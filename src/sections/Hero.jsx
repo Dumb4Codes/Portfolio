@@ -19,14 +19,14 @@ const Hero = () => {
         style={{ width: "100vw", height: "100vh" }}
       >
         <Canvas camera={{ position: [0, 1, 3] }}>
-          <ambientLight color="#5865f2" intensity={0.4} />
-          <directionalLight color="#9a55ff" intensity={0.7} />
+          <ambientLight color="#5865f2" intensity={0.9} />
+          <directionalLight color="#9a55ff" intensity={60} />
 
           <Suspense fallback={<Loader />}>
             <Float>
               <Astronaut
-                scale={isMobile && 0.23}
-                position={isMobile ? [0, -1.5, 0] : [2, 0, 0]}
+                scale={isMobile && 1.7} // ⬅️ increased from 0.23→0.3 (mobile) and 0.4→0.5 (desktop)
+                position={isMobile ? [0, -3.3, 0] : [3, -3.5, 0.5]}
               />
             </Float>
             <Rig />

@@ -29,9 +29,7 @@
   --animate-marquee: marquee 50s linear infinite;
   --animate-marquee-vertical: marquee-vertical 50s linear infinite;
 
-  html {
-  scroll-behavior: smooth;
-}
+  
 
   @keyframes marquee {
     from {
@@ -51,6 +49,11 @@
     }
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #01020c;
   font-family: "Funnel Display", sans-serif;

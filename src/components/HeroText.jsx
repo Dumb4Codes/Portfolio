@@ -152,7 +152,7 @@ const HeroText = () => {
             onClick={() => scrollToSection("projects")}
             className="inline-block cursor-pointer px-6 py-3 text-base font-semibold rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-[0_0_20px_-5px_rgba(167,139,250,0.4)] hover:shadow-[0_0_35px_-10px_rgba(167,139,250,0.7)] transition-all duration-300 hover:scale-[1.03]"
           >
-            View My Work
+            View My Work 🔥
           </button>
         </motion.div>
       </div>
