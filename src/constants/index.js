@@ -121,7 +121,7 @@ export const myProjects = [
     logo: "",
     image: "/assets/projects/growthSpace.png",
     tags: [
-      
+
     ],
   },
 ];
