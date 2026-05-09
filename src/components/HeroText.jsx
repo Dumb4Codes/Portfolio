@@ -81,7 +81,7 @@ const HeroText = () => {
 
           <motion.button
             onClick={() => scrollToSection("projects")}
-            className="inline-block px-8 py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-[0_0_20px_-5px_rgba(167,139,250,0.4)] hover:shadow-[0_0_35px_-10px_rgba(167,139,250,0.7)] transition-all duration-300 hover:scale-[1.03]"
+            className="inline-block px-8 py-3 text-lg cursor-pointer font-semibold rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-[0_0_20px_-5px_rgba(167,139,250,0.4)] hover:shadow-[0_0_35px_-10px_rgba(167,139,250,0.7)] transition-all duration-300 hover:scale-[1.03]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >

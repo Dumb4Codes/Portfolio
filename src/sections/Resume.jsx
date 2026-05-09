@@ -18,6 +18,7 @@ const Resume = () => {
     "React.js",
     "JavaScript",
     "TypeScript",
+    "Java",
     "Node.js",
     "Express.js",
     "MongoDB",
@@ -26,6 +27,8 @@ const Resume = () => {
     "Tailwind CSS",
     "Figma",
     "Git & GitHub",
+    "Spring Boot",
+
   ];
 
   const certifications = [

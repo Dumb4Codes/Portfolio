@@ -34,6 +34,11 @@ export const myProjects = [
         name: "mongodb",
         path: "/assets/logos/mongodb.svg",
       },
+      {
+        id: 5,
+        name: "Framer Motion",
+        path: "",
+      },
     ],
   },
   {
@@ -76,6 +81,11 @@ export const myProjects = [
         name: "mongodb",
         path: "/assets/logos/mongodb.svg",
       },
+      {
+        id: 6,
+        name: "Framer Motion",
+        path: "",
+      },
     ],
   },
   {
@@ -88,7 +98,7 @@ export const myProjects = [
       "Used TypeScript for precise number calculations and consistent state handling.",
       "Designed with Tailwind CSS for an enhanced UX.",
     ],
-    href: "",
+    href: "https://typing-game-five-rho.vercel.app",
     logo: "",
     image: "/assets/projects/typingGame.png",
     tags: [
@@ -103,14 +113,48 @@ export const myProjects = [
         path: "/assets/logos/typescript.svg",
       },
       {
+        id: 3,
+        name: "TailwindCSS",
+        path: "/assets/logos/tailwindcss.svg",
+      },
+      {
         id: 4,
+        name: "Framer Motion",
+        path: "",
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Smart Bookmark",
+    description:
+      "Developed a full-stack Smart Bookmark Manager with secure user-specific storage, Google login, and realtime syncing for a smooth production-like experience.",
+    subDescription: [
+      "Focused on secure architecture with Row Level Security, real-time updates, cross-tab auth sync, responsive UI, and clean TypeScript-based implementation while solving realtime insert sync and Supabase publication issues.",
+    ],
+    href: "https://smart-bookmark-app-5lof.vercel.app",
+    logo: "",
+    image: "/assets/projects/smartBookmark.png",
+    tags: [
+      {
+        id: 1,
+        name: "next.js",
+        path: "/assets/logos/next.js.svg",
+      },
+      {
+        id: 2,
+        name: "supabase",
+        path: "/assets/logos/supabase.svg",
+      },
+      {
+        id: 3,
         name: "TailwindCSS",
         path: "/assets/logos/tailwindcss.svg",
       },
     ],
   },
   {
-    id: 4,
+    id: 5,
     title: "Growth Space (Figma)",
     description: "Growth Space, A fun little project built using Figma",
     subDescription: [
@@ -120,9 +164,7 @@ export const myProjects = [
     href: "",
     logo: "",
     image: "/assets/projects/growthSpace.png",
-    tags: [
-
-    ],
+    tags: [],
   },
 ];
 
