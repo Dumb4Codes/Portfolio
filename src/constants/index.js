@@ -1,6 +1,94 @@
 export const myProjects = [
   {
     id: 1,
+    title: "Instantly (AI Ecommerce Platform)",
+    description:
+      "A scalable AI-powered ecommerce platform built using the MERN stack, with layered architecture, secure authentication, RBAC, transactional business logic, and AI-powered workflows.",
+    subDescription: [
+      "Architected a scalable MERN application using layered architecture, service-oriented modules, and reusable component composition to improve maintainability and separation of concerns.",
+      "Engineered secure authentication, RBAC, request validation, and middleware-driven API workflows using Passport.js, JWT, HttpOnly cookies, and Zod.",
+      "Designed scalable domain models, transactional business logic, and consistent data persistence through MongoDB, Mongoose, and service-layer abstractions.",
+      "Integrated Stripe webhooks, AWS S3, and Gemini AI through asynchronous event-driven workflows while preserving modularity across application boundaries.",
+    ],
+    href: "https://ai-ecom-mocha.vercel.app",
+    logo: "",
+    image: "/assets/projects/instantly.png",
+    tags: [
+      {
+        id: 1,
+        name: "react",
+        path: "/assets/logos/react.svg",
+      },
+      {
+        id: 2,
+        name: "typescript",
+        path: "/assets/logos/typescript.svg",
+      },
+      {
+        id: 3,
+        name: "node.js",
+        path: "",
+      },
+      {
+        id: 4,
+        name: "express.js",
+        path: "",
+      },
+      {
+        id: 5,
+        name: "mongodb",
+        path: "/assets/logos/mongodb.svg",
+      },
+      {
+        id: 6,
+        name: "passport.js",
+        path: "",
+      },
+      {
+        id: 7,
+        name: "jwt",
+        path: "",
+      },
+      {
+        id: 8,
+        name: "zustand",
+        path: "",
+      },
+      {
+        id: 9,
+        name: "tanstack query",
+        path: "",
+      },
+      {
+        id: 10,
+        name: "aws s3",
+        path: "",
+      },
+      {
+        id: 11,
+        name: "stripe",
+        path: "/assets/logos/stripe.svg",
+      },
+      {
+        id: 12,
+        name: "gemini",
+        path: "",
+      },
+      {
+        id: 13,
+        name: "zod",
+        path: "",
+      },
+      {
+        id: 14,
+        name: "tailwindcss",
+        path: "/assets/logos/tailwindcss.svg",
+      },
+    ],
+  },
+
+  {
+    id: 2,
     title: "Car Rental Platform",
     description:
       "Car Rental is a modern, feature-rich web application built using the MERN stack, designed to simplify the car rental process for both owners and users with secure authentication, real-time car availability, and smooth animations powered by Framer Motion.",
@@ -41,8 +129,9 @@ export const myProjects = [
       },
     ],
   },
+
   {
-    id: 2,
+    id: 3,
     title: "Quick Stay (Hotel Booking System)",
     description:
       "A Full-Stack Hotel Booking Platform, QuickStay is a modern, scalable hotel booking web application built using the MERN stack, featuring secure authentication, seamless payment integration, and a clean user experience, fully deployed on Vercel.",
@@ -88,8 +177,9 @@ export const myProjects = [
       },
     ],
   },
+
   {
-    id: 3,
+    id: 4,
     title: "Typing Game",
     description:
       "A modern, minimalist typing game built inspired by monkeyType.",
@@ -124,8 +214,9 @@ export const myProjects = [
       },
     ],
   },
+
   {
-    id: 4,
+    id: 5,
     title: "Smart Bookmark",
     description:
       "Developed a full-stack Smart Bookmark Manager with secure user-specific storage, Google login, and realtime syncing for a smooth production-like experience.",
@@ -153,8 +244,9 @@ export const myProjects = [
       },
     ],
   },
+
   {
-    id: 5,
+    id: 6,
     title: "Growth Space (Figma)",
     description: "Growth Space, A fun little project built using Figma",
     subDescription: [
@@ -199,6 +291,7 @@ export const experiences = [
       "Executed XML to SVG conversions using X-DOM, ensuring dynamic and efficient data visualization.",
     ],
   },
+
   {
     title: "Back-End Developer",
     job: "Car Manufacture",
@@ -211,6 +304,7 @@ export const experiences = [
       "✅ Delivered remote features like over-the-air updates, real-time tracking, and remote start capabilities.",
     ],
   },
+
   {
     title: "Freelance Developer",
     job: "Self-Employed",
@@ -221,6 +315,7 @@ export const experiences = [
     ],
   },
 ];
+
 export const reviews = [
   {
     name: "Dhvanit Raval",
