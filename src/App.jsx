@@ -11,7 +11,7 @@ import Resume from "./sections/Resume";
 
 const App = () => {
   return (
-    <div className="container mx-auto max-w-8xl">
+    <div className="container mx-auto max-w-full">
       <Navbar />
       <Hero />
       <About />
