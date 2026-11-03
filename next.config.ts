@@ -5,6 +5,8 @@ const config: NextConfig = {
   poweredByHeader: false,
   images: { formats: ['image/avif', 'image/webp'], qualities: [60, 75, 85] },
   productionBrowserSourceMaps: false,
+  // Next 16 otherwise writes an AGENTS.md into the repo on `next dev`
+  agentRules: false,
   async redirects() {
     return [{ source: '/admin', destination: '/keystatic', permanent: false }]
   },

@@ -67,6 +67,7 @@ test.describe('interactions', () => {
   test('certificates open in a dialog with focus trap and Escape', async ({ page }) => {
     await skipIntro(page)
     await page.goto('/')
+    await page.waitForLoadState('networkidle') // before hydration a click is just a normal link to the file
     const first = page.locator('.cert__card').first()
     await first.scrollIntoViewIfNeeded()
     await first.click({ force: true })

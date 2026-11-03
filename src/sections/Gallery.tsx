@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import Img from '@/components/Img'
 import { useRef, useState } from 'react'
 import { getLenis } from '@/lib/scroll'
 
@@ -51,7 +51,7 @@ export default function Gallery({ items, title }: { items: Item[]; title: string
         {items.map((g, i) => (
           <li key={g.src}>
             <button type="button" className="gallery__thumb" onClick={() => open(i)} data-cursor="View" aria-haspopup="dialog">
-              <Image src={g.src} alt={g.alt} width={640} height={400} sizes="(min-width: 1024px) 34vw, 78vw" quality={70} placeholder={g.blur ? 'blur' : 'empty'} blurDataURL={g.blur} draggable={false} />
+              <Img src={g.src} alt={g.alt} width={640} height={400} sizes="(min-width: 1024px) 34vw, 78vw" quality={70} blur={g.blur} draggable={false} />
             </button>
           </li>
         ))}
@@ -78,7 +78,7 @@ export default function Gallery({ items, title }: { items: Item[]; title: string
       >
         {cur && (
           <figure className="lightbox__fig">
-            <Image src={cur.src} alt={cur.alt} width={1600} height={1000} sizes="94vw" quality={80} className="lightbox__img" />
+            <Img src={cur.src} alt={cur.alt} width={1600} height={1000} sizes="94vw" quality={80} className="lightbox__img" />
             <figcaption className="mono">
               <span className="muted">
                 {(idx ?? 0) + 1} / {items.length}

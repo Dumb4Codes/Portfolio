@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Img from '@/components/Img'
 import Reveal from '@/components/Reveal'
 import type { Experience, Profile } from '@/content/schema'
 import AboutPhoto from './AboutPhoto'
@@ -37,15 +37,14 @@ export default function AboutSection({ profile, job, blur }: { profile: Profile;
           </p>
           {profile.photo && (
             <AboutPhoto>
-              <Image
+              <Img
                 src={profile.photo}
                 alt={profile.photoAlt}
                 width={900}
                 height={1125}
                 sizes="(min-width: 1024px) 34vw, 86vw"
                 quality={75}
-                placeholder={blur ? 'blur' : 'empty'}
-                blurDataURL={blur}
+                blur={blur}
                 className="about__img"
               />
             </AboutPhoto>

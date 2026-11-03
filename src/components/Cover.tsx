@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Img from '@/components/Img'
 import { hashSlug } from '@/content/derive'
 
 /** Typographic cover for projects without an image: title in Archivo on a tint derived from the slug. Never blank. */
@@ -24,19 +24,18 @@ type Props = {
   className?: string
 }
 
-/** Project cover: next/image with a blur placeholder (computed at build, passed in), or the generated typographic cover. */
+/** Project cover: an optimised <img> with a blur placeholder (computed at build, passed in), or the generated typographic cover. */
 export default function Cover({ src, alt, title, slug, sizes, blur, priority, className }: Props) {
   if (!src) return <GeneratedCover title={title} slug={slug} className={className} />
   return (
-    <Image
+    <Img
       src={src}
       alt={alt}
       fill
       sizes={sizes}
       priority={priority}
       quality={75}
-      placeholder={blur ? 'blur' : 'empty'}
-      blurDataURL={blur}
+      blur={blur}
       className={className}
       style={{ objectFit: 'cover' }}
     />

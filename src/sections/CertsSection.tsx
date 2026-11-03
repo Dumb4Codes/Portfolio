@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import Img from '@/components/Img'
 import { useRef, useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { formatCertDate } from '@/content/derive'
@@ -53,7 +53,7 @@ export default function CertsSection({ certs }: { certs: Cert[] }) {
               }}
               aria-haspopup="dialog"
             >
-              <Image src={c.image} alt="" width={440} height={310} sizes="(min-width: 1024px) 18vw, 70vw" quality={60} className="cert__img" />
+              <Img src={c.image} alt="" width={440} height={310} sizes="(min-width: 1024px) 18vw, 70vw" quality={60} className="cert__img" />
               <span className="cert__cap">
                 <b className="cert__title">{c.title}</b>
                 <span className="mono muted">
@@ -74,7 +74,7 @@ export default function CertsSection({ certs }: { certs: Cert[] }) {
       >
         {open && (
           <div className="cert-dialog__body" data-lenis-prevent>
-            <Image src={open.image} alt={`${open.title} certificate from ${open.issuer}`} width={1400} height={990} sizes="(min-width: 1024px) 70vw, 94vw" quality={80} className="cert-dialog__img" />
+            <Img src={open.image} alt={`${open.title} certificate from ${open.issuer}`} width={1400} height={990} sizes="(min-width: 1024px) 70vw, 94vw" quality={80} className="cert-dialog__img" />
             <div className="cert-dialog__meta">
               <div>
                 <h3 className="display cert-dialog__title">{open.title}</h3>

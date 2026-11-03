@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import Img from '@/components/Img'
 import { useEffect, useRef, useState } from 'react'
 import { prefersReducedMotion } from '@/lib/scroll'
 import { frameLoop } from '@/lib/tween'
@@ -59,7 +59,7 @@ export default function ArchivePreview({ previews }: { previews: Record<string, 
     <div ref={box} className="archive__preview" aria-hidden="true">
       {p &&
         (p.src ? (
-          <Image src={p.src} alt="" fill sizes="300px" quality={60} style={{ objectFit: 'cover' }} />
+          <Img src={p.src} alt="" fill sizes="300px" quality={60} style={{ objectFit: 'cover' }} />
         ) : (
           <div className="gen-cover" style={{ ['--h' as string]: p.hue, ['--ang' as string]: `${p.ang}deg` }}>
             <span className="gen-cover__title display">{p.title}</span>
