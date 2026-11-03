@@ -1,25 +1,49 @@
 import { pointsFromMask } from './mask'
 import type { Box, Shape } from './types'
 
+const TILE = 120 // 120 x 120 = 14,400 px, under Chrome's size threshold for GPU-accelerated 2D canvases
+
 /**
  * Samples text drawn in the display font. Call after `document.fonts.ready`.
  * `lines` lets mobile stack "YOU / VRAJ". Browser only (needs a canvas).
+ *
+ * The glyphs are rasterised in small tiles. Small canvases stay CPU-backed, so reading the pixels
+ * back never needs a GPU readback, whatever the text size.
  */
 export function textShape(lines: string[], n: number, box: Box, fontFamily: string, seed = 7): Shape {
   const px = 240
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d', { willReadFrequently: true })!
   const font = `800 ${px}px ${fontFamily}`
+  const lh = px * 0.92
+
+  const tile = document.createElement('canvas')
+  tile.width = TILE
+  tile.height = TILE
+  const ctx = tile.getContext('2d', { willReadFrequently: true })!
   ctx.font = font
   const widest = Math.max(...lines.map((l) => ctx.measureText(l).width))
-  const lh = px * 0.92
-  canvas.width = Math.ceil(widest + px * 0.2)
-  canvas.height = Math.ceil(lh * lines.length + px * 0.2)
-  ctx.font = font // resizing the canvas resets the context
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillStyle = '#fff'
-  lines.forEach((l, i) => ctx.fillText(l, canvas.width / 2, px * 0.1 + lh * (i + 0.5)))
-  const img = ctx.getImageData(0, 0, canvas.width, canvas.height)
-  return pointsFromMask({ width: img.width, height: img.height, data: img.data }, n, box, seed)
+
+  const W = Math.ceil(widest + px * 0.2)
+  const H = Math.ceil(lh * lines.length + px * 0.2)
+  const mask = new Uint8Array(W * H)
+
+  for (let ty = 0; ty < H; ty += TILE) {
+    for (let tx = 0; tx < W; tx += TILE) {
+      ctx.clearRect(0, 0, TILE, TILE)
+      ctx.save()
+      ctx.translate(-tx, -ty)
+      ctx.font = font
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillStyle = '#fff'
+      lines.forEach((l, i) => ctx.fillText(l, W / 2, px * 0.1 + lh * (i + 0.5)))
+      ctx.restore()
+      const w = Math.min(TILE, W - tx)
+      const h = Math.min(TILE, H - ty)
+      const data = ctx.getImageData(0, 0, w, h).data
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) mask[(ty + y) * W + tx + x] = data[(y * w + x) * 4 + 3]
+      }
+    }
+  }
+  return pointsFromMask({ width: W, height: H, data: mask }, n, box, seed, 1)
 }

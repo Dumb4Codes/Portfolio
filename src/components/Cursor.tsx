@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef } from 'react'
-import { gsap } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/scroll'
+import { frameLoop } from '@/lib/tween'
 
 /**
  * Dot + lagging ring for fine pointers. The system cursor is only hidden while the mouse is in use:
@@ -15,18 +15,28 @@ export default function Cursor() {
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches || prefersReducedMotion()) return
     const root = document.documentElement
-    const dx = gsap.quickTo(dot.current, 'x', { duration: 0.08, ease: 'power3' })
-    const dy = gsap.quickTo(dot.current, 'y', { duration: 0.08, ease: 'power3' })
-    const rx = gsap.quickTo(ring.current, 'x', { duration: 0.45, ease: 'power3' })
-    const ry = gsap.quickTo(ring.current, 'y', { duration: 0.45, ease: 'power3' })
+    const target = { x: 0, y: 0 }
+    const pos = { x: 0, y: 0 }
+    let seen = false
+    const loop = frameLoop(() => {
+      pos.x += (target.x - pos.x) * 0.2
+      pos.y += (target.y - pos.y) * 0.2
+      if (ring.current) ring.current.style.transform = `translate3d(${pos.x}px,${pos.y}px,0)`
+      return Math.abs(target.x - pos.x) > 0.1 || Math.abs(target.y - pos.y) > 0.1
+    })
 
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === 'touch') return
       root.classList.add('cursor-on')
-      dx(e.clientX)
-      dy(e.clientY)
-      rx(e.clientX)
-      ry(e.clientY)
+      target.x = e.clientX
+      target.y = e.clientY
+      if (!seen) {
+        seen = true
+        pos.x = e.clientX
+        pos.y = e.clientY
+      }
+      if (dot.current) dot.current.style.transform = `translate3d(${e.clientX}px,${e.clientY}px,0)`
+      loop.wake()
       const t = (e.target as Element | null)?.closest?.('[data-cursor], a, button, input, textarea, summary, [role=button]') as HTMLElement | null
       const text = t?.dataset.cursor ?? (t ? '' : null)
       ring.current?.classList.toggle('is-active', text !== null)
@@ -41,6 +51,7 @@ export default function Cursor() {
     window.addEventListener('keydown', onKey)
     document.addEventListener('pointerleave', onLeave)
     return () => {
+      loop.stop()
       root.classList.remove('cursor-on')
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('keydown', onKey)

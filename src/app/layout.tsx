@@ -28,6 +28,7 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  title: { default: 'Youvraj Singh, Full-Stack Developer in Bengaluru', template: '%s' },
   manifest: '/manifest.webmanifest',
 }
 

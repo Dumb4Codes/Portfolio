@@ -18,23 +18,28 @@ export type PaletteData = {
 type Item = { id: string; group: string; label: string; hint?: string; run: () => void }
 
 /** Command palette: Ctrl/Cmd+K or "/" . Combobox pattern: input owns focus, list uses aria-activedescendant. */
-export default function Palette({ data }: { data: PaletteData }) {
+export default function Palette({ data, openSignal, returnTo }: { data: PaletteData; openSignal: number; returnTo: React.RefObject<HTMLElement | null> }) {
+  const [seen, setSeen] = useState(0)
   const [open, setOpen] = useState(false)
+  // open whenever the host reports a new trigger (state derived from props, no effect)
+  if (openSignal !== seen) {
+    setSeen(openSignal)
+    setOpen(true)
+  }
   const [q, setQ] = useState('')
   const [active, setActive] = useState(0)
   const router = useRouter()
   const pathname = usePathname()
   const theme = useTheme()
   const input = useRef<HTMLInputElement>(null)
-  const returnTo = useRef<HTMLElement | null>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const close = useCallback(() => {
+  const close = () => {
     setOpen(false)
     setQ('')
     setActive(0)
     returnTo.current?.focus?.()
-  }, [])
+  }
 
   const goSection = useCallback(
     (href: string) => {
@@ -59,7 +64,7 @@ export default function Palette({ data }: { data: PaletteData }) {
       label: 'Call Youvraj',
       hint: 'Phone',
       run: () => {
-        window.location.href = `tel:${decodeContact(data.phoneEnc).replace(/\s/g, '')}`
+        window.location.assign(`tel:${decodeContact(data.phoneEnc).replace(/\s/g, '')}`)
       },
     })
     if (data.resume) list.push({ id: 'cv', group: 'Actions', label: 'Download résumé', hint: 'PDF', run: () => window.open(data.resume, '_blank', 'noopener') })
@@ -72,33 +77,6 @@ export default function Palette({ data }: { data: PaletteData }) {
     const s = q.trim().toLowerCase()
     return s ? items.filter((i) => `${i.label} ${i.group} ${i.hint ?? ''}`.toLowerCase().includes(s)) : items
   }, [items, q])
-
-  useEffect(() => setActive(0), [q])
-
-  // open triggers
-  useEffect(() => {
-    const show = () => {
-      returnTo.current = document.activeElement as HTMLElement
-      setOpen(true)
-    }
-    const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement | null
-      const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault()
-        show()
-      } else if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey) {
-        e.preventDefault()
-        show()
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    window.addEventListener('palette:open', show)
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      window.removeEventListener('palette:open', show)
-    }
-  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -132,10 +110,16 @@ export default function Palette({ data }: { data: PaletteData }) {
         data-lenis-prevent
         onKeyDown={(e) => {
           if (e.key === 'Escape') return close()
-          if (e.key === 'ArrowDown') (e.preventDefault(), setActive((a) => Math.min(a + 1, shown.length - 1)))
-          else if (e.key === 'ArrowUp') (e.preventDefault(), setActive((a) => Math.max(a - 1, 0)))
-          else if (e.key === 'Enter') (e.preventDefault(), run(shown[active]))
-          else if (e.key === 'Tab') e.preventDefault() // focus stays in the combobox
+          if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            setActive((a) => Math.min(a + 1, shown.length - 1))
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            setActive((a) => Math.max(a - 1, 0))
+          } else if (e.key === 'Enter') {
+            e.preventDefault()
+            run(shown[active])
+          } else if (e.key === 'Tab') e.preventDefault() // focus stays in the combobox
         }}
       >
         <input
@@ -149,7 +133,10 @@ export default function Palette({ data }: { data: PaletteData }) {
           aria-label="Search commands"
           placeholder="Jump to a section, project or action"
           value={q}
-          onChange={(e) => setQ(e.target.value)}
+          onChange={(e) => {
+            setQ(e.target.value)
+            setActive(0)
+          }}
           autoComplete="off"
           spellCheck={false}
         />

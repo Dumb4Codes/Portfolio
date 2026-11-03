@@ -39,11 +39,11 @@
   --bg: #efeae1;
   --bg-2: #e6e0d5;
   --fg: #0e0e0f;
-  --muted: #6b665e;
+  --muted: #625d55;
   --line: rgba(14, 14, 15, 0.12);
   --line-strong: rgba(14, 14, 15, 0.3);
   --accent: #ff5a1f;
-  --accent-text: #b8380a; /* AA on bone paper for small text */
+  --accent-text: #ad3409; /* AA on bone paper and the raised panel for small text */
   --live: #15803d;
   --on-accent: #0e0e0f;
   --grain-opacity: 0.06;
@@ -392,13 +392,13 @@ html.lenis body {
 /* ============================================================
    Reveals. Only hidden when JS has run, so no-JS users see everything.
    ============================================================ */
-html.js [data-reveal='fade'] {
+html.js:not([data-motion='failed']) :is([data-reveal='rise'], [data-reveal='clip'], [data-reveal='wdth']) {
   opacity: 0;
 }
-html.js [data-reveal='rule'] {
+html.js:not([data-motion='failed']) [data-reveal='rule'] {
   transform: scaleX(0);
 }
-html.js [data-reveal='lines'] {
+html.js:not([data-motion='failed']) [data-reveal='lines'] {
   visibility: hidden;
 }
 .mask-line {
@@ -438,5 +438,7 @@ html.js [data-reveal='lines'] {
   html.js [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
+    visibility: visible !important;
   }
 }
+

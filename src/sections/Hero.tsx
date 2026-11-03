@@ -1,6 +1,5 @@
 import { splitHeadline } from '@/content/derive'
 import type { Profile } from '@/content/schema'
-import HeroMotion from './HeroMotion'
 
 /**
  * The h1 is real HTML ("Youvraj Singh"). Once WebGL is ready the particle word sits exactly over it
@@ -54,7 +53,6 @@ export default function Hero({ profile, jobLine }: { profile: Profile; jobLine: 
           <span className={`muted hero__avail hero__avail--${profile.availability.status}`}>{profile.availability.label}</span>
         </div>
       </div>
-      <HeroMotion />
     </section>
   )
 }

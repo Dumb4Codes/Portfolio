@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ROUTE_NODES, nodeT, routePath } from '@/gl/shapes/route'
 import { prefersReducedMotion } from '@/lib/scroll'
 import { useChapter } from './useChapter'
@@ -12,18 +12,18 @@ const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 const DESCRIPTION =
   'Illustrative delivery route with sample data. One rider visits up to four stops: buy, pick up, drop off, then home. Status moves from requested to delivered, and the customer sees each step on a tracking page.'
 
-/** Scrambles characters into place when `go` flips true. Pure DOM-free text state. */
+const noop = () => () => {}
+
+/** Scrambles characters into place when `go` flips true. Reduced motion: the final text, no animation. */
 function useScramble(target: string, go: boolean) {
   const [text, setText] = useState(target)
   const started = useRef(false)
+  const reduced = useSyncExternalStore(noop, prefersReducedMotion, () => false)
+
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setText(target)
-      return
-    }
+    if (reduced) return
     if (!go) {
       started.current = false
-      setText(target.replace(/[A-Z0-9]/g, '·').replace('MDB-', 'MDB-'))
       return
     }
     if (started.current) return
@@ -44,8 +44,10 @@ function useScramble(target: string, go: boolean) {
       }
     }, 40)
     return () => clearInterval(id)
-  }, [go, target])
-  return text
+  }, [go, target, reduced])
+
+  if (reduced) return target
+  return go ? text : target.replace(/[A-Z0-9]/g, '·').replace('MDB-', 'MDB-')
 }
 
 export default function RouteVisual({ standalone = false }: { standalone?: boolean }) {

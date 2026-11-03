@@ -4,9 +4,8 @@ import { notFound } from 'next/navigation'
 import { GeneratedCover } from '@/components/Cover'
 import Cover from '@/components/Cover'
 import Metrics from '@/components/Metrics'
-import Reveal from '@/components/Reveal'
 import { getProject, getSiteData } from '@/content/reader'
-import { blurFor } from '@/lib/blur'
+import { blurMap } from '@/lib/blur'
 import { SITE_URL } from '@/lib/site'
 import Gallery from '@/sections/Gallery'
 import NextProject from '@/sections/NextProject'
@@ -43,7 +42,8 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
   const p = projects[idx]
   const next = projects[(idx + 1) % projects.length]
   const internal = p.kind === 'internal'
-  const gallery = await Promise.all(p.gallery.map(async (g) => ({ ...g, blur: await blurFor(g.src) })))
+  const blurs = await blurMap([p.cover, ...p.gallery.map((g) => g.src)])
+  const gallery = p.gallery.map((g) => ({ ...g, blur: blurs[g.src] }))
 
   const ld = {
     '@context': 'https://schema.org',
@@ -77,9 +77,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
             <span className="muted">[ {index} ]</span>
             {internal ? <span className="badge">Internal · Confidential</span> : <span className="badge badge--ghost">Personal</span>}
           </p>
-          <Reveal as="h1" variant="wdth" className="display cs__title" start="top 100%">
-            {p.title}
-          </Reveal>
+          <h1 className="display cs__title">{p.title}</h1>
           {p.tagline && <p className="serif cs__tagline">{p.tagline}</p>}
 
           <dl className="cs__meta mono">
@@ -114,15 +112,15 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
             <InternalVisual project={p} standalone />
           </div>
         ) : (
-          <Reveal variant="clip" className="cs__frame">
+          <div className="cs__frame">
             <div className="cs__frame-inner">
               {p.cover ? (
-                <Cover src={p.cover} alt={`${p.title} cover screenshot`} title={p.title} slug={p.slug} sizes="(min-width: 1024px) 92vw, 100vw" priority />
+                <Cover src={p.cover} alt={`${p.title} cover screenshot`} title={p.title} slug={p.slug} sizes="(min-width: 1024px) 92vw, 100vw" blur={p.cover ? blurs[p.cover] : undefined} priority />
               ) : (
                 <GeneratedCover title={p.title} slug={p.slug} />
               )}
             </div>
-          </Reveal>
+          </div>
         )}
       </section>
 

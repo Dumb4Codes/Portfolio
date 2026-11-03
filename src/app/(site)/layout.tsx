@@ -8,7 +8,7 @@ import LazyPalette from '@/components/SiteChrome'
 import PageWipe from '@/components/PageWipe'
 import Preloader from '@/components/Preloader'
 import ScrollProgress from '@/components/ScrollProgress'
-import SmoothScroll from '@/components/SmoothScroll'
+import MotionBoot from '@/motion/Boot'
 import { Toaster } from '@/components/toast'
 import { getSiteData } from '@/content/reader'
 import GLMount from '@/gl/GLMount'
@@ -31,7 +31,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <SmoothScroll />
+      <MotionBoot />
       <GLMount />
       <div className="grain" aria-hidden="true" />
       <ScrollProgress />

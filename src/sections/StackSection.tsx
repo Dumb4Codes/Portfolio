@@ -1,7 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Reveal from '@/components/Reveal'
-import Link from 'next/link'
 
 type Group = { name: string; items: string[] }
 
@@ -11,7 +10,7 @@ type Group = { name: string; items: string[] }
  */
 export default function StackSection({ groups, usage, titles }: { groups: Group[]; usage: Record<string, string[]>; titles: Record<string, string> }) {
   const [active, setActive] = useState<string | null>(null)
-  const slugs = active ? (usage[active] ?? []) : []
+  const slugs = useMemo(() => (active ? (usage[active] ?? []) : []), [active, usage])
 
   useEffect(() => {
     const set = new Set(slugs)
@@ -33,9 +32,9 @@ export default function StackSection({ groups, usage, titles }: { groups: Group[
           <p className="section-label mono stack__label">
             <span>[ 05 ]</span> <span>Stack</span>
           </p>
-          <h2 id="stack-title" className="display stack__title">
+          <Reveal as="h2" variant="wdth" id="stack-title" className="display stack__title">
             What I <em className="serif">reach for</em>
-          </h2>
+          </Reveal>
           <p className="stack__hint mono muted">Point at a skill to see where it is used.</p>
         </div>
 
@@ -77,9 +76,9 @@ export default function StackSection({ groups, usage, titles }: { groups: Group[
                 <span className="accent">{active}</span> used in {slugs.length} {slugs.length === 1 ? 'project' : 'projects'}:{' '}
                 {slugs.map((s, i) => (
                   <span key={s}>
-                    <Link href={`/work/${s}`} data-wipe={titles[s]}>
+                    <a href={`/work/${s}`} data-wipe={titles[s]}>
                       {titles[s]}
-                    </Link>
+                    </a>
                     {i < slugs.length - 1 ? ', ' : ''}
                   </span>
                 ))}

@@ -83,10 +83,10 @@
   white-space: nowrap;
 }
 /* once the particle word is drawn over it, the HTML glyphs step aside (still there for SEO / screen readers) */
-html[data-gl='on'] .hero__first { color: transparent; }
+html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, transparent); }
 .hero__stack { display: none; font-size: clamp(120px, 36vw, 300px); text-transform: uppercase; line-height: 0.8; letter-spacing: -0.05em; margin-left: -0.04em; transition: color 0.6s ease; }
 .hero__stack > span { display: block; }
-html[data-gl='on'] .hero__stack { color: transparent; }
+html[data-gl='on'] .hero__stack { color: color-mix(in oklab, var(--fg) 9%, transparent); }
 @media (max-width: 767px) {
   .hero__first { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .hero__stack { display: block; }
@@ -109,6 +109,12 @@ html[data-gl='on'] .hero__stack { color: transparent; }
   text-wrap: balance;
 }
 .hero__sub { max-width: 52ch; color: var(--muted); font-size: clamp(15px, 1.15vw, 19px); }
+/* entrance is CSS so it never waits for the motion engine; held until the preloader is gone */
+@keyframes hero-in { from { opacity: 0; transform: translateY(18px); } }
+html.preload .hero__headline, html.preload .hero__sub, html.preload .hero__bottom > *, html.preload .hero__top > * { opacity: 0; }
+html:not(.preload) .hero__headline { animation: hero-in 1.1s var(--ease-out) 0.05s both; }
+html:not(.preload) .hero__sub { animation: hero-in 1s var(--ease-out) 0.35s both; }
+html:not(.preload) .hero__bottom > *, html:not(.preload) .hero__top > * { animation: hero-in 1s var(--ease-out) 0.6s both; }
 .hero__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; }
 .hero__cue { display: inline-flex; align-items: center; gap: 12px; }
 .hero__drip { position: relative; display: block; width: 1px; height: 40px; background: var(--line-strong); overflow: hidden; }
@@ -185,18 +191,19 @@ html[data-gl='on'] .hero__stack { color: transparent; }
   align-items: baseline;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
-  opacity: 0.12;
-  transition: opacity 0.4s var(--ease-out);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
   font-size: 11px;
 }
-.ledger__row[data-on='true'] { opacity: 1; }
+.ledger__row[data-on='true'] { opacity: 1; transform: none; }
 .ledger__row[data-current='true'] { color: var(--accent-text); }
 .ledger__meta { color: var(--muted); grid-column: 3 / -1; font-size: 10px; letter-spacing: 0.08em; }
 .ledger__bal { text-align: right; }
 .ledger__row[data-current='true'] .ledger__meta { color: inherit; }
 .ledger__plus { color: var(--live); }
 .ledger__minus { color: var(--muted); }
-.ledger__foot { display: flex; justify-content: space-between; padding-top: 6px; opacity: 0.25; transition: opacity 0.5s; }
+.ledger__foot { display: flex; justify-content: space-between; padding-top: 6px; opacity: 0; transition: opacity 0.5s; }
 .ledger__foot[data-on='true'] { opacity: 1; }
 .ledger__foot b { font-size: 18px; font-weight: 500; }
 .rail { margin-top: 4px; }
@@ -223,7 +230,7 @@ html[data-gl='on'] .hero__stack { color: transparent; }
 .shift-legend i.is-night { background: var(--accent); }
 .net { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
 .net__fig { font-size: clamp(22px, 2.6vw, 32px); letter-spacing: -0.02em; font-weight: 500; }
-.net__delta { opacity: 0.2; transition: opacity 0.5s; }
+.net__delta { opacity: 0; transition: opacity 0.5s; }
 .net__delta[data-on='true'] { opacity: 1; }
 .states { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 10px; }
 .states li { padding: 6px 9px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--muted); transition: all 0.3s; }
@@ -279,7 +286,7 @@ html[data-gl='on'] .hero__stack { color: transparent; }
     border: 0;
     background: transparent;
   }
-  .visual--ledger {
+  .chapter__visual .visual--ledger {
     padding: 18px !important;
     border: 1px solid var(--line-strong) !important;
     background: color-mix(in oklab, var(--bg) 88%, transparent) !important;
@@ -291,19 +298,19 @@ html[data-gl='on'] .hero__stack { color: transparent; }
     left: calc(72% - var(--vis-w) * 0.3) !important;
     top: calc(50% + var(--vis-h) * 0.08) !important;
   }
-  .visual--ledger .vis-note { display: none; }
-  .visual--ledger .ledger__row { font-size: 12px; padding: 11px 0; }
-  .visual--payroll { display: block; }
-  .visual--payroll .clock-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .visual--payroll .shift-legend { position: absolute; }
-  .visual--payroll .net { position: absolute; inset: 0; justify-content: center; }
-  .visual--payroll .states { position: absolute; left: 0; right: 0; top: calc(100% + 44px); }
-  .visual--payroll .shift-legend { top: calc(100% + 92px); left: 0; right: 0; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 20px; align-self: auto; }
-  .visual--payroll .vis-tag { position: absolute; right: 0; top: 0; }
-  .visual--route { display: block; }
-  .visual--route .route-map { position: absolute; inset: 0; aspect-ratio: auto; border: 0; }
-  .visual--route .route-meta { position: absolute; left: 0; right: 0; top: calc(100% + 18px); }
-  .visual--route .vis-tag { position: absolute; right: 0; top: -34px; }
+  .chapter__visual .visual--ledger .vis-note { display: none; }
+  .chapter__visual .visual--ledger .ledger__row { font-size: 12px; padding: 11px 0; }
+  .chapter__visual .visual--payroll { display: block; }
+  .chapter__visual .visual--payroll .clock-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .chapter__visual .visual--payroll .shift-legend { position: absolute; }
+  .chapter__visual .visual--payroll .net { position: absolute; inset: 0; justify-content: center; }
+  .chapter__visual .visual--payroll .states { position: absolute; left: 0; right: 0; top: calc(100% + 44px); }
+  .chapter__visual .visual--payroll .shift-legend { top: calc(100% + 92px); left: 0; right: 0; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 20px; align-self: auto; }
+  .chapter__visual .visual--payroll .vis-tag { position: absolute; right: 0; top: 0; }
+  .chapter__visual .visual--route { display: block; }
+  .chapter__visual .visual--route .route-map { position: absolute; inset: 0; aspect-ratio: auto; border: 0; }
+  .chapter__visual .visual--route .route-meta { position: absolute; left: 0; right: 0; top: calc(100% + 18px); }
+  .chapter__visual .visual--route .vis-tag { position: absolute; right: 0; top: -34px; }
 }
 
 /* ============================================================
@@ -401,7 +408,9 @@ html[data-gl='on'] .hero__stack { color: transparent; }
   overflow: hidden;
   border: 1px solid var(--line-strong);
   background: var(--bg-2);
+  transition: opacity 0.3s, visibility 0.3s;
 }
+.archive__preview.is-on { visibility: visible; opacity: 1; }
 .archive__preview .gen-cover__title { font-size: 28px; }
 @media (min-width: 900px) {
   .archive__row { grid-template-columns: 72px minmax(0, 1.4fr) minmax(0, 1.4fr) 180px; align-items: center; }

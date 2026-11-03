@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { projectsUsing } from '@/content/derive'
 import { getSiteData } from '@/content/reader'
+import { blurMap } from '@/lib/blur'
 import { SITE_URL } from '@/lib/site'
 import AboutSection from '@/sections/AboutSection'
 import ArchiveSection from '@/sections/ArchiveSection'
@@ -30,6 +31,7 @@ export default async function Home() {
   const jobLine = currentJob ? `${currentJob.role} @ ${currentJob.company}` : null
   const company = projects.find((p) => p.kind === 'internal' && p.company)?.company ?? currentJob?.company ?? ''
 
+  const blurs = await blurMap([profile.photo, ...projects.map((p) => p.cover)])
   const usage: Record<string, string[]> = {}
   skills.groups.forEach((g) => g.items.forEach((s) => (usage[s] = projectsUsing(s, projects))))
   const titles = Object.fromEntries(projects.map((p) => [p.slug, p.title]))
@@ -51,19 +53,19 @@ export default async function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
       <Hero profile={profile} jobLine={jobLine} />
-      <Manifesto template={site.manifesto} total={d.testsTotal} projects={projects} skills={skills} />
+        <Manifesto template={site.manifesto} total={d.testsTotal} projects={projects} skills={skills} />
       <WorkSection projects={projects} company={company} />
       <div className="field-zone" data-scene="field">
-        <BuildsSection projects={projects} />
+        <BuildsSection projects={projects} blurs={blurs} />
         <ArchiveSection projects={projects} />
         <ExperienceSection jobs={experience} projects={projects} education={profile.education} />
         <StackSection groups={skills.groups} usage={usage} titles={titles} />
-        <CertsSection
-          certs={certifications.map((c) => ({ slug: c.slug, title: c.title, issuer: c.issuer, date: c.date, image: c.image, verifyUrl: c.verifyUrl, file: c.file }))}
-        />
-        <AboutSection profile={profile} job={currentJob} />
+          <CertsSection
+            certs={certifications.map((c) => ({ slug: c.slug, title: c.title, issuer: c.issuer, date: c.date, image: c.image, verifyUrl: c.verifyUrl, file: c.file }))}
+          />
+          <AboutSection profile={profile} job={currentJob} blur={profile.photo ? blurs[profile.photo] : undefined} />
       </div>
-      <ContactSection profile={profile} headline={site.contactHeadline} />
+        <ContactSection profile={profile} headline={site.contactHeadline} />
     </>
   )
 }

@@ -19,12 +19,14 @@ body:has(.nf) .gl-layer { opacity: 1; }
 .cs__hero { padding-top: calc(var(--header-h) + clamp(32px, 8vh, 96px)); padding-bottom: clamp(32px, 6vh, 72px); }
 .cs__crumb { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; margin-bottom: clamp(20px, 5vh, 56px); }
 .cs__crumb a { display: inline-block; padding: 12px 0; min-height: 44px; border-bottom: 1px solid var(--line-strong); }
-.cs__title { --w: 112%; font-size: clamp(48px, 13vw, 260px); line-height: 0.86; letter-spacing: -0.045em; overflow-wrap: anywhere; max-width: 12ch; }
+.cs__title { --w: 112%; animation: cs-in 1.2s var(--ease-out) both; font-size: clamp(48px, 13vw, 260px); line-height: 0.86; letter-spacing: -0.045em; overflow-wrap: anywhere; max-width: 12ch; }
 .cs__tagline { margin-top: 24px; font-size: clamp(22px, 2.8vw, 44px); line-height: 1.1; max-width: 26ch; }
 .cs__meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 24px; margin-top: clamp(32px, 6vh, 64px); }
 .cs__meta > div { border-top: 1px solid var(--line-strong); padding: 12px 0 18px; }
 .cs__meta dd { margin: 6px 0 0; text-transform: none; letter-spacing: 0.02em; font-size: 13px; line-height: 1.5; }
 .cs__links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+@keyframes cs-in { from { opacity: 0; transform: translateY(0.12em); } }
+.cs__frame { animation: cs-in 1.2s var(--ease-out) 0.15s both; }
 .cs__cover { padding-block: 0 clamp(40px, 8vh, 96px); }
 .cs__frame { position: relative; border: 1px solid var(--line-strong); background: var(--bg-2); }
 .cs__frame-inner { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
@@ -37,6 +39,7 @@ body:has(.nf) .gl-layer { opacity: 1; }
 .cs__body { display: flex; flex-direction: column; gap: clamp(40px, 9vh, 112px); padding-bottom: clamp(48px, 10vh, 120px); }
 .cs__block { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .cs__label { padding-top: 6px; }
+.cs__summary { display: block !important; }
 .cs__summary .lead { font-size: clamp(22px, 2.4vw, 36px); line-height: 1.3; letter-spacing: -0.015em; max-width: 34em; }
 .cs__list { display: flex; flex-direction: column; gap: 1em; padding-left: 0; counter-reset: li; }
 .cs__list li { position: relative; padding-left: 2.2em; }

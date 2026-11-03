@@ -2,11 +2,11 @@ import { collection, config, fields, singleton } from '@keystatic/core'
 
 /**
  * The admin form (`/admin` -> `/keystatic`). Content is stored as YAML in `content/`.
- * Dev: local files. Production: commits to GitHub (set KEYSTATIC_STORAGE=local to force local).
+ * Dev: local files. Production: commits to GitHub. NEXT_PUBLIC_KEYSTATIC_STORAGE=local|github overrides both.
  */
-const useGithub =
-  process.env.KEYSTATIC_STORAGE === 'github' ||
-  (process.env.NODE_ENV === 'production' && process.env.KEYSTATIC_STORAGE !== 'local')
+// NEXT_PUBLIC_ so the browser bundle and the API route always agree on the storage mode.
+const forced = process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE
+const useGithub = forced === 'github' || (process.env.NODE_ENV === 'production' && forced !== 'local')
 
 const stringList = (label: string, description?: string, itemLabel = 'Item') =>
   fields.array(fields.text({ label: itemLabel, multiline: true }), {

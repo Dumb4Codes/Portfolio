@@ -1,11 +1,15 @@
 'use client'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useId, useRef, useState, useSyncExternalStore } from 'react'
 import { copyText } from '@/components/toast'
 import { decodeContact } from '@/lib/obfuscate'
 
 export function ContactActions({ email, phoneEnc, resume }: { email: string; phoneEnc: string; resume?: string }) {
-  const [phone, setPhone] = useState('')
-  useEffect(() => setPhone(decodeContact(phoneEnc)), [phoneEnc])
+  // decoded in the browser only: the number is not plain text in the server HTML
+  const phone = useSyncExternalStore(
+    () => () => {},
+    () => decodeContact(phoneEnc),
+    () => '',
+  )
   return (
     <ul className="contact__actions">
       <li>

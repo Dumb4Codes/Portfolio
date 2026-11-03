@@ -3,6 +3,19 @@ import fs from 'node:fs'
 import path from 'node:path'
 import sharp from 'sharp'
 
+/** Blur placeholders for several images at once: { '/images/x.webp': 'data:...' } (missing files are skipped). */
+export async function blurMap(paths: (string | undefined)[]): Promise<Record<string, string>> {
+  const out: Record<string, string> = {}
+  await Promise.all(
+    paths.map(async (p) => {
+      if (!p) return
+      const b = await blurFor(p)
+      if (b) out[p] = b
+    }),
+  )
+  return out
+}
+
 const cache = new Map<string, string | undefined>()
 
 /** Tiny blurred data-URL for next/image placeholders, generated from /public at build time. */

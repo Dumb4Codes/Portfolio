@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/scroll'
 
 const THRESHOLD = 700 // wheel / touch distance past the end of the page
@@ -12,22 +11,9 @@ const THRESHOLD = 700 // wheel / touch distance past the end of the page
  */
 export default function NextProject({ slug, title, tagline }: { slug: string; title: string; tagline: string }) {
   const root = useRef<HTMLAnchorElement>(null)
-  const ring = useRef<SVGCircleElement>(null)
   const [pushed, setPushed] = useState(0)
   const acc = useRef(0)
   const fired = useRef(false)
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion() || !root.current) return
-      gsap.fromTo(
-        ring.current,
-        { strokeDashoffset: 100 },
-        { strokeDashoffset: 50, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top 85%', end: 'bottom bottom', scrub: true } },
-      )
-    },
-    { scope: root },
-  )
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -65,7 +51,6 @@ export default function NextProject({ slug, title, tagline }: { slug: string; ti
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('touchstart', onStart)
       window.removeEventListener('touchmove', onMove)
-      ScrollTrigger.refresh()
     }
   }, [])
 
@@ -76,7 +61,7 @@ export default function NextProject({ slug, title, tagline }: { slug: string; ti
         <span className="display next__title">{title}</span>
         <svg className="next__ring" viewBox="0 0 44 44" aria-hidden="true">
           <circle cx="22" cy="22" r="20" className="next__ring-bg" />
-          <circle ref={ring} cx="22" cy="22" r="20" pathLength="100" className="next__ring-fg" strokeDasharray="100" strokeDashoffset="100" />
+          <circle data-next-ring cx="22" cy="22" r="20" pathLength="100" className="next__ring-fg" strokeDasharray="100" strokeDashoffset="100" />
           <circle cx="22" cy="22" r="20" pathLength="100" className="next__ring-push" strokeDasharray="100" strokeDashoffset={100 - pushed * 100} />
           <path d="M14 22h16M24 16l6 6-6 6" className="next__arrow" />
         </svg>

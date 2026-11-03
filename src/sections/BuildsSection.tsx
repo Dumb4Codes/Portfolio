@@ -1,17 +1,16 @@
-import Link from 'next/link'
 import Cover from '@/components/Cover'
 import Reveal from '@/components/Reveal'
 import type { Project } from '@/content/schema'
 import BuildsGallery from './BuildsGallery'
 
-async function Card({ p, i, total }: { p: Project; i: number; total: number }) {
+function Card({ p, i, total, blur }: { p: Project; i: number; total: number; blur?: string }) {
   return (
     <li className="build" data-project={p.slug}>
       <Reveal variant="clip" className="build__media" start="top 92%">
-        <Link href={`/work/${p.slug}`} tabIndex={-1} aria-hidden="true" data-cursor="View" data-wipe={p.title} className="build__img">
-          <Cover src={p.cover} alt="" title={p.title} slug={p.slug} sizes="(min-width: 1024px) 46vw, 92vw" />
+        <a href={`/work/${p.slug}`} tabIndex={-1} aria-hidden="true" data-cursor="View" data-wipe={p.title} className="build__img">
+          <Cover src={p.cover} alt="" title={p.title} slug={p.slug} sizes="(min-width: 1024px) 46vw, 92vw" blur={blur} />
           <span className="build__lens" />
-        </Link>
+        </a>
       </Reveal>
       <div className="build__body">
         <p className="mono muted build__meta">
@@ -19,9 +18,9 @@ async function Card({ p, i, total }: { p: Project; i: number; total: number }) {
           <span>{p.year}</span>
         </p>
         <h3 className="display build__title">
-          <Link href={`/work/${p.slug}`} data-wipe={p.title} data-cursor="View">
+          <a href={`/work/${p.slug}`} data-wipe={p.title} data-cursor="View">
             {p.title}
-          </Link>
+          </a>
         </h3>
         <p className="build__tag">{p.tagline}</p>
         <ul className="chips" aria-label="Stack">
@@ -48,7 +47,7 @@ async function Card({ p, i, total }: { p: Project; i: number; total: number }) {
   )
 }
 
-export default function BuildsSection({ projects }: { projects: Project[] }) {
+export default function BuildsSection({ projects, blurs }: { projects: Project[]; blurs: Record<string, string> }) {
   const featured = projects.filter((p) => p.kind === 'personal' && p.featured)
   return (
     <section id="builds" className="builds" aria-labelledby="builds-title">
@@ -58,14 +57,14 @@ export default function BuildsSection({ projects }: { projects: Project[] }) {
           <p className="section-label mono builds__label">
             <span>[ 02 ]</span> <span>Personal builds</span>
           </p>
-          <h2 id="builds-title" className="display builds__title">
+          <Reveal as="h2" variant="wdth" id="builds-title" className="display builds__title">
             Things I built to learn and <em className="serif">ship</em> end to end.
-          </h2>
+          </Reveal>
         </div>
       </div>
-      <BuildsGallery count={featured.length}>
+      <BuildsGallery>
         {featured.map((p, i) => (
-          <Card key={p.slug} p={p} i={i} total={featured.length} />
+            <Card key={p.slug} p={p} i={i} total={featured.length} blur={p.cover ? blurs[p.cover] : undefined} />
         ))}
       </BuildsGallery>
     </section>

@@ -3,61 +3,17 @@ import Image from 'next/image'
 import { useRef, useState } from 'react'
 import Reveal from '@/components/Reveal'
 import { formatCertDate } from '@/content/derive'
-import { gsap, useGSAP } from '@/lib/gsap'
 import { getLenis } from '@/lib/scroll'
 
 export type Cert = { slug: string; title: string; issuer: string; date: string; image: string; verifyUrl?: string; file?: string }
 
 /**
- * A deck of cards (CSS 3D, not WebGL): stacked and slightly rotated, they fan into a row on scroll.
+ * A deck of cards (CSS 3D, not WebGL): stacked and slightly rotated, they fan into a row on scroll (motion engine).
  * Mobile: a swipeable scroll-snap carousel. A click opens a native <dialog> (focus trap, Esc, focus return).
  */
 export default function CertsSection({ certs }: { certs: Cert[] }) {
-  const stage = useRef<HTMLUListElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const [open, setOpen] = useState<Cert | null>(null)
-
-  useGSAP(
-    () => {
-      const el = stage.current!
-      const mm = gsap.matchMedia()
-      mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
-        const cards = gsap.utils.toArray<HTMLElement>('.cert', el)
-        const n = cards.length
-        const w = cards[0]?.offsetWidth ?? 220
-        const span = Math.min(el.clientWidth - w, (n - 1) * (w * 0.72))
-        const stack = (i: number) => ({ x: i * 5 - n * 2.5, y: i * -4, rotation: (i - n / 2) * 2.2, rotateY: -8, z: i * 2 })
-        cards.forEach((c, i) => gsap.set(c, { ...stack(i), transformPerspective: 1200 }))
-        gsap.to(cards, {
-          x: (i) => (n === 1 ? 0 : -span / 2 + (span / (n - 1)) * i),
-          y: 0,
-          rotation: (i) => (i - (n - 1) / 2) * 1.4,
-          rotateY: 0,
-          z: 0,
-          duration: 1.4,
-          ease: 'expo.out',
-          stagger: 0.07,
-          scrollTrigger: { trigger: el, start: 'top 75%', once: true },
-        })
-        // gentle lift on hover keeps the fan legible
-        const enter = (e: Event) => gsap.to(e.currentTarget, { y: -18, rotation: 0, scale: 1.04, duration: 0.5, zIndex: 20 })
-        const leave = (e: Event) => gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.5, zIndex: 0 })
-        cards.forEach((c) => {
-          c.addEventListener('pointerenter', enter)
-          c.addEventListener('pointerleave', leave)
-        })
-        return () => {
-          cards.forEach((c) => {
-            c.removeEventListener('pointerenter', enter)
-            c.removeEventListener('pointerleave', leave)
-          })
-          gsap.set(cards, { clearProps: 'all' })
-        }
-      })
-      return () => mm.revert()
-    },
-    { scope: stage, dependencies: [certs.length] },
-  )
 
   const show = (c: Cert) => {
     setOpen(c)
@@ -77,13 +33,13 @@ export default function CertsSection({ certs }: { certs: Cert[] }) {
           <p className="section-label mono certs__label">
             <span>[ 06 ]</span> <span>Certifications</span>
           </p>
-          <h2 id="cert-title" className="display certs__title">
+          <Reveal as="h2" variant="wdth" id="cert-title" className="display certs__title">
             Proof of <em className="serif">coursework</em>
-          </h2>
+          </Reveal>
         </div>
       </div>
 
-      <ul ref={stage} className="certs__stage">
+      <ul className="certs__stage">
         {certs.map((c) => (
           <li key={c.slug} className="cert">
             <a

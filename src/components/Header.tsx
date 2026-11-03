@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
 import { getLenis } from '@/lib/scroll'
 import LiveClock from './LiveClock'
@@ -14,19 +14,23 @@ type Props = {
 }
 
 export default function Header({ jobLine, timezone, nav, socials }: Props) {
-  const [open, setOpen] = useState(false)
-  const [mac, setMac] = useState(false)
   const pathname = usePathname()
+  // the menu is open only for the path it was opened on, so navigating closes it without an effect
+  const [openOn, setOpenOn] = useState<string | null>(null)
+  const open = openOn === pathname
+  const setOpen = useCallback((v: boolean | ((o: boolean) => boolean)) => setOpenOn((cur) => ((typeof v === 'function' ? v(cur === pathname) : v) ? pathname : null)), [pathname])
+  const mac = useSyncExternalStore(
+    () => () => {},
+    () => /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent),
+    () => false,
+  )
   const btn = useRef<HTMLButtonElement>(null)
   const panel = useRef<HTMLDivElement>(null)
-
-  useEffect(() => setMac(/mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent)), [])
-  useEffect(() => setOpen(false), [pathname])
 
   const close = useCallback(() => {
     setOpen(false)
     btn.current?.focus()
-  }, [])
+  }, [setOpen])
 
   useEffect(() => {
     if (!open) return
@@ -40,8 +44,13 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
       const f = focusables()
       const first = f[0]
       const last = f[f.length - 1]
-      if (e.shiftKey && document.activeElement === first) (e.preventDefault(), last.focus())
-      else if (!e.shiftKey && document.activeElement === last) (e.preventDefault(), first.focus())
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
     document.addEventListener('keydown', onKey)
     return () => {
@@ -54,7 +63,7 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
     <>
       <header className="site-header">
         <div className="wrap site-header__row">
-          <Link href="/" className="monogram display" aria-label="Youvraj Singh, home" data-cursor="Home">
+          <Link href="/" className="monogram display" aria-label="YS, Youvraj Singh home page" data-cursor="Home">
             YS
           </Link>
 
@@ -78,7 +87,7 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
             <button
               type="button"
               className="kbd-hint mono"
-              aria-label="Open command palette"
+              aria-label={`${mac ? '⌘K' : 'Ctrl K'}, open command palette`}
               onClick={() => window.dispatchEvent(new Event('palette:open'))}
             >
               {mac ? '⌘K' : 'Ctrl K'}

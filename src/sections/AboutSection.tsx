@@ -1,12 +1,10 @@
 import Image from 'next/image'
 import Reveal from '@/components/Reveal'
 import type { Experience, Profile } from '@/content/schema'
-import { blurFor } from '@/lib/blur'
 import AboutPhoto from './AboutPhoto'
 
-export default async function AboutSection({ profile, job }: { profile: Profile; job?: Experience }) {
+export default function AboutSection({ profile, job, blur }: { profile: Profile; job?: Experience; blur?: string }) {
   const paragraphs = profile.bio.split(/\n\s*\n/).map((p) => p.replace(/\s*\n\s*/g, ' ').trim())
-  const blur = profile.photo ? await blurFor(profile.photo) : undefined
   const links = [
     profile.socials.github && { label: 'GitHub', href: profile.socials.github },
     profile.socials.linkedin && { label: 'LinkedIn', href: profile.socials.linkedin },
@@ -53,9 +51,9 @@ export default async function AboutSection({ profile, job }: { profile: Profile;
             </AboutPhoto>
           )}
           <div className="about__copy">
-            <h2 id="about-title" className="display about__title">
+            <Reveal as="h2" variant="wdth" id="about-title" className="display about__title">
               The person <em className="serif">behind</em> the ledger
-            </h2>
+            </Reveal>
             <div className="about__bio">
               {paragraphs.map((p, i) => (
                 <p key={i}>{p}</p>

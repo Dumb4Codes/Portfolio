@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/scroll'
+import { tween } from '@/lib/tween'
 
 /**
  * Drives an illustration by steps (0..steps). Inside a pinned chapter it follows scroll progress
@@ -16,9 +16,9 @@ export function useChapter<T extends HTMLElement>(steps: number, duration = 6) {
     const el = ref.current
     if (!el || prefersReducedMotion()) return
     const host = el.closest('[data-chapter]')
-    setStep(0)
 
     if (host) {
+      // the motion engine broadcasts progress; until its first message the finished state stays
       const on = (e: Event) => {
         const p = (e as CustomEvent<number>).detail
         setStep(Math.min(steps, Math.round(p * steps)))
@@ -27,20 +27,20 @@ export function useChapter<T extends HTMLElement>(steps: number, duration = 6) {
       return () => host.removeEventListener('chapter-progress', on)
     }
 
-    let tween: gsap.core.Tween | undefined
-    const proxy = { v: 0 }
+    let cancel = () => {}
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return
         io.disconnect()
-        tween = gsap.to(proxy, { v: steps, duration, ease: 'none', onUpdate: () => setStep(Math.round(proxy.v)) })
+        setStep(0)
+        cancel = tween(0, steps, duration * 1000, (v) => setStep(Math.round(v)), (t) => t)
       },
       { threshold: 0.35 },
     )
     io.observe(el)
     return () => {
       io.disconnect()
-      tween?.kill()
+      cancel()
     }
   }, [steps, duration])
 

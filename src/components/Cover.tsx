@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { hashSlug } from '@/content/derive'
-import { blurFor } from '@/lib/blur'
 
 /** Typographic cover for projects without an image: title in Archivo on a tint derived from the slug. Never blank. */
 export function GeneratedCover({ title, slug, className = '' }: { title: string; slug: string; className?: string }) {
@@ -20,14 +19,14 @@ type Props = {
   title: string
   slug: string
   sizes: string
+  blur?: string
   priority?: boolean
   className?: string
 }
 
-/** Project cover: next/image with a blur placeholder, or the generated typographic cover. */
-export default async function Cover({ src, alt, title, slug, sizes, priority, className }: Props) {
+/** Project cover: next/image with a blur placeholder (computed at build, passed in), or the generated typographic cover. */
+export default function Cover({ src, alt, title, slug, sizes, blur, priority, className }: Props) {
   if (!src) return <GeneratedCover title={title} slug={slug} className={className} />
-  const blur = await blurFor(src)
   return (
     <Image
       src={src}

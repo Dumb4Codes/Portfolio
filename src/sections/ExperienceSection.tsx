@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Reveal from '@/components/Reveal'
 import { dateRange } from '@/content/derive'
 import type { Experience, Profile, Project } from '@/content/schema'
@@ -14,9 +13,9 @@ export default function ExperienceSection({ jobs, projects, education }: { jobs:
           <p className="section-label mono exp__label">
             <span>[ 04 ]</span> <span>Experience</span>
           </p>
-          <h2 id="exp-title" className="display exp__title">
+          <Reveal as="h2" variant="wdth" id="exp-title" className="display exp__title">
             The <em className="serif">entries</em>
-          </h2>
+          </Reveal>
         </div>
 
         <ol className="timeline">
@@ -68,9 +67,9 @@ export default function ExperienceSection({ jobs, projects, education }: { jobs:
                     <p className="entry__cases mono">
                       <span className="muted">Case studies</span>
                       {j.projects.map((s) => (
-                        <Link key={s} href={`/work/${s}`} data-wipe={title.get(s)} data-project={s} data-cursor="View">
+                        <a key={s} href={`/work/${s}`} data-wipe={title.get(s)} data-project={s} data-cursor="View">
                           {title.get(s)} →
-                        </Link>
+                        </a>
                       ))}
                     </p>
                   )}

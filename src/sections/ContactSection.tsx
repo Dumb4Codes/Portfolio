@@ -22,9 +22,9 @@ export default function ContactSection({ profile, headline }: { profile: Profile
           <span>[ 08 ]</span> <span>Contact</span>
         </p>
 
-        <h2 id="contact-title" className="display contact__title">
+        <Reveal as="h2" variant="wdth" id="contact-title" className="display contact__title">
           {parts.map((p, i) => (p.em ? <em key={i} className="serif">{p.t}</em> : <span key={i}>{p.t}</span>))}
-        </h2>
+        </Reveal>
 
         <div className="contact__grid grid12">
           <div className="contact__cta">

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Reveal from '@/components/Reveal'
 import { hashSlug } from '@/content/derive'
 import type { Project } from '@/content/schema'
@@ -18,9 +17,9 @@ export default function ArchiveSection({ projects }: { projects: Project[] }) {
           <p className="section-label mono archive__label">
             <span>[ 03 ]</span> <span>Archive</span>
           </p>
-          <h2 id="archive-title" className="display archive__title">
+          <Reveal as="h2" variant="wdth" id="archive-title" className="display archive__title">
             Everything <em className="serif">else</em>
-          </h2>
+          </Reveal>
         </div>
 
         <div className="archive__table" role="table" aria-label="All other projects">
@@ -34,9 +33,9 @@ export default function ArchiveSection({ projects }: { projects: Project[] }) {
             <div key={p.slug} className="archive__row" role="row" data-project={p.slug} data-preview={p.slug}>
               <span role="cell" className="mono muted archive__year">{p.year}</span>
               <span role="cell" className="archive__name">
-                <Link href={`/work/${p.slug}`} data-wipe={p.title} data-cursor="View">
+                <a href={`/work/${p.slug}`} data-wipe={p.title} data-cursor="View">
                   {p.title}
-                </Link>
+                </a>
                 {p.kind === 'internal' && <span className="badge badge--sm mono">Internal</span>}
               </span>
               <span role="cell" className="mono muted archive__stack">{p.stack.slice(0, 4).join(' · ')}</span>

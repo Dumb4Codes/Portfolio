@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Metrics from '@/components/Metrics'
 import Reveal from '@/components/Reveal'
 import type { Project } from '@/content/schema'
@@ -26,9 +25,9 @@ export default function WorkSection({ projects, company }: { projects: Project[]
           <p className="section-label mono work__label">
             <span>[ 01 ]</span> <span>Selected work</span>
           </p>
-          <h2 id="work-title" className="display work__title">
+          <Reveal as="h2" variant="wdth" id="work-title" className="display work__title">
             Shipped at <em className="serif">{company}</em>
-          </h2>
+          </Reveal>
           <div className="work__intro-note">
             <p>
               A multi-brand cloud kitchen in Bengaluru. These are internal systems, so the visuals are illustrative and the data is sample data.
@@ -55,9 +54,9 @@ export default function WorkSection({ projects, company }: { projects: Project[]
                   </li>
                 ))}
               </ul>
-              <Link href={`/work/${p.slug}`} className="link-arrow" data-cursor="Open" data-wipe={p.title}>
+              <a href={`/work/${p.slug}`} className="link-arrow" data-cursor="Open" data-wipe={p.title}>
                 Read case study →
-              </Link>
+              </a>
             </div>
             <div className="chapter__visual">
               <InternalVisual project={p} />

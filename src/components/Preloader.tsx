@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef } from 'react'
-import { gsap } from '@/lib/gsap'
+import { tween } from '@/lib/tween'
 
 /**
  * First visit per session only, 1.6s at most, skippable with any key or click.
@@ -18,11 +18,17 @@ export default function Preloader() {
       window.dispatchEvent(new Event('intro:done'))
       return
     }
-    const state = { v: 0 }
+    let value = 0
     let finished = false
-    const render = () => {
-      if (num.current) num.current.textContent = String(Math.round(state.v)).padStart(3, '0')
-      if (bar.current) bar.current.style.transform = `scaleX(${state.v / 100})`
+    let cancel = () => {}
+    const render = (v: number) => {
+      value = v
+      if (num.current) num.current.textContent = String(Math.round(v)).padStart(3, '0')
+      if (bar.current) bar.current.style.transform = `scaleX(${v / 100})`
+    }
+    const to = (v: number, ms: number) => {
+      cancel()
+      cancel = tween(value, v, ms, render)
     }
     const finish = () => {
       if (finished) return
@@ -32,28 +38,35 @@ export default function Preloader() {
       } catch {
         /* private mode */
       }
-      gsap.to(state, { v: 100, duration: 0.2, onUpdate: render })
-      gsap.to(root.current, {
-        yPercent: -100,
-        duration: 0.9,
-        delay: 0.2,
-        ease: 'power3.inOut',
-        onComplete: () => {
-          html.classList.remove('preload')
-          window.dispatchEvent(new Event('intro:done'))
-        },
+      to(100, 200)
+      const anim = root.current?.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], {
+        duration: 900,
+        delay: 200,
+        easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+        fill: 'forwards',
       })
+      const done = () => {
+        html.classList.remove('preload')
+        window.dispatchEvent(new Event('intro:done'))
+      }
+      if (anim) anim.finished.then(done, done)
+      else done()
     }
 
     let fontsDone = false
     let glDone = false
-    const target = () => (fontsDone ? 50 : 8) + (glDone ? 50 : 0)
     const step = () => {
-      gsap.to(state, { v: Math.min(target(), 99), duration: 0.5, ease: 'power2.out', overwrite: true, onUpdate: render })
+      to(Math.min((fontsDone ? 50 : 8) + (glDone ? 50 : 0), 99), 500)
       if (fontsDone && glDone) finish()
     }
-    document.fonts.ready.then(() => ((fontsDone = true), step()))
-    const onGl = () => ((glDone = true), step())
+    void document.fonts.ready.then(() => {
+      fontsDone = true
+      step()
+    })
+    const onGl = () => {
+      glDone = true
+      step()
+    }
     window.addEventListener('gl:ready', onGl, { once: true })
     const timeout = setTimeout(finish, 1600)
     step()
@@ -62,6 +75,7 @@ export default function Preloader() {
     window.addEventListener('pointerdown', skip, { once: true })
     return () => {
       clearTimeout(timeout)
+      cancel()
       window.removeEventListener('gl:ready', onGl)
       window.removeEventListener('keydown', skip)
       window.removeEventListener('pointerdown', skip)

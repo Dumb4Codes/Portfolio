@@ -1,10 +1,9 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
-import Particles from './Particles'
+import { ParticleEngine } from './engine'
 import StaticScene from './StaticScene'
 
-/** Particle count: 40k on capable desktops, 8k on phones, halved if the 1s FPS probe fails. */
+/** Particle count: 40k on capable desktops, 8k on phones, halved once if the FPS probe fails. */
 function initialCount() {
   try {
     const forced = Number(sessionStorage.getItem('particles')) // dev / QA switch: sessionStorage.particles = 40000
@@ -19,16 +18,17 @@ function initialCount() {
   return weak ? 24000 : 40000
 }
 
-/** The persistent canvas. Mounted once in the root site layout; survives route changes. */
+/** The persistent canvas. Mounted once in the site layout; survives route changes. */
 export default function GLRoot() {
+  const canvas = useRef<HTMLCanvasElement>(null)
   const [count, setCount] = useState<number | null>(null)
+  const [base, setBase] = useState<number | null>(null)
   const [lost, setLost] = useState(false)
-  const [mobile, setMobile] = useState(false)
 
+  // the hero shape is sampled from the display font, so wait for it before choosing a count
   useEffect(() => {
     let alive = true
     ;(async () => {
-      // The hero shape is sampled from the display font, so wait for it.
       try {
         await document.fonts.ready
         await document.fonts.load('800 120px ' + getComputedStyle(document.body).fontFamily)
@@ -36,47 +36,42 @@ export default function GLRoot() {
         /* fonts API missing: sample with the fallback face */
       }
       if (!alive) return
-      setMobile(window.matchMedia('(max-width: 767px)').matches)
-      setCount(initialCount())
+      const n = initialCount()
+      setBase(n)
+      setCount(n)
     })()
     return () => {
       alive = false
     }
   }, [])
 
-  const onReady = useCallback(() => {
-    document.documentElement.dataset.gl = 'on'
-    window.dispatchEvent(new Event('gl:ready'))
-  }, [])
-  const initial = useRef(0)
-  if (count && !initial.current) initial.current = count
   // halve once at most; a second halving would mean the probe is measuring the page, not the GPU
-  const onSlow = useCallback(() => setCount((c) => (c && c === initial.current && c > 6000 ? Math.floor(c / 2) : c)), [])
+  const onSlow = useCallback(() => setCount((c) => (c !== null && c === base && c > 6000 ? Math.floor(c / 2) : c)), [base])
+
+  useEffect(() => {
+    if (!count || !canvas.current) return
+    const engine = new ParticleEngine({
+      canvas: canvas.current,
+      count,
+      onReady: () => {
+        document.documentElement.dataset.gl = 'on'
+        window.dispatchEvent(new Event('gl:ready'))
+      },
+      onSlow,
+      onLost: () => setLost(true),
+    })
+    return () => engine.dispose()
+  }, [count, onSlow])
 
   useEffect(() => {
     if (lost) delete document.documentElement.dataset.gl
   }, [lost])
 
   if (lost) return <StaticScene />
-  if (!count) return null
-
   return (
     <div className="gl-layer" aria-hidden="true">
-      <Canvas
-        key={count}
-        frameloop="demand"
-        dpr={[1, mobile ? 1.5 : 1.75]}
-        camera={{ fov: 35, near: 1, far: 8000 }}
-        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance', stencil: false, depth: false }}
-        onCreated={({ gl }) => {
-          gl.domElement.addEventListener('webglcontextlost', (e) => {
-            e.preventDefault()
-            setLost(true)
-          })
-        }}
-      >
-        <Particles count={count} onReady={onReady} onSlow={onSlow} />
-      </Canvas>
+      {/* key: a halved count needs a fresh canvas (a canvas cannot hand its context to a new renderer) */}
+      <canvas key={count ?? 0} ref={canvas} />
     </div>
   )
 }
