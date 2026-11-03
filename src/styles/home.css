@@ -84,12 +84,7 @@
 }
 /* once the particle word is drawn over it, the HTML glyphs step aside (still there for SEO / screen readers) */
 html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, transparent); }
-.hero__stack { display: none; font-size: calc((100vw - 2 * var(--pad)) / 2.72); text-transform: uppercase; line-height: 0.8; letter-spacing: -0.05em; margin-left: -0.04em; transition: color 0.6s ease; }
-.hero__stack > span { display: block; }
-html[data-gl='on'] .hero__stack { color: color-mix(in oklab, var(--fg) 9%, transparent); }
 @media (max-width: 767px) {
-  .hero__first { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .hero__stack { display: block; }
   .hero__last { font-size: clamp(30px, 11vw, 64px); margin-top: 0.1em; }
 }
 .hero__last {

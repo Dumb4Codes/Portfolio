@@ -40,13 +40,14 @@ test.describe('no horizontal scroll from 320px to 2560px', () => {
 test.describe('mobile layout is designed, not squeezed', () => {
   test.use({ viewport: { width: 390, height: 844 } })
 
-  test('hero name stacks on two lines and fills the width; touch targets are at least 44px', async ({ page }) => {
+  test('hero name is one readable word that fills the width; touch targets are at least 44px', async ({ page }) => {
     await skipIntro(page)
     await page.goto('/')
-    const stack = page.locator('.hero__stack')
-    await expect(stack).toBeVisible()
-    const box = await stack.boundingBox()
-    expect(box!.width).toBeGreaterThan(390 * 0.7)
+    const name = page.locator('.hero__first')
+    await expect(name).toBeVisible()
+    const box = await name.boundingBox()
+    expect(box!.width).toBeGreaterThan(390 * 0.8)
+    expect(box!.height).toBeLessThan(box!.width * 0.3) // one line, not two
     for (const sel of ['.menu-btn', '.icon-btn', '.btn']) {
       const b = await page.locator(sel).first().boundingBox()
       expect(b!.height, sel).toBeGreaterThanOrEqual(36) // 44 for primary controls, 36 for the small copy button

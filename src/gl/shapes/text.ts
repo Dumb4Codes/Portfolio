@@ -5,7 +5,7 @@ const TILE = 120 // 120 x 120 = 14,400 px, under Chrome's size threshold for GPU
 
 /**
  * Samples text drawn in the display font. Call after `document.fonts.ready`.
- * `lines` lets mobile stack "YOU / VRAJ". Browser only (needs a canvas).
+ * `lines` draws one string per line (centred). Browser only (needs a canvas).
  *
  * The glyphs are rasterised in small tiles. Small canvases stay CPU-backed, so reading the pixels
  * back never needs a GPU readback, whatever the text size.

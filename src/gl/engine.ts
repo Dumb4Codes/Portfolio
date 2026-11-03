@@ -37,7 +37,6 @@ type Options = {
 
 /** Reads the hero word's on-screen box so the particle word sits exactly over the HTML word. */
 function heroBox(vw: number, vh: number): { box: Box; lines: string[]; font: string; ls: number } {
-  // two candidates (single line / stacked); the one that is actually laid out wins
   const el = Array.from(document.querySelectorAll<HTMLElement>('[data-hero-name]')).find((e) => e.getBoundingClientRect().width > 24)
   const fallback: Box = { cx: 0, cy: vh * 0.05, w: vw * 0.92, h: vw * 0.26 }
   if (!el) return { box: fallback, lines: ['YOUVRAJ'], font: 'sans-serif', ls: 0 }
@@ -53,10 +52,7 @@ function heroBox(vw: number, vh: number): { box: Box; lines: string[]; font: str
   return {
     ls: parseFloat(cs.letterSpacing) / parseFloat(cs.fontSize) || 0,
     box: { cx: (left + right) / 2 - vw / 2, cy: vh / 2 - (docTop + r.height / 2), w: right - left, h: r.height },
-    lines:
-      el.dataset.stacked !== undefined
-        ? Array.from(el.querySelectorAll('span')).map((s) => (s.textContent ?? '').toUpperCase())
-        : [(el.textContent ?? '').toUpperCase()],
+    lines: [(el.textContent ?? '').toUpperCase()],
     font: getComputedStyle(el).fontFamily,
   }
 }

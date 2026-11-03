@@ -24,11 +24,6 @@ export default function Hero({ profile, jobLine }: { profile: Profile; jobLine: 
           <h1 id="hero-title" className="hero__name">
             <span className="hero__first display" data-hero-name>
               {first}
-            </span>
-            {/* phones: the same word stacked on two lines so it can be set much larger */}
-            <span className="hero__stack display" data-hero-name data-stacked aria-hidden="true">
-              <span>{first.slice(0, Math.floor(first.length / 2))}</span>
-              <span>{first.slice(Math.floor(first.length / 2))}</span>
             </span>{' '}
             <span className="hero__last serif">{rest.join(' ')}</span>
           </h1>
