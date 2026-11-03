@@ -10,7 +10,7 @@ A single WebGL particle field sits behind the page and morphs, as you scroll, fr
 - **Admin:** `/admin` (Keystatic). Add a project, edit a job, swap the résumé, with no code. Saves are commits to this repo; Vercel redeploys.
 - **Free to run:** Vercel Hobby, Keystatic, Web3Forms. No database.
 
-Docs: [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md) (deploy + admin, for Youvraj) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (how it works) · [`docs/CONTENT.md`](docs/CONTENT.md) (content model + rules) · [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md) (decisions, deviations, QA results) · [`PLAN.md`](PLAN.md).
+Docs: **[`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md) (start here: the whole project in one file, written to be pasted into an AI assistant)** · [`docs/SETUP_GUIDE.md`](docs/SETUP_GUIDE.md) (deploy + admin, for Youvraj) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (how it works) · [`docs/CONTENT.md`](docs/CONTENT.md) (content model + rules) · [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md) (decisions, deviations, QA results) · [`PLAN.md`](PLAN.md).
 
 ---
 
