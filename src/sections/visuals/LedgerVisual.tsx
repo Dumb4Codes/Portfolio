@@ -5,12 +5,12 @@ type Row = { sign: '+' | '−'; qty: string; unit: string; item: string; type: s
 
 /** Sample data only. Quantities are invented for the picture; the variance line is the point. */
 const ROWS: Row[] = [
-  { sign: '+', qty: '20.000', unit: 'kg', item: 'ONION', type: 'RECEIPT', note: 'APPROVED', bal: '20.000' },
-  { sign: '−', qty: '4.800', unit: 'kg', item: 'ONION', type: 'PRODUCTION', note: 'GRAVY BASE', bal: '15.200' },
-  { sign: '+', qty: '6.000', unit: 'kg', item: 'GRAVY BASE', type: 'PRODUCTION', note: 'BATCH 01', bal: '6.000' },
-  { sign: '+', qty: '12.000', unit: 'kg', item: 'CHICKEN', type: 'RECEIPT', note: 'APPROVED', bal: '12.000' },
-  { sign: '−', qty: '1,000', unit: 'g', item: 'GRAVY BASE', type: 'SALE', note: 'BUTTER CHICKEN ×5', bal: '5.000' },
-  { sign: '−', qty: '900', unit: 'g', item: 'CHICKEN', type: 'SALE', note: 'BUTTER CHICKEN ×5', bal: '11.100' },
+  { sign: '+', qty: '20.000', unit: 'kg', item: 'RM-101', type: 'RECEIPT', note: 'APPROVED', bal: '20.000' },
+  { sign: '−', qty: '4.800', unit: 'kg', item: 'RM-101', type: 'PRODUCTION', note: 'RECIPE R-07', bal: '15.200' },
+  { sign: '+', qty: '6.000', unit: 'kg', item: 'SF-210', type: 'PRODUCTION', note: 'BATCH 01', bal: '6.000' },
+  { sign: '+', qty: '12.000', unit: 'kg', item: 'RM-102', type: 'RECEIPT', note: 'APPROVED', bal: '12.000' },
+  { sign: '−', qty: '1,000', unit: 'g', item: 'SF-210', type: 'SALE', note: 'DISH D-31 ×5', bal: '5.000' },
+  { sign: '−', qty: '900', unit: 'g', item: 'RM-102', type: 'SALE', note: 'DISH D-31 ×5', bal: '11.100' },
 ]
 const STAGES = 12
 const GATE = 4
@@ -28,7 +28,7 @@ export default function LedgerVisual({ example }: { example?: string }) {
   return (
     <div ref={ref} className="visual visual--ledger" role="img" aria-label={DESCRIPTION}>
       <div className="vis-head mono">
-        <span>Stock ledger</span>
+        <span>Ledger · append-only</span>
         <span className="vis-tag">Illustrative · sample data</span>
       </div>
 

@@ -37,7 +37,7 @@ Built autonomously on 2026-11-03 from the brief in the kit (`PROMPT.md`, `DESIGN
 - **Pipeline Builder** has no README and an unreadable stack, so it keeps the tagline only (`stack: []`). Worth filling in through the admin.
 - Years come from repo creation / first-commit dates (Instantly 2026, CarRental 2025, QuickStay 2025, the rest 2026).
 - "Next steps" on Instantly, CarRental and QuickStay come from the "future improvements" sections of Youvraj's own notes, phrased as next steps. The notes themselves are not in the repo.
-- **The résumé PDF in `public/resume/` is the older one** from the kit (it has no SKOPE Kitchens). I only had the new résumé as an image/text in the chat, not as a file, so I could not replace it. Replace it in the admin: Profile → Résumé.
+- **Résumé PDF:** replaced on 2026-11-03 with the latest résumé from Youvraj (`public/resume/youvraj-singh-resume.pdf`).
 - The three SKOPE chapter illustrations use invented sample figures (clearly labelled "Illustrative · sample data"): ledger quantities, a payroll figure of ₹31,250.00, a tracking ID `MDB-4K7Q2X`. None are real data.
 
 ## QA results

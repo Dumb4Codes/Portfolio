@@ -15,7 +15,7 @@ test.describe('smoke', () => {
       await expect(page.locator(`#${id}`), `#${id}`).toHaveCount(1)
     }
     await expect(page.locator('.chapter-wrap')).toHaveCount(3)
-    await expect(page.locator('.manifesto')).toContainText('934')
+    await expect(page.locator('.manifesto')).toContainText('1,300+')
     await expect(page.locator('.build')).not.toHaveCount(0)
     // status pill uses the first job with no end date
     await expect(page.locator('.status-pill').first()).toContainText('Full Stack Developer Intern @ SKOPE Kitchens')

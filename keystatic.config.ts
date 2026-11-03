@@ -117,7 +117,7 @@ export default config({
         manifesto: fields.text({
           label: 'Big statement',
           multiline: true,
-          description: 'Use {tests} where the total of automated checks (added up from your projects) should appear.',
+          description: 'Write the number as text (it is set in the accent colour). Optionally use {tests} to insert the total added up from the automated-check counts on your projects.',
         }),
         contactHeadline: fields.text({
           label: 'Contact headline',

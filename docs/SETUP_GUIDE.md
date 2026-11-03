@@ -39,7 +39,7 @@ Until step 3 is done the site still builds and deploys normally; `/admin` just s
 | Update a job | Experience → pick the job → edit highlights. Leave *End* empty for "Present". |
 | Add a new job | Experience → Add. Set *Order* to 1 to put it on top (and in the hero status pill). |
 | New certificate | Certifications → Add → upload the image (and PDF), paste the verify link. |
-| Replace my résumé | Profile → Résumé → upload the new PDF. **Do this soon: the PDF that shipped with the kit is the older résumé and doesn't list SKOPE Kitchens.** |
+| Replace my résumé | Profile → Résumé → upload the new PDF. |
 | Change headline/bio/phone | Profile. |
 
 ## 6. Good to know

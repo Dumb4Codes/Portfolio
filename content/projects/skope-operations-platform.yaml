@@ -61,8 +61,6 @@ stack:
   - pytest
 visual: ledger
 testsCount: 471
-illustrativeExample: Post 5 × Butter Chicken → the ledger consumes 1,000 g gravy base and 900 g
-  chicken; the gravy base itself was produced from 4.8 kg onion and 400 ml oil. (Sample test data,
-  not real figures.)
+illustrativeExample: Post 5 × dish D-31 → the ledger consumes 1,000 g of semi-finished SF-210 and 900 g of raw material RM-102; SF-210 itself was produced from 4.8 kg of RM-101 via recipe R-07. (Sample test data, not real figures.)
 gallery: []
 nextSteps: []
