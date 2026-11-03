@@ -47,6 +47,7 @@ test.describe('interactions', () => {
   test('stack: pointing at a skill highlights the projects that use it', async ({ page }) => {
     await skipIntro(page)
     await page.goto('/')
+    await page.waitForLoadState('networkidle') // hover handlers only exist after hydration
     const skill = page.getByRole('button', { name: /^Playwright/ })
     await skill.hover()
     await expect(page.locator('#stack .stack__readout')).toContainText('used in')

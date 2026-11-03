@@ -214,6 +214,7 @@ html:not(.preload) .hero__bottom > *, html:not(.preload) .hero__top > * { animat
 .rail__ticks i[data-gate='true'][data-on='true'] { background: var(--accent); }
 .rail__labels { position: relative; display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; }
 .rail__gate { position: absolute; transform: translateX(-50%); color: var(--accent-text); top: 0; white-space: nowrap; }
+@media (max-width: 640px) { .rail__labels { padding-bottom: 1.9em; } .rail__gate { top: 1.9em; } }
 
 /* payroll */
 .visual--payroll { align-items: center; }

@@ -18,13 +18,40 @@ export function useChapter<T extends HTMLElement>(steps: number, duration = 6) {
     const host = el.closest('[data-chapter]')
 
     if (host) {
-      // the motion engine broadcasts progress; until its first message the finished state stays
+      // Desktop: the motion engine pins the chapter and broadcasts its progress (until its first
+      // message the finished state stays).
+      // Stacked layouts (phones/tablets) do not pin, and the chapter's progress spans the text above
+      // the picture, so the picture would already be finished when it scrolls into view. There the
+      // picture follows its own position on screen instead (still scrubbed, so it reverses).
+      const stacked = window.matchMedia('(max-width: 1023px)')
       const on = (e: Event) => {
+        if (stacked.matches) return
         const p = (e as CustomEvent<number>).detail
         setStep(Math.min(steps, Math.round(p * steps)))
       }
+      let raf = 0
+      const follow = () => {
+        if (!stacked.matches) return
+        cancelAnimationFrame(raf)
+        raf = requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect()
+          const vh = window.innerHeight
+          const start = vh * 0.8 // picture's top edge is 80% of the way down the screen
+          const end = Math.min(vh * 0.4, vh * 0.92 - r.height) // its bottom edge is nearly on screen
+          const p = Math.min(1, Math.max(0, (start - r.top) / Math.max(150, start - end)))
+          setStep(Math.min(steps, Math.round(p * steps)))
+        })
+      }
       host.addEventListener('chapter-progress', on)
-      return () => host.removeEventListener('chapter-progress', on)
+      window.addEventListener('scroll', follow, { passive: true })
+      window.addEventListener('resize', follow)
+      follow()
+      return () => {
+        cancelAnimationFrame(raf)
+        host.removeEventListener('chapter-progress', on)
+        window.removeEventListener('scroll', follow)
+        window.removeEventListener('resize', follow)
+      }
     }
 
     let cancel = () => {}
