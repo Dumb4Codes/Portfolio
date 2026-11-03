@@ -91,14 +91,14 @@ ol.cs__list li::before { content: counter(li, decimal-leading-zero); position: a
   border-top: 1px solid var(--line);
 }
 .workindex__item:last-child a { border-bottom: 1px solid var(--line); }
-.workindex__name { grid-column: 2; font-size: clamp(28px, 4.4vw, 64px); line-height: 0.95; transition: transform 0.5s var(--ease-out), color 0.3s; }
+.workindex__name { grid-column: 2; font-size: clamp(26px, 3.3vw, 52px); line-height: 0.95; transition: transform 0.5s var(--ease-out), color 0.3s; }
 .workindex__item a:hover .workindex__name { transform: translateX(10px); color: var(--accent-text); }
 .workindex__tag { grid-column: 2 / -1; color: var(--muted); max-width: 60ch; }
 .workindex__stack { display: none; grid-column: 2 / -1; }
 .workindex__kind { grid-column: 3; grid-row: 1; }
 .workindex__item[data-hl='0'] { opacity: 0.28; }
 @media (min-width: 900px) {
-  .workindex__item a { grid-template-columns: 72px minmax(0, 1.2fr) minmax(0, 1.4fr) 110px; align-items: center; }
+  .workindex__item a { grid-template-columns: 72px minmax(0, 1.7fr) minmax(0, 1.2fr) 110px; align-items: center; }
   .workindex__name { grid-column: 2; }
   .workindex__tag { grid-column: 3; font-size: 15px; }
   .workindex__stack { display: none; }

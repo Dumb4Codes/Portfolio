@@ -67,3 +67,13 @@ As in CMS_SPEC, plus one optional addition: **`nextSteps`** (array of text) on p
 - Repo READMEs read for Pulse, Smart Bookmark, Finance Dashboard, Visual Workflow Playground (FlowForge), Typing Game (SpeedType), Nectar Grocery. Pipeline Builder has no README: tagline only.
 - Project years verified from first-commit/created dates.
 - `reference/` notes used only for "next steps" on Instantly, CarRental, QuickStay. Never copied or deployed.
+
+## 7. What changed during the build
+
+The plan above was the starting point. The final design differs in a few places (full list with reasons in `docs/BUILD_LOG.md`):
+
+- `@react-three/fiber` and drei were dropped for plain three.js (`src/gl/engine.ts`) to meet the GL chunk budget.
+- Scroll/animation code moved from React hooks into one lazy, attribute-driven **motion engine** (`src/motion/`); `@gsap/react` and SplitText are not used.
+- Internal links are plain `<a>` and images are plain `<img>` from `getImageProps`, for hydration cost.
+- The hero entrance is CSS; the hero word is sampled from the measured width of the HTML word.
+- `STACK_BREAKPOINT` (1024px): chapters stack below it, so shapes sit centred behind the text there.

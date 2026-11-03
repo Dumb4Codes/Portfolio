@@ -124,6 +124,7 @@ export const vertexShader = /* glsl */ `
     vec2 accB = accentFor(uShapeB, aAttrB, uLocalB);
     vAccent = mix(accA.x, accB.x, t);
     vAlpha = mix(accA.y * gainFor(uShapeA), accB.y * gainFor(uShapeB), t);
+    vAlpha *= 1.0 - 0.72 * uScatter; // a scattered 404 stays a dim dust so the page text is readable
     vCold = step(0.985, aRand.w);
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
