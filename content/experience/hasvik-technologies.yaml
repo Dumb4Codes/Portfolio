@@ -8,13 +8,9 @@ start: 2026-06
 end: 2026-10
 order: 2
 summary: >-
-  Worked across the whole delivery chain on client products, from requirements
-  to production. Turned client BRDs into Figma designs the client approved
-  before any code was written, then built them as responsive Next.js components
-  and cut page load time by 25%. On the backend, built the NestJS REST APIs
-  behind a CRM migration, documented and tested them with Swagger, and
-  restructured the PostgreSQL schemas, with AWS hosting and senior code review
-  throughout.
+  Took client features from requirement to production: BRDs into approved Figma
+  designs, Next.js builds that cut page load time by 25%, and the NestJS APIs
+  for a CRM migration.
 highlights:
   - >-
     Converted Figma designs into responsive, high-performance Next.js components
