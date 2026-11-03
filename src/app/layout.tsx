@@ -41,7 +41,7 @@ export const viewport: Viewport = {
 }
 
 // Runs before first paint: theme without flash, and the `js` flag that arms reveal animations.
-const BOOT = `try{var d=document.documentElement,t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';d.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}document.documentElement.classList.add('js')`
+const BOOT = `try{var d=document.documentElement,t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';d.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}document.documentElement.classList.add('js');try{if(location.pathname==='/'&&!sessionStorage.getItem('pre')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('preload')}catch(e){}`
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -46,6 +46,7 @@ export const siteSchema = z.object({
   seoTitle: z.string().min(1),
   seoDescription: z.string().min(1),
   manifesto: z.string().min(1),
+  contactHeadline: z.string().default("Let's build *something* that adds up."),
   ogImage: optPath,
   showPreloader: z.boolean().default(true),
   easterEgg: z.boolean().default(true),

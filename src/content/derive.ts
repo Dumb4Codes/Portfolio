@@ -116,6 +116,14 @@ export function splitHeadline(headline: string): { before: string; accent: strin
   }
 }
 
+/** "Let's build *something* that adds up." -> text parts, with the starred word flagged for italic serif. */
+export function splitEmphasis(text: string): { t: string; em: boolean }[] {
+  return text
+    .split(/(\*[^*]+\*)/)
+    .filter(Boolean)
+    .map((t) => (t.startsWith('*') && t.endsWith('*') ? { t: t.slice(1, -1), em: true } : { t, em: false }))
+}
+
 /** Deterministic 0..1 hash for generated covers. */
 export function hashSlug(slug: string): number {
   let h = 2166136261

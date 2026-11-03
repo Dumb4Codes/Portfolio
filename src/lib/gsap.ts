@@ -10,6 +10,8 @@ export function registerGsap() {
   if (done || typeof window === 'undefined') return
   gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP)
   gsap.defaults({ ease: 'expo.out' })
+  // the particle director re-measures its chapter anchors whenever ScrollTrigger lays out
+  ScrollTrigger.addEventListener('refresh', () => window.dispatchEvent(new Event('gl:layout')))
   done = true
 }
 registerGsap()

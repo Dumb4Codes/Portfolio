@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import '../styles/chrome.css';
+@import '../styles/home.css';
+@import '../styles/pages.css';
 
 /* ============================================================
    Tokens. Dark is the default; light via [data-theme='light'].
@@ -395,8 +398,8 @@ html.js [data-reveal='fade'] {
 html.js [data-reveal='rule'] {
   transform: scaleX(0);
 }
-html.js [data-reveal='mask'] {
-  overflow: hidden;
+html.js [data-reveal='lines'] {
+  visibility: hidden;
 }
 .mask-line {
   display: block;

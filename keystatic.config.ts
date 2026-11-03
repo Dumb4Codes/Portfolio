@@ -119,6 +119,10 @@ export default config({
           multiline: true,
           description: 'Use {tests} where the total of automated checks (added up from your projects) should appear.',
         }),
+        contactHeadline: fields.text({
+          label: 'Contact headline',
+          description: 'Put *stars* around the one word to set in italic serif.',
+        }),
         ogImage: fields.image({
           label: 'Share image (optional)',
           directory: 'public/images/site',
