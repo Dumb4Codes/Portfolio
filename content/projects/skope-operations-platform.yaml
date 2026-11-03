@@ -1,0 +1,68 @@
+title: SKOPE Operations Platform
+kind: internal
+company: SKOPE Kitchens
+featured: true
+order: 1
+year: 2026
+role: Full-stack developer (production hardening, mobile, test suite)
+tagline: One immutable stock ledger behind every number in a multi-brand kitchen.
+summary: An operations ERP that runs a multi-brand cloud kitchen from purchasing to daily closing.
+  Every stock movement is written once to an immutable ledger, so stock, cost and every report are
+  calculated from the same source and always agree.
+problem: Purchasing, store, kitchens and sales each kept their own numbers, so stock, food cost and
+  variance never agreed. The app also had to be used on phones in the kitchen by six very different
+  roles, and it had to be trustworthy enough to lock a day's books.
+approach:
+  - "One ledger: receipts, issues, transfers, production, sales consumption, wastage and adjustments
+    are all ledger entries. Stock is entries in minus entries out, and history is never edited."
+  - Sales consume recipes. Posting a sale subtracts ingredients through the recipe and its
+    sub-recipes (using each sub-recipe's yield %) and checks for shortages first.
+  - An approval gate on purchase receipts (full, partial or reject), supply-chain rules between Main
+    Store, Base Kitchen and Normal Kitchens, and daily closing that compares physical counts with
+    the ledger and locks the day.
+  - "Roles are enforced twice: a route guard in the UI and a 403 on the server for anything outside
+    the role."
+myWork:
+  - Migrated the frontend from Create React App to Vite 8 after the old build failed on a fresh
+    install.
+  - Made the app usable on phones with swipeable tabs, 44px touch targets, one-column forms and
+    scroll hints on wide tables, audited at 360–768px with no sideways overflow.
+  - Added a route guard that closed a role-access gap, plus an error screen after fixing a crash
+    that blanked the app.
+  - Wrote the browser test suite (464 checks across all six roles on desktop and phone) that
+    verifies exact ledger numbers after every step.
+outcome: The whole purchase-to-closing flow passes end to end for all six roles on desktop and
+  phone, with the numbers checked against the ledger at every step.
+metrics:
+  - value: "464"
+    label: browser test checks, all passing
+  - value: "6"
+    label: roles, enforced in UI and API
+  - value: "11"
+    label: screens · 10 reports · 27 collections
+  - value: "12"
+    label: stages from purchase to locked day
+stack:
+  - React 19
+  - Vite 8
+  - React Router 7
+  - Tailwind CSS
+  - Radix UI
+  - TanStack Query
+  - Recharts
+  - Python
+  - FastAPI
+  - Pydantic
+  - MongoDB
+  - PyJWT
+  - bcrypt
+  - Playwright
+  - Vitest
+  - pytest
+visual: ledger
+testsCount: 471
+illustrativeExample: Post 5 × Butter Chicken → the ledger consumes 1,000 g gravy base and 900 g
+  chicken; the gravy base itself was produced from 4.8 kg onion and 400 ml oil. (Sample test data,
+  not real figures.)
+gallery: []
+nextSteps: []

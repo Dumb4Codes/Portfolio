@@ -1,0 +1,30 @@
+company: HASVIK Technologies
+companyNote: Software services
+url: https://hasviktech.com
+role: Software Development Intern
+location: Remote
+mode: Remote
+start: 2026-06
+end: 2026-10
+order: 2
+summary: Front-end and API work for client products, from Figma to production.
+highlights:
+  - Converted Figma designs into responsive, high-performance Next.js components and refactored
+    client-side code, cutting page load time by 25%.
+  - Designed new features in Figma straight from client BRDs; the client reviewed and approved the
+    designs before development began.
+  - Contributed to a CRM migration by building scalable REST APIs in NestJS, documenting and testing
+    them with Swagger, and restructuring PostgreSQL schemas for data consistency.
+  - Helped deploy and manage AWS resources for hosting and scaling team features, working in a Git
+    workflow with code review from senior developers.
+stack:
+  - Next.js
+  - React
+  - TypeScript
+  - NestJS
+  - PostgreSQL
+  - Swagger
+  - AWS
+  - Figma
+  - Git
+projects: []

@@ -1,0 +1,25 @@
+title: Finance Dashboard
+kind: personal
+featured: false
+order: 20
+year: 2026
+role: Solo build
+tagline: Income, expenses and transactions at a glance.
+summary: A finance dashboard for income, expenses and spending patterns, with searchable and
+  sortable transactions, CSV and JSON export, and an Admin / Viewer role switch.
+stack:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - shadcn/ui
+  - Recharts
+  - Framer Motion
+visual: none
+repoUrl: https://github.com/Dumb4Codes/finance-dashboard
+cover: /images/projects/finance-dashboard/01.webp
+gallery: []
+nextSteps: []
+approach: []
+myWork: []
+metrics: []

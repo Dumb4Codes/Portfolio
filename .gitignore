@@ -1,0 +1,16 @@
+# kit + reference notes: never committed or deployed
+_kit/
+node_modules/
+.next/
+out/
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+playwright-report/
+test-results/
+shots/
+.lighthouse/
+.DS_Store

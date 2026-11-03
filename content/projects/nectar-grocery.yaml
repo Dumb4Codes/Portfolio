@@ -1,0 +1,22 @@
+title: Nectar Grocery
+kind: personal
+featured: false
+order: 20
+year: 2026
+role: Solo build
+tagline: A grocery shopping app.
+summary: A grocery shopping app with a product grid, filters, a cart and a checkout sheet.
+stack:
+  - React 19
+  - TypeScript
+  - Vite
+  - Tailwind CSS 4
+  - React Router
+  - Zustand
+visual: none
+repoUrl: https://github.com/Dumb4Codes/nectar-grocery
+gallery: []
+nextSteps: []
+approach: []
+myWork: []
+metrics: []

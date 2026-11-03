@@ -1,0 +1,24 @@
+title: Visual Workflow Playground
+kind: personal
+featured: false
+order: 20
+year: 2026
+role: Solo build
+tagline: A visual, node-based workflow playground.
+summary: "FlowForge: drag, drop and connect nodes into a workflow, then validate and run it with
+  animated feedback. A FastAPI backend checks the graph."
+stack:
+  - React
+  - React Flow
+  - Zustand
+  - Tailwind CSS
+  - Python
+  - FastAPI
+  - Pydantic
+visual: none
+repoUrl: https://github.com/Dumb4Codes/visual-workflow-playground
+gallery: []
+nextSteps: []
+approach: []
+myWork: []
+metrics: []

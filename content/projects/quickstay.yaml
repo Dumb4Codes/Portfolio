@@ -1,0 +1,56 @@
+title: QuickStay
+kind: personal
+featured: true
+order: 6
+year: 2025
+role: Solo build
+tagline: Hotel booking with Clerk auth, Stripe payments and automatic confirmation emails.
+summary: A hotel booking platform where guests browse and filter rooms, book and pay online or at
+  the hotel, and get a confirmation email. Hotel owners manage rooms and bookings from a dashboard.
+problem: Keep auth, payments and email in sync across three outside services without letting any one
+  of them break a booking.
+approach:
+  - Clerk handles sign-in; svix-verified Clerk webhooks keep users in sync in MongoDB (created,
+    updated, deleted).
+  - A booking is created first, then paid through Stripe Checkout or at the hotel; a Stripe webhook
+    flips isPaid.
+  - Cloudinary handles room media; Nodemailer over SMTP sends confirmations inside try/catch so an
+    email failure never cancels a booking.
+  - Owner dashboard for inventory and bookings in real time.
+outcome: Around a 20% cut in manual overhead for managing inventory and bookings.
+metrics:
+  - value: ~20%
+    label: less manual overhead
+  - value: "3"
+    label: outside services kept in sync via webhooks
+stack:
+  - React.js
+  - Tailwind CSS
+  - Node.js
+  - Express.js
+  - MongoDB
+  - Clerk
+  - Stripe
+  - Cloudinary
+  - Nodemailer
+visual: none
+liveUrl: https://quickstay-xi-teal.vercel.app
+repoUrl: https://github.com/Dumb4Codes/Hotel-Booking
+cover: /images/projects/quickstay/01.webp
+gallery:
+  - src: /images/projects/quickstay/01.webp
+    alt: "QuickStay hero: Discover Your Perfect Gateway Destination, over a dusk resort pool"
+  - src: /images/projects/quickstay/02.webp
+    alt: Clerk sign-in modal
+  - src: /images/projects/quickstay/03.webp
+    alt: Hotel rooms list with filters
+  - src: /images/projects/quickstay/04.webp
+    alt: Room details with gallery, amenities and a booking form
+  - src: /images/projects/quickstay/05.webp
+    alt: Stripe payment page
+nextSteps:
+  - Verify Clerk tokens with jwt.verify against Clerk's public keys instead of jwt.decode.
+  - Replace the fixed wait after Stripe checkout with polling for booking status.
+  - Pass check-in and check-out dates into search, and count only paid bookings in revenue.
+  - Real star ratings from guests, and room editing for owners.
+myWork: []

@@ -1,0 +1,82 @@
+title: Instantly
+kind: personal
+featured: true
+order: 4
+year: 2026
+role: "Solo build: design, frontend, backend, deployment"
+tagline: A full-stack grocery store with Stripe, S3 and an AI copywriter for admins.
+summary: An AI-assisted e-commerce platform with guest and signed-in carts, Stripe checkout (card
+  and cash on delivery), order tracking, verified-purchase reviews and an admin portal with
+  Gemini-powered product copy.
+problem: Build a store that behaves like a real one, where payment status can't be faked, carts
+  survive sign-in and admins don't have to write every product description by hand.
+approach:
+  - Stripe Checkout with signature-verified webhooks as the only source of truth for 'paid', for
+    both card and cash-on-delivery orders.
+  - Passport.js JWT strategy with the token in an HttpOnly cookie; RBAC splits the user and admin
+    panels.
+  - Guest cart in Zustand (persisted) that merges into the server cart on sign-in; TanStack Query
+    for server state.
+  - Controllers stay thin and the business rules live in services, validated with Zod; product
+    images go through multer to AWS S3.
+  - Gemini via the Vercel AI SDK / AI Gateway rewrites product titles and generates descriptions,
+    and the model can be swapped by changing one string.
+outcome: Client render time cut by around 25%, checkout latency kept under 400 ms, and server
+  response time improved by around 30% after the schema and RBAC work.
+metrics:
+  - value: <400ms
+    label: checkout latency
+  - value: −25%
+    label: client render time
+  - value: ~30%
+    label: faster server responses
+stack:
+  - React 19
+  - TypeScript
+  - Vite
+  - Tailwind CSS v4
+  - shadcn/ui
+  - Zustand
+  - TanStack Query
+  - Node.js
+  - Express 5
+  - MongoDB
+  - Mongoose
+  - Passport.js
+  - JWT
+  - Zod
+  - Stripe
+  - AWS S3
+  - Gemini
+  - Vercel AI SDK
+  - Render
+  - Vercel
+visual: none
+liveUrl: https://ai-ecom-mocha.vercel.app
+repoUrl: https://github.com/Dumb4Codes/AI-Ecom
+cover: /images/projects/instantly/01.webp
+gallery:
+  - src: /images/projects/instantly/01.webp
+    alt: Instantly storefront home with category rail and today's deals
+  - src: /images/projects/instantly/02.webp
+    alt: Product page with price, reviews and rating distribution
+  - src: /images/projects/instantly/03.webp
+    alt: Slide-over cart
+  - src: /images/projects/instantly/04.webp
+    alt: Checkout with saved delivery addresses and order summary
+  - src: /images/projects/instantly/05.webp
+    alt: Stripe hosted checkout
+  - src: /images/projects/instantly/06.webp
+    alt: Admin dashboard with revenue, orders and recent orders
+  - src: /images/projects/instantly/07.webp
+    alt: Admin orders table with payment and order status
+  - src: /images/projects/instantly/08.webp
+    alt: Admin products list
+  - src: /images/projects/instantly/09.webp
+    alt: Admin new-product form with AI title and description helpers
+nextSteps:
+  - Add rate limiting to the login and register endpoints.
+  - Scope the S3 IAM policy down to the single bucket.
+  - Add a resize and format pipeline for uploaded product images.
+  - Wire the integration tests into CI.
+myWork: []

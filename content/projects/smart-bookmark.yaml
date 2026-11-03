@@ -1,0 +1,24 @@
+title: Smart Bookmark
+kind: personal
+featured: false
+order: 20
+year: 2026
+role: Solo build
+tagline: A private bookmark manager with Google sign-in.
+summary: A private bookmark manager. Sign in with Google, save links, and see changes sync in real
+  time across tabs and devices, with each user seeing only their own bookmarks.
+stack:
+  - Next.js 16
+  - TypeScript
+  - Tailwind CSS
+  - Supabase
+  - Google OAuth
+  - Vercel
+visual: none
+repoUrl: https://github.com/Dumb4Codes/smart-bookmark-app
+cover: /images/projects/smart-bookmark/01.webp
+gallery: []
+nextSteps: []
+approach: []
+myWork: []
+metrics: []

@@ -1,0 +1,62 @@
+title: SKOPE HR Portal
+kind: internal
+company: SKOPE Kitchens
+featured: true
+order: 2
+year: 2026
+role: Designed, built, tested and deployed
+tagline: Replaced a WhatsApp attendance group with payroll that matches to the paisa.
+summary: An HR web app for about 53 staff covering attendance, shifts and rosters, overtime, salary,
+  payroll and PDF payslips. It replaced the WhatsApp group where staff posted their login and logout
+  times.
+problem: Attendance lived in a chat group and payroll lived in a spreadsheet. Overnight kitchen
+  shifts, half days, overtime and loss-of-pay had to be calculated by hand, with no audit trail.
+approach:
+  - One Next.js 16 codebase for pages and API, with Supabase used only as managed Postgres; the
+    browser never talks to the database.
+  - Every API route goes through one guard that checks origin, reloads the user, forces a first-time
+    password change and checks the permission, so revoking access takes effect on the next request.
+  - Attendance is stamped by the server; overnight shifts belong to the day they start; overtime is
+    detected at sign-out in 30-minute blocks and paid only once approved.
+  - Money uses decimal.js. A payroll run moves GENERATED → UNDER_REVIEW → APPROVED → FINALIZED →
+    PAID, and finalizing freezes a snapshot so an issued payslip never changes.
+  - "Separation of duties: HR approves but can't finalize; Accounts finalizes but can't approve
+    overtime; nobody approves their own changes. The audit log is append-only."
+myWork:
+  - End-to-end owner, covering data model (22 tables, Drizzle migrations), ~60 API endpoints, 19
+    screens, PDF payslips and Excel import/export.
+  - Deployed for free on Render (Singapore) and Supabase, with a daily keep-alive and weekly AES-256
+    encrypted pg_dump backups via GitHub Actions.
+  - Diagnosed a production 502 that came from the transaction pooler hanging queries, and fixed it
+    by moving to the session pooler and keeping the health check off the database.
+outcome: Went live on 16 October 2026 after passing 191 automated checks, and the first real payroll
+  matched the company budget sheet for every person checked.
+metrics:
+  - value: ₹0.00
+    label: difference vs the budget sheet, every person checked
+  - value: "53"
+    label: staff on one payroll
+  - value: "191"
+    label: automated checks passed
+  - value: "19"
+    label: screens · 22 tables · ~60 endpoints
+stack:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - Tailwind CSS 4
+  - PostgreSQL
+  - Supabase
+  - Drizzle ORM
+  - PGlite
+  - jose
+  - bcrypt
+  - decimal.js
+  - "@react-pdf/renderer"
+  - exceljs
+  - Render
+  - GitHub Actions
+visual: payroll
+testsCount: 191
+gallery: []
+nextSteps: []

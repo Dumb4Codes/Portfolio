@@ -1,0 +1,75 @@
+groups:
+  - name: Languages
+    items:
+      - JavaScript (ES6+)
+      - TypeScript
+      - Python
+      - Java
+      - SQL
+      - HTML5
+      - CSS3
+  - name: Frontend
+    items:
+      - React 19
+      - Next.js
+      - Angular
+      - Vite
+      - Redux Toolkit
+      - Zustand
+      - TanStack Query
+      - Tailwind CSS
+      - Radix UI
+      - shadcn/ui
+      - Framer Motion
+      - React Three Fiber
+      - Recharts
+  - name: Backend
+    items:
+      - Node.js
+      - Express.js
+      - NestJS
+      - FastAPI
+      - REST APIs
+      - Swagger
+      - Passport.js
+      - JWT
+      - Zod
+      - RBAC
+  - name: Data
+    items:
+      - MongoDB
+      - Mongoose
+      - PostgreSQL
+      - Supabase
+      - Neon
+      - Drizzle ORM
+  - name: Cloud & Hosting
+    items:
+      - AWS S3
+      - Vercel
+      - Vercel Blob
+      - Render
+      - Netlify
+      - GitHub Actions
+  - name: Testing & Tools
+    items:
+      - Playwright
+      - Vitest
+      - pytest
+      - axe-core
+      - Git
+      - GitHub
+      - Postman
+      - Figma
+      - Chrome DevTools
+  - name: Integrations
+    items:
+      - Stripe
+      - Clerk
+      - Cloudinary
+      - ImageKit
+      - Nodemailer
+      - Resend
+      - Gemini / Vercel AI SDK
+      - Google Places
+      - Workato

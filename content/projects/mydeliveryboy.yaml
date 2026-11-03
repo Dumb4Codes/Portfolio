@@ -1,0 +1,62 @@
+title: mydeliveryboy
+kind: internal
+company: SKOPE Kitchens
+featured: true
+order: 3
+year: 2026
+role: Designed, built, tested and deployed
+tagline: One rider, up to four stops, tracked live, with no app and no login.
+summary: An errand and multi-stop delivery service. A customer books one rider who buys, picks up
+  and drops off at up to four stops in one trip, then follows every step on a live tracking page.
+problem: Aggregator commissions, ads and discounts can take around half of a cloud kitchen's order
+  revenue. The business wanted its own direct route to the customer, live fast and without depending
+  on a rider-partner API that didn't exist yet.
+approach:
+  - "No accounts: booking takes three short steps (area, 1–4 stops each set to Buy / Pick up / Drop
+    off, delivery details). A half-filled form survives a refresh."
+  - Shop search runs on the server via Google Places, falls back to free OpenStreetMap (Photon),
+    stays inside about 5 km of the chosen area, and is debounced, cached and rate-limited.
+  - A rider desk assigns riders and hands off the job in one tap through a pre-written WhatsApp
+    message, so there's no Meta approval or partner API on day one.
+  - Riders work from a private phone link with big buttons (accept, arrive, done, couldn't do it,
+    photo, delivered), and every tap appears on the customer's tracking page.
+  - "An honest status machine: Requested → Assigned → Accepted → In progress → Out for delivery →
+    Delivered, so the site never says confirmed until a rider accepts."
+myWork:
+  - Built the whole product in Next.js 16 with Neon Postgres via Drizzle, photos in Vercel Blob, Zod
+    validation shared by client and server, and per-endpoint rate limits.
+  - Built for privacy, using secret tracking links, rider links that die on reassignment and hide
+    customer details 12 hours after the trip, and noindex on private pages.
+  - Tested with 96 logic tests, 176 Playwright browser tests and axe-core accessibility scans, plus
+    a hands-on trial and an independent code review.
+outcome: Working end to end (booking, assignment, rider stops with photos, delivery), with every
+  update reaching the customer's tracking page.
+metrics:
+  - value: 1–4
+    label: stops per trip, one rider
+  - value: "272"
+    label: automated tests passing
+  - value: "0"
+    label: apps or logins for customers & riders
+  - value: 20s
+    label: live tracking refresh
+stack:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - PostgreSQL
+  - Neon
+  - Drizzle ORM
+  - Vercel Blob
+  - Zod
+  - jose
+  - Google Places
+  - OpenStreetMap
+  - Vitest
+  - Playwright
+  - axe-core
+  - Vercel
+visual: route
+testsCount: 272
+gallery: []
+nextSteps: []

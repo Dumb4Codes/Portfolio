@@ -1,0 +1,38 @@
+company: SKOPE Kitchens
+companyNote: Multi-brand cloud kitchen
+role: Full Stack Developer Intern
+location: Bengaluru
+mode: On-site
+start: 2026-10
+end: ""
+order: 1
+summary: Building the internal software that runs a multi-brand cloud kitchen, from purchasing and
+  stock to payroll and last-mile delivery. Three platforms shipped in my first month.
+highlights:
+  - Hardened the SKOPE Operations Platform (React 19 + FastAPI + MongoDB) for production; moved it
+    from Create React App to Vite 8, made all 11 screens work on phones, and closed a role-access
+    gap with a route guard.
+  - Wrote a 464-check Playwright suite that runs as each of 6 roles on desktop and phone and checks
+    the exact stock-ledger numbers after every step of the business flow.
+  - Built and deployed the SKOPE HR Portal (Next.js 16, Supabase Postgres, Drizzle) for about 53
+    staff; its first payroll matched the company's budget sheet to the paisa.
+  - Built mydeliveryboy, an errand and multi-stop delivery service with no-login booking, a rider
+    desk, rider phone pages and live tracking, covered by 272 automated tests.
+stack:
+  - React 19
+  - Next.js 16
+  - TypeScript
+  - FastAPI
+  - MongoDB
+  - PostgreSQL
+  - Supabase
+  - Neon
+  - Drizzle ORM
+  - Playwright
+  - Vitest
+  - Vercel
+  - Render
+projects:
+  - skope-operations-platform
+  - skope-hr-portal
+  - mydeliveryboy

@@ -1,0 +1,66 @@
+title: CarRental
+kind: personal
+featured: true
+order: 5
+year: 2025
+role: Solo build
+tagline: Luxury car rental with a 3D hero and booking logic that refuses overlapping dates.
+summary: A two-sided car rental platform. Customers search by location and dates and book; owners
+  list cars, toggle availability and manage bookings and revenue from a dashboard.
+problem: "Two kinds of users with different powers, and one rule that must never break: a car can't
+  be booked twice for overlapping dates."
+approach:
+  - 14+ REST endpoints covering listings, bookings, availability and owner management.
+  - Date-range validation on the server blocks overlapping bookings; the server calculates the total
+    price.
+  - Separate JWT-secured access for users and owners, with bcrypt-hashed passwords.
+  - ImageKit auto-resizes and compresses vehicle images to 1280px WebP; a React Three Fiber hero
+    renders a 3D car.
+outcome: A complete customer and owner flow, from search to booking to an owner revenue view.
+metrics:
+  - value: 14+
+    label: REST endpoints
+  - value: "2"
+    label: "roles: renter & owner"
+stack:
+  - React.js
+  - React Three Fiber
+  - Three.js
+  - Tailwind CSS
+  - Node.js
+  - Express.js
+  - MongoDB
+  - JWT
+  - bcrypt
+  - ImageKit
+visual: none
+liveUrl: https://car-rental-psi-rosy.vercel.app
+repoUrl: https://github.com/Dumb4Codes/CarRental
+cover: /images/projects/carrental/01.webp
+gallery:
+  - src: /images/projects/carrental/01.webp
+    alt: Hero with a 3D purple sports car and a location and date search bar
+  - src: /images/projects/carrental/02.webp
+    alt: Available cars grid with search
+  - src: /images/projects/carrental/03.webp
+    alt: Featured vehicles section
+  - src: /images/projects/carrental/04.webp
+    alt: List-your-car banner and customer testimonials
+  - src: /images/projects/carrental/05.webp
+    alt: My Bookings with status and price per booking
+  - src: /images/projects/carrental/06.webp
+    alt: Owner admin dashboard with totals and monthly revenue
+  - src: /images/projects/carrental/07.webp
+    alt: Owner Manage Cars table
+  - src: /images/projects/carrental/08.webp
+    alt: Owner Manage Bookings table
+  - src: /images/projects/carrental/09.webp
+    alt: Owner Add New Car form
+  - src: /images/projects/carrental/10.webp
+    alt: Testimonials, newsletter and footer
+nextSteps:
+  - Verify tokens with jwt.verify instead of jwt.decode.
+  - Add a payment gateway at booking time.
+  - Let owners edit a car after listing it, and let renters cancel pending bookings.
+  - Push real-time availability updates to anyone viewing a car.
+myWork: []

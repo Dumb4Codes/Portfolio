@@ -1,0 +1,35 @@
+name: Youvraj Singh
+shortName: Youvraj
+role: Full-Stack Developer
+headline: I build the software that runs real businesses.
+subheadline: "Full-stack developer in Bengaluru. Right now I'm shipping internal platforms for a
+  multi-brand cloud kitchen: stock ledgers, payroll and live delivery tracking."
+availability:
+  status: open
+  label: Open to full-time roles & freelance builds
+location: Bengaluru, Karnataka, India
+timezone: Asia/Kolkata
+email: youv2002@gmail.com
+phone: +91 78699 05752
+socials:
+  github: https://github.com/Dumb4Codes
+  linkedin: https://www.linkedin.com/in/youvraj-singh/
+  leetcode: https://leetcode.com/u/Dumb4Codes/
+  extra: []
+resume: /resume/youvraj-singh-resume.pdf
+photo: /images/profile/youvraj-singh.jpg
+photoAlt: Youvraj Singh smiling, wearing a navy blazer over a white shirt, against a pale wall.
+bio: |
+  I'm a full-stack developer who likes the unglamorous parts of software: the ledger that has to
+  balance, the payroll that has to match to the paisa, the booking that must never double-book.
+
+  I work across the whole lifecycle (design in Figma, build in React/Next.js and Node or Python,
+  test with Playwright, deploy on Vercel, Render or AWS) and I care about what happens after launch:
+  role-based access, audit trails and tests that prove the numbers.
+
+  I studied Computer Science at St. Aloysius College, Jabalpur, and I'm currently a Full Stack
+  Developer Intern at SKOPE Kitchens in Bengaluru, after a software development internship with HASVIK Technologies.
+education:
+  degree: Bachelor of Science in Computer Science
+  school: St. Aloysius College, Jabalpur (RDVV University)
+  years: 2020 – 2023

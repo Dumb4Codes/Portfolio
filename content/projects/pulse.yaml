@@ -1,0 +1,56 @@
+title: Pulse
+kind: personal
+featured: true
+order: 7
+year: 2026
+role: Solo build
+tagline: "Your world, curated: a personalised content dashboard."
+summary: A personalised content dashboard with a curated feed, trending stories, favourites and
+  settings for interests, appearance and language.
+problem: One place for news, movie picks and social posts, shaped by what each reader chooses to follow.
+approach:
+  - Readers pick categories and hashtags in Settings; the choices persist across reloads.
+  - News and movie data come through server routes, and every source falls back to seeded mock data,
+    so the app runs with no API keys.
+  - Redux Toolkit and RTK Query manage feed state; the infinite feed interleaves the sources and
+    cards can be dragged into your own order.
+  - A keyboard-driven command palette searches everything, with light and dark themes and three
+    languages.
+  - New items stream in live over Server-Sent Events.
+outcome: A working dashboard that a fresh clone can demo in about a minute, backed by unit and
+  browser tests.
+metrics:
+  - value: "3"
+    label: "languages: English, Hindi, Spanish"
+  - value: "7"
+    label: content categories
+stack:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - Redux Toolkit
+  - RTK Query
+  - Tailwind CSS 4
+  - Framer Motion
+  - react-i18next
+  - Vitest
+  - Playwright
+  - MSW
+  - Vercel
+visual: none
+liveUrl: https://pulse-dashboard-ten-delta.vercel.app
+repoUrl: https://github.com/Dumb4Codes/pulse-dashboard
+cover: /images/projects/pulse/01.webp
+gallery:
+  - src: /images/projects/pulse/01.webp
+    alt: "Pulse sign-in screen: Your world, curated."
+  - src: /images/projects/pulse/02.webp
+    alt: Your feed with category chips and story cards
+  - src: /images/projects/pulse/03.webp
+    alt: "Trending: ranked stories in a bento grid"
+  - src: /images/projects/pulse/04.webp
+    alt: Favourites
+  - src: /images/projects/pulse/05.webp
+    alt: Settings for interests, appearance, language and profile
+nextSteps: []
+myWork: []

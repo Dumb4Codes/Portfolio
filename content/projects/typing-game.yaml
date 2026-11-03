@@ -1,0 +1,24 @@
+title: Typing Game
+kind: personal
+featured: false
+order: 8
+year: 2026
+role: Solo build
+tagline: A minimalist typing speed test.
+summary: "SpeedType: a distraction-free typing test with 30-second, 60-second and 5-minute modes,
+  live WPM and accuracy, and five themes."
+stack:
+  - React 19
+  - TypeScript
+  - Vite
+visual: none
+liveUrl: https://typing-game-five-rho.vercel.app
+repoUrl: https://github.com/Dumb4Codes/Typing-Game
+cover: /images/projects/typing-game/01.webp
+gallery:
+  - src: /images/projects/typing-game/01.webp
+    alt: Typing test with a 30-second timer and the word stream
+nextSteps: []
+approach: []
+myWork: []
+metrics: []
