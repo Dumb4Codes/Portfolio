@@ -1,6 +1,5 @@
-import { Analytics } from '@vercel/analytics/next'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import Cursor from '@/components/Cursor'
+import Telemetry from '@/components/Telemetry'
 import EasterEgg from '@/components/EasterEgg'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -55,8 +54,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <PageWipe />
       {site.showPreloader && <Preloader />}
       {site.easterEgg && <EasterEgg />}
-      {process.env.VERCEL && <Analytics />}
-      {process.env.VERCEL && <SpeedInsights />}
+      {process.env.VERCEL && <Telemetry />}
     </>
   )
 }

@@ -11,10 +11,12 @@ export { pointsFromMask } from './mask'
 export { ledgerShape, clockShape, routeShape, fieldShape, pinShape }
 
 export const MOBILE_BREAKPOINT = 768
+/** Below this the chapters stack (no right-hand column), so shapes sit centred behind the text. */
+export const STACK_BREAKPOINT = 1024
 
 /** Where each shape sits on screen: right-hand 7 columns on desktop, centred behind the text on mobile. */
 export function sceneBox(key: SceneKey, vw: number, vh: number): Box {
-  const mobile = vw < MOBILE_BREAKPOINT
+  const mobile = vw < STACK_BREAKPOINT
   if (key === 'field' || key === 'hero') return { cx: 0, cy: 0, w: vw, h: vh }
   if (mobile) {
     const s = Math.min(vw * 0.94, vh * 0.58)

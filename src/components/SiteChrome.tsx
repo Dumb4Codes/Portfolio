@@ -34,5 +34,6 @@ export default function LazyPalette({ data }: { data: PaletteData }) {
     }
   }, [])
 
-  return <Palette data={data} openSignal={signal} returnTo={returnTo} />
+  // the palette chunk is only fetched the first time someone asks for it
+  return signal > 0 ? <Palette data={data} openSignal={signal} returnTo={returnTo} /> : null
 }

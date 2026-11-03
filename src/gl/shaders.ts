@@ -152,7 +152,7 @@ export const fragmentShader = /* glsl */ `
     if (d > 0.5) discard;
     float soft = smoothstep(0.5, 0.15, d);
     vec3 col = mix(uFg, uCold, vCold * uDark * 0.8);
-    col = mix(col, uAccent * 0.9, vAccent);
+    col = mix(col, uAccent * mix(1.0, 0.9, uDark), vAccent);
     float a = soft * vAlpha * uOpacity * mix(0.9, 0.62, vAccent);
     gl_FragColor = vec4(col, a);
   }

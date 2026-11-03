@@ -74,7 +74,7 @@
 .hero__name { font-weight: 800; line-height: 0.82; margin-bottom: clamp(4px, 1vw, 16px); }
 .hero__first {
   display: block;
-  font-size: clamp(46px, 18.9vw, 440px);
+  font-size: clamp(46px, 18.9vw, 340px); /* the word is ~4.85em wide: never wider than the 1760px page column */
   text-transform: uppercase;
   line-height: 0.82;
   letter-spacing: -0.045em;
@@ -84,7 +84,7 @@
 }
 /* once the particle word is drawn over it, the HTML glyphs step aside (still there for SEO / screen readers) */
 html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, transparent); }
-.hero__stack { display: none; font-size: clamp(120px, 36vw, 300px); text-transform: uppercase; line-height: 0.8; letter-spacing: -0.05em; margin-left: -0.04em; transition: color 0.6s ease; }
+.hero__stack { display: none; font-size: calc((100vw - 2 * var(--pad)) / 2.72); text-transform: uppercase; line-height: 0.8; letter-spacing: -0.05em; margin-left: -0.04em; transition: color 0.6s ease; }
 .hero__stack > span { display: block; }
 html[data-gl='on'] .hero__stack { color: color-mix(in oklab, var(--fg) 9%, transparent); }
 @media (max-width: 767px) {
@@ -217,7 +217,7 @@ html:not(.preload) .hero__bottom > *, html:not(.preload) .hero__top > * { animat
 
 /* payroll */
 .visual--payroll { align-items: center; }
-.clock-svg { width: min(100%, 340px); overflow: visible; margin-block: 22px; }
+.clock-svg { width: min(86%, 320px); overflow: visible; margin-block: 22px; }
 .clock-ring { fill: none; stroke: var(--line-strong); stroke-width: 0.5; }
 .clock-hour { fill: var(--muted); font-size: 4.2px; }
 .clock-hand { stroke: var(--accent); stroke-width: 0.7; }
@@ -240,7 +240,7 @@ html:not(.preload) .hero__bottom > *, html:not(.preload) .hero__top > * { animat
 /* route */
 .route-map { position: relative; aspect-ratio: 16 / 11; border-bottom: 1px dashed var(--line); }
 .route-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.route-path { fill: none; stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 5; }
+.route-path { fill: none; stroke: var(--fg); stroke-opacity: 0.55; stroke-width: 1.2; stroke-dasharray: 3 5; }
 .stop {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -300,8 +300,9 @@ html:not(.preload) .hero__bottom > *, html:not(.preload) .hero__top > * { animat
   }
   .chapter__visual .visual--ledger .vis-note { display: none; }
   .chapter__visual .visual--ledger .ledger__row { font-size: 12px; padding: 11px 0; }
+  .chapter__visual .clock-static, .chapter__visual .route-static { display: none; }
   .chapter__visual .visual--payroll { display: block; }
-  .chapter__visual .visual--payroll .clock-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .chapter__visual .visual--payroll .clock-svg { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; }
   .chapter__visual .visual--payroll .shift-legend { position: absolute; }
   .chapter__visual .visual--payroll .net { position: absolute; inset: 0; justify-content: center; }
   .chapter__visual .visual--payroll .states { position: absolute; left: 0; right: 0; top: calc(100% + 44px); }

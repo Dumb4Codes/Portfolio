@@ -10,7 +10,7 @@ const TILE = 120 // 120 x 120 = 14,400 px, under Chrome's size threshold for GPU
  * The glyphs are rasterised in small tiles. Small canvases stay CPU-backed, so reading the pixels
  * back never needs a GPU readback, whatever the text size.
  */
-export function textShape(lines: string[], n: number, box: Box, fontFamily: string, seed = 7): Shape {
+export function textShape(lines: string[], n: number, box: Box, fontFamily: string, seed = 7, opts: { letterSpacingEm?: number; fit?: 'contain' | 'width' } = {}): Shape {
   const px = 240
   const font = `800 ${px}px ${fontFamily}`
   const lh = px * 0.92
@@ -20,6 +20,8 @@ export function textShape(lines: string[], n: number, box: Box, fontFamily: stri
   tile.height = TILE
   const ctx = tile.getContext('2d', { willReadFrequently: true })!
   ctx.font = font
+  const ls = (opts.letterSpacingEm ?? 0) * px
+  if (ls && 'letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${ls}px`
   const widest = Math.max(...lines.map((l) => ctx.measureText(l).width))
 
   const W = Math.ceil(widest + px * 0.2)
@@ -32,6 +34,7 @@ export function textShape(lines: string[], n: number, box: Box, fontFamily: stri
       ctx.save()
       ctx.translate(-tx, -ty)
       ctx.font = font
+      if (ls && 'letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${ls}px`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillStyle = '#fff'
@@ -45,5 +48,5 @@ export function textShape(lines: string[], n: number, box: Box, fontFamily: stri
       }
     }
   }
-  return pointsFromMask({ width: W, height: H, data: mask }, n, box, seed, 1)
+  return pointsFromMask({ width: W, height: H, data: mask }, n, box, seed, 1, opts.fit ?? 'contain')
 }

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 /**
- * Loads the motion engine (GSAP, ScrollTrigger, SplitText, Lenis) after hydration and an idle moment, so the
+ * Loads the motion engine (GSAP, ScrollTrigger, Lenis) after hydration and an idle moment, so the
  * initial JavaScript is just React and the interactive islands. Effects run after the whole page has hydrated,
  * so the engine never touches DOM that React is still adopting. Re-runs on every route change.
  * If the engine cannot load, `data-motion="failed"` releases every element the CSS hid for an entrance.

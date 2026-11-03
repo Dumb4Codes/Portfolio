@@ -60,11 +60,10 @@ export default function RouteVisual({ standalone = false }: { standalone?: boole
   return (
     <div ref={ref} className={`visual visual--route ${standalone ? 'visual--standalone' : ''}`} role="img" aria-label={DESCRIPTION}>
       <div className="route-map" aria-hidden="true">
-        {standalone && (
-          <svg className="route-svg" viewBox="0 0 200 110" preserveAspectRatio="none">
-            <path d={routePath(200, 110)} className="route-path" vectorEffect="non-scaling-stroke" />
-          </svg>
-        )}
+        {/* drawn on phones and the case study; on desktop chapters the particles draw the route */}
+        <svg className="route-svg route-static" viewBox="0 0 200 110" preserveAspectRatio="none">
+          <path d={routePath(200, 110)} className="route-path" vectorEffect="non-scaling-stroke" />
+        </svg>
         {ROUTE_NODES.map(([x, y], i) => (
           <span
             key={i}

@@ -24,7 +24,6 @@ const arc = (a: number, b: number, r: number) => {
   return `M${x1.toFixed(2)} ${y1.toFixed(2)}A${r} ${r} 0 ${b - a > 12 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`
 }
 
-/** `standalone`: draw the ring and shift arcs in SVG (case study). On the home page the particles draw them. */
 export default function PayrollVisual({ standalone = false }: { standalone?: boolean }) {
   const steps = 40
   const { ref, step } = useChapter<HTMLDivElement>(steps)
@@ -39,11 +38,15 @@ export default function PayrollVisual({ standalone = false }: { standalone?: boo
   return (
     <div ref={ref} className={`visual visual--payroll ${standalone ? 'visual--standalone' : ''}`} role="img" aria-label={DESCRIPTION}>
       <svg viewBox="-100 -100 200 200" aria-hidden="true" className="clock-svg">
-        {standalone && <circle r="96" className="clock-ring" />}
-        {standalone &&
-          SHIFTS.map(([a, b, k], i) => <path key={i} d={arc(a, b, 96 * k)} className={i === 2 ? 'clock-arc clock-arc--night' : 'clock-arc'} />)}
+        {/* ring + arcs: shown on phones and the case study; on desktop chapters the particles draw them */}
+        <g className="clock-static">
+          <circle r="96" className="clock-ring" />
+          {SHIFTS.map(([a, b, k], i) => (
+            <path key={i} d={arc(a, b, 96 * k)} className={i === 2 ? 'clock-arc clock-arc--night' : 'clock-arc'} />
+          ))}
+        </g>
         {labels.map((h) => {
-          const [x, y] = at(h, 106)
+          const [x, y] = at(h, 109)
           return (
             <text key={h} x={x} y={y} className="clock-hour mono" textAnchor="middle" dominantBaseline="central">
               {String(h).padStart(2, '0')}

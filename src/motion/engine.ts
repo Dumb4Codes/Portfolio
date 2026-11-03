@@ -1,7 +1,7 @@
 import Lenis from 'lenis'
 import { formatMetric, parseMetric } from '@/content/derive'
 import { chapterLocal } from '@/lib/chapter'
-import { gsap, ScrollTrigger, SplitText } from '@/lib/gsap'
+import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { getLenis, prefersReducedMotion, setLenis } from '@/lib/scroll'
 
 /**
@@ -46,65 +46,56 @@ function ensureLenis() {
 
 // ---------------------------------------------------------------- entrances
 
+/**
+ * Entrances and counters use one IntersectionObserver instead of a ScrollTrigger each: no layout reads at
+ * start-up (the expensive part on phones), and each element animates the moment it scrolls into view.
+ */
 function reveals(): Cleanup[] {
   const undo: Cleanup[] = []
-  for (const el of $$('[data-reveal]')) {
+  const targets = $$('[data-reveal], [data-metric]')
+  if (!targets.length) return undo
+
+  const play = (el: HTMLElement) => {
+    if (el.dataset.metric !== undefined) {
+      const p = parseMetric(el.dataset.metric)
+      if (p.value === null) return
+      const proxy = { v: 0 }
+      el.textContent = formatMetric(p, 0)
+      gsap.to(proxy, {
+        v: p.value,
+        duration: 1.6,
+        ease: 'power3.out',
+        onUpdate: () => (el.textContent = formatMetric(p, proxy.v)),
+        onComplete: () => (el.textContent = p.raw),
+      })
+      return
+    }
     const variant = el.dataset.reveal!
     const delay = Number(el.dataset.delay ?? 0)
-    const trigger = { trigger: el, start: el.dataset.start ?? 'top 88%', once: true }
-    if (variant === 'rule') {
-      gsap.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: 1.4, delay, scrollTrigger: trigger })
-    } else if (variant === 'rise') {
-      gsap.fromTo(el, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay, scrollTrigger: trigger })
-    } else if (variant === 'clip') {
-      gsap.fromTo(el, { clipPath: 'inset(0 0 100% 0)', opacity: 1 }, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, delay, scrollTrigger: trigger })
-    } else if (variant === 'wdth') {
+    if (variant === 'rule') gsap.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: 1.4, delay })
+    else if (variant === 'rise') gsap.fromTo(el, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 1, delay })
+    else if (variant === 'clip') gsap.fromTo(el, { clipPath: 'inset(0 0 100% 0)', opacity: 1 }, { clipPath: 'inset(0 0 0% 0)', duration: 1.2, delay })
+    else if (variant === 'wdth') {
       // hold the box height steady while the width axis animates, so nothing around it shifts
       const final = parseFloat(getComputedStyle(el).getPropertyValue('--w')) || 100
-      const hold = () => {
-        el.style.minHeight = ''
-        el.style.minHeight = `${el.getBoundingClientRect().height}px`
-      }
-      hold()
-      ScrollTrigger.addEventListener('refreshInit', hold)
-      undo.push(() => ScrollTrigger.removeEventListener('refreshInit', hold))
-      gsap.fromTo(el, { '--w': '62%', opacity: 0 }, { '--w': `${final}%`, opacity: 1, duration: 1.3, delay, scrollTrigger: trigger })
-    } else if (variant === 'lines') {
-      let split: SplitText | undefined
-      void document.fonts.ready.then(() => {
-        split = SplitText.create(el, {
-          type: 'lines',
-          mask: 'lines',
-          autoSplit: true,
-          aria: 'none',
-          onSplit: (self) => {
-            el.style.visibility = 'visible'
-            return gsap.from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.07, delay, scrollTrigger: trigger })
-          },
-        })
-      })
-      undo.push(() => split?.revert())
+      el.style.minHeight = `${el.getBoundingClientRect().height}px`
+      gsap.fromTo(el, { '--w': '62%', opacity: 0 }, { '--w': `${final}%`, opacity: 1, duration: 1.3, delay, onComplete: () => void (el.style.minHeight = '') })
     }
   }
-  return undo
-}
 
-function metrics(): Cleanup[] {
-  for (const el of $$('[data-metric]')) {
-    const p = parseMetric(el.dataset.metric!)
-    if (p.value === null) continue
-    const proxy = { v: 0 }
-    el.textContent = formatMetric(p, 0)
-    gsap.to(proxy, {
-      v: p.value,
-      duration: 1.6,
-      ease: 'power3.out',
-      onUpdate: () => (el.textContent = formatMetric(p, proxy.v)),
-      onComplete: () => (el.textContent = p.raw),
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-    })
-  }
-  return []
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue
+        io.unobserve(e.target)
+        play(e.target as HTMLElement)
+      }
+    },
+    { rootMargin: '0px 0px -10% 0px' },
+  )
+  targets.forEach((t) => io.observe(t))
+  undo.push(() => io.disconnect())
+  return undo
 }
 
 // ---------------------------------------------------------------- hero
@@ -335,7 +326,6 @@ export function start(): Cleanup {
   }
   if (!reduced()) {
     run(reveals)
-    run(metrics)
     run(hero)
     run(ticker)
     run(chapters)

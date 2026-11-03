@@ -398,9 +398,6 @@ html.js:not([data-motion='failed']) :is([data-reveal='rise'], [data-reveal='clip
 html.js:not([data-motion='failed']) [data-reveal='rule'] {
   transform: scaleX(0);
 }
-html.js:not([data-motion='failed']) [data-reveal='lines'] {
-  visibility: hidden;
-}
 .mask-line {
   display: block;
   overflow: hidden;

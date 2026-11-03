@@ -14,7 +14,7 @@ import {
 } from 'three'
 import { director, OVERRIDE_SHAPE } from './director'
 import { fragmentShader, vertexShader } from './shaders'
-import { generateScene, MOBILE_BREAKPOINT, textShape } from './shapes'
+import { generateScene, MOBILE_BREAKPOINT, STACK_BREAKPOINT, textShape } from './shapes'
 import type { Box, Shape } from './shapes'
 import { mulberry32 } from './shapes/rng'
 
@@ -36,15 +36,23 @@ type Options = {
 }
 
 /** Reads the hero word's on-screen box so the particle word sits exactly over the HTML word. */
-function heroBox(vw: number, vh: number): { box: Box; lines: string[]; font: string } {
+function heroBox(vw: number, vh: number): { box: Box; lines: string[]; font: string; ls: number } {
   // two candidates (single line / stacked); the one that is actually laid out wins
   const el = Array.from(document.querySelectorAll<HTMLElement>('[data-hero-name]')).find((e) => e.getBoundingClientRect().width > 24)
   const fallback: Box = { cx: 0, cy: vh * 0.05, w: vw * 0.92, h: vw * 0.26 }
-  if (!el) return { box: fallback, lines: ['YOUVRAJ'], font: 'sans-serif' }
+  if (!el) return { box: fallback, lines: ['YOUVRAJ'], font: 'sans-serif', ls: 0 }
+  // the block is as wide as its container; the painted word is narrower, so measure the text itself
+  const range = document.createRange()
+  range.selectNodeContents(el)
+  const lines = Array.from(range.getClientRects()).filter((q) => q.width > 4)
+  const left = Math.min(...lines.map((q) => q.left))
+  const right = Math.max(...lines.map((q) => q.right))
   const r = el.getBoundingClientRect()
   const docTop = r.top + window.scrollY
+  const cs = getComputedStyle(el)
   return {
-    box: { cx: r.left + r.width / 2 - vw / 2, cy: vh / 2 - (docTop + r.height / 2), w: r.width, h: r.height },
+    ls: parseFloat(cs.letterSpacing) / parseFloat(cs.fontSize) || 0,
+    box: { cx: (left + right) / 2 - vw / 2, cy: vh / 2 - (docTop + r.height / 2), w: right - left, h: r.height },
     lines:
       el.dataset.stacked !== undefined
         ? Array.from(el.querySelectorAll('span')).map((s) => (s.textContent ?? '').toUpperCase())
@@ -65,6 +73,7 @@ export class ParticleEngine {
   private vw = 0
   private vh = 0
   private mobile = false
+  private stacked = false
   private shapes = new Map<number, Shape>()
   private boundA = -1
   private boundB = -1
@@ -167,6 +176,7 @@ export class ParticleEngine {
     this.vw = vw
     this.vh = vh
     this.mobile = vw < MOBILE_BREAKPOINT
+    this.stacked = vw < STACK_BREAKPOINT
     const dpr = Math.min(window.devicePixelRatio || 1, this.mobile ? 1.5 : 1.75)
     this.renderer.setPixelRatio(dpr)
     this.renderer.setSize(vw, vh, false)
@@ -253,8 +263,8 @@ export class ParticleEngine {
     const { vw, vh, count } = this
     let shape: Shape
     if (i === 0) {
-      const { box, lines, font } = heroBox(vw, vh)
-      shape = textShape(lines, count, box, font)
+      const { box, lines, font, ls } = heroBox(vw, vh)
+      shape = textShape(lines, count, box, font, 7, { letterSpacingEm: ls, fit: 'width' })
     } else if (i === OVERRIDE_SHAPE) {
       const box: Box = this.mobile ? { cx: 0, cy: vh * 0.05, w: vw * 0.9, h: vw * 0.45 } : { cx: 0, cy: 0, w: Math.min(vw * 0.8, 1300), h: vh * 0.5 }
       shape = textShape([director.override?.text ?? 'HIRE?'], count, box, getComputedStyle(document.body).fontFamily)
@@ -325,7 +335,7 @@ export class ParticleEngine {
     u.uMouseK.value = this.mouseK
     u.uRipple.value = this.ripple
     const o = Math.min(Math.max(director.s, 0), 1)
-    u.uOpacity.value = this.mobile ? 0.95 - 0.68 * o : 1 - 0.12 * o
+    u.uOpacity.value = this.stacked ? 0.95 - 0.68 * o : 1 - 0.12 * o
 
     this.renderer.render(this.scene, this.camera)
 
@@ -334,13 +344,13 @@ export class ParticleEngine {
       this.opts.onReady()
     }
 
-    // one probe: halve the count on slow GPUs (skips warm-up frames: hydration and shader compile jank)
+    // one probe: halve the count on slow GPUs (skips the first ~1.5s of frames: hydration and shader compile jank)
     const p = this.probe
     if (!p.done) {
-      if (++p.warm >= 45) {
+      if (++p.warm >= 90) {
         if (!p.start) p.start = now
         p.frames++
-        if (now - p.start > 1500) {
+        if (now - p.start > 2000) {
           p.done = true
           if ((p.frames * 1000) / (now - p.start) < 45) this.opts.onSlow()
         }
