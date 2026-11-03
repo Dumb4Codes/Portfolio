@@ -7,6 +7,8 @@ const config: NextConfig = {
   productionBrowserSourceMaps: false,
   // Next 16 otherwise writes an AGENTS.md into the repo on `next dev`
   agentRules: false,
+  // Keystatic's GitHub mode runs the dev editor on 127.0.0.1; Next 16 blocks dev assets/HMR from it otherwise (blank page).
+  allowedDevOrigins: ['127.0.0.1'],
   async redirects() {
     return [{ source: '/admin', destination: '/keystatic', permanent: false }]
   },

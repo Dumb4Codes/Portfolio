@@ -13,12 +13,12 @@ Everything here is free. Total time: about 20 minutes after Claude Code finishes
 3. Project → Settings → Environment Variables, add:
    - `NEXT_PUBLIC_SITE_URL` = your `.vercel.app` address (with `https://`)
    - `NEXT_PUBLIC_GITHUB_OWNER` = `Dumb4Codes`
-   - `NEXT_PUBLIC_GITHUB_REPO` = `portfolio`
+   - `NEXT_PUBLIC_GITHUB_REPO` = `Portfolio`
    - `NEXT_PUBLIC_WEB3FORMS_KEY` = see step 4
 4. Redeploy (Deployments → ⋯ → Redeploy).
 
 ## 3. Turn on the admin (Keystatic + GitHub)
-1. On your computer, in the project folder, create a file called `.env.local` containing the two lines `NEXT_PUBLIC_GITHUB_OWNER=Dumb4Codes` and `NEXT_PUBLIC_GITHUB_REPO=portfolio` (use your repo's name). Then run `pnpm dev:github` (it starts the editor in GitHub mode) and open `http://localhost:3000/keystatic`.
+1. On your computer, in the project folder, create a file called `.env.local` containing the two lines `NEXT_PUBLIC_GITHUB_OWNER=Dumb4Codes` and `NEXT_PUBLIC_GITHUB_REPO=Portfolio` (match the repo name exactly). Then run `pnpm dev:github` (it starts the editor in GitHub mode) and open `http://localhost:3000/keystatic`.
 2. Keystatic offers to **create a GitHub App**. Follow it: name it e.g. "youvraj-portfolio-cms" and install it on your portfolio repo only.
 3. Keystatic writes four values into `.env`: `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`. Copy all four into Vercel's Environment Variables and redeploy.
 4. In the GitHub App's settings, add your live callback URL: `https://<your-site>.vercel.app/api/keystatic/github/oauth/callback`.
