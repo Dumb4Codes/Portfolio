@@ -7,16 +7,28 @@ mode: Remote
 start: 2026-06
 end: 2026-10
 order: 2
-summary: Front-end and API work for client products, from Figma to production.
+summary: >-
+  Worked across the whole delivery chain on client products, from requirements
+  to production. Turned client BRDs into Figma designs the client approved
+  before any code was written, then built them as responsive Next.js components
+  and cut page load time by 25%. On the backend, built the NestJS REST APIs
+  behind a CRM migration, documented and tested them with Swagger, and
+  restructured the PostgreSQL schemas, with AWS hosting and senior code review
+  throughout.
 highlights:
-  - Converted Figma designs into responsive, high-performance Next.js components and refactored
-    client-side code, cutting page load time by 25%.
-  - Designed new features in Figma straight from client BRDs; the client reviewed and approved the
-    designs before development began.
-  - Contributed to a CRM migration by building scalable REST APIs in NestJS, documenting and testing
-    them with Swagger, and restructuring PostgreSQL schemas for data consistency.
-  - Helped deploy and manage AWS resources for hosting and scaling team features, working in a Git
-    workflow with code review from senior developers.
+  - >-
+    Converted Figma designs into responsive, high-performance Next.js components
+    and refactored client-side code, cutting page load time by 25%.
+  - >-
+    Designed new features in Figma straight from client BRDs; the client
+    reviewed and approved the designs before development began.
+  - >-
+    Contributed to a CRM migration by building scalable REST APIs in NestJS,
+    documenting and testing them with Swagger, and restructuring PostgreSQL
+    schemas for data consistency.
+  - >-
+    Helped deploy and manage AWS resources for hosting and scaling team
+    features, working in a Git workflow with code review from senior developers.
 stack:
   - Next.js
   - React
