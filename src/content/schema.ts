@@ -103,7 +103,8 @@ export const experienceSchema = z.object({
   location: z.string().min(1),
   mode: z.enum(['On-site', 'Remote', 'Hybrid']),
   start: month,
-  end: z.preprocess(blank, month.optional()),
+  // empty = still in the role; "Present" typed in the admin means the same thing
+  end: z.preprocess((v) => (typeof v === 'string' && /^\s*(present|current|now)\s*$/i.test(v) ? undefined : blank(v)), month.optional()),
   order: z.number().int(),
   summary: z.string().default(''),
   highlights: stringList,

@@ -83,6 +83,8 @@ describe('project schema rules', () => {
     expect(bad.success).toBe(false)
     if (!bad.success) expect(bad.error.issues[0].message).toMatch(/YYYY-MM/)
     expect(experienceSchema.parse({ ...e, start: '2026-06', end: '' }).end).toBeUndefined()
+    // typed in the admin: means "still in the role", must not break the build
+    expect(experienceSchema.parse({ ...e, start: '2026-06', end: 'Present' }).end).toBeUndefined()
   })
 })
 
