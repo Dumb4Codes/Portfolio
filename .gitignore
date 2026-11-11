@@ -14,3 +14,6 @@ test-results/
 shots/
 .lighthouse/
 .DS_Store
+
+# job applications (tailored résumés contain personal details): never committed
+_applications/
