@@ -144,11 +144,15 @@ html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, trans
 @media (max-width: 639px) {
   .hero__bottom { flex-direction: column; align-items: flex-start; }
   .hero__cue { display: none; }
+  .hero__avail { display: none; } /* the pill at the top already says it */
   .hero__signals { max-width: none; }
 }
 @media (max-width: 479px) {
-  .hero__cta { flex-direction: column; align-items: stretch; }
-  .hero__cta .btn { justify-content: center; }
+  /* primary action full width, the two secondary ones share a row */
+  .hero__cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .hero__cta .btn { justify-content: center; padding-inline: 10px; min-height: 46px; }
+  .hero__cta .btn-accent { grid-column: 1 / -1; }
+  .hero__cta .btn-ghost { border-color: var(--line-strong); }
 }
 
 /* ---------- entrance (repeat visits): CSS, never waits for JS ---------- */
@@ -183,7 +187,8 @@ html.js.preload [data-built='true'] { animation: build-flash 0.7s var(--ease-out
    Range line + ticker
    ============================================================ */
 .manifesto { padding-top: var(--section); position: relative; }
-.manifesto__text { font-size: clamp(32px, 6.4vw, 124px); line-height: 0.95; max-width: 22ch; }
+.manifesto__text { font-size: clamp(38px, 6.4vw, 124px); line-height: 0.95; max-width: 22ch; }
+@media (max-width: 767px) { .manifesto__text { font-size: clamp(38px, 11.5vw, 64px); } .ticker { margin-top: 36px; } }
 .manifesto__line { display: block; --w: 108%; padding-bottom: 0.08em; }
 .manifesto__num { font-weight: 900; }
 .ticker { margin-top: calc(var(--section) * 0.5); border-block: 1px solid var(--line); overflow: hidden; padding-block: 16px; background: color-mix(in oklab, var(--bg) 60%, transparent); }

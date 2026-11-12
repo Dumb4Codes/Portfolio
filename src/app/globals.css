@@ -39,7 +39,7 @@
 
   --gutter: 16px;
   --pad: 16px;
-  --section: clamp(96px, 20vh, 240px);
+  --section: clamp(56px, 9vh, 88px); /* phones: tight, the gaps stack */
   --header-h: 64px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -73,6 +73,7 @@
     --gutter: 24px;
     --pad: 32px;
     --header-h: 72px;
+    --section: clamp(96px, 20vh, 240px);
   }
 }
 @media (min-width: 1280px) {
