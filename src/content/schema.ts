@@ -39,6 +39,8 @@ export const profileSchema = z.object({
   photo: optPath,
   photoAlt: z.string().default(''),
   bio: z.string().min(1),
+  /** the hero's "Across" line: the technologies you most want seen first, in order */
+  heroStack: stringList.default([]),
   education: z.object({ degree: z.string(), school: z.string(), years: z.string() }),
 })
 

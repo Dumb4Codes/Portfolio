@@ -47,11 +47,12 @@ export default async function Home() {
   )
   // styling and build tools are real skills but say little about range; the line is for languages, frameworks and data
   const tooling = /tailwind|vite|radix|shadcn|framer|zod|jwt/i
-  const top = [...counts.values()]
+  const derived = [...counts.values()]
     .filter((v) => !tooling.test(v.label))
     .sort((a, b) => b.n - a.n)
     .slice(0, 5)
     .map((v) => v.label)
+  const top = profile.heroStack.length ? profile.heroStack : derived
   const signals: Signal[] = [
     ...(currentJob ? [{ label: 'Currently', value: `${currentJob.role}, ${currentJob.company}` }] : []),
     { label: 'Shipped', value: `${projects.length} projects across ${experience.length} internships and personal work` },

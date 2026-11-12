@@ -19,6 +19,17 @@ socials:
 resume: /resume/youvraj-singh-resume.pdf
 photo: /images/profile/youvraj-singh.jpg
 photoAlt: Youvraj Singh smiling, wearing a navy blazer over a white shirt, against a pale wall.
+heroStack:
+  - React
+  - Next.js
+  - Node.js
+  - TypeScript
+  - Python
+  - FastAPI
+  - PostgreSQL
+  - MongoDB
+  - Docker
+  - AWS
 bio: |
   I'm a full-stack developer. I've shipped an operations ERP, a payroll system, a delivery service,
   e-commerce and booking platforms, dashboards and a few tools built for fun, and I like every part of

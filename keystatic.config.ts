@@ -95,6 +95,11 @@ export default config({
           description: IMG_HELP,
         }),
         photoAlt: fields.text({ label: 'Photo description', description: 'For screen readers.' }),
+        heroStack: fields.array(fields.text({ label: 'Technology' }), {
+          label: 'Hero tech line',
+          description: 'The technologies shown in the hero "Across" line, in order. Leave empty to use the most-used ones from your projects.',
+          itemLabel: (p) => p.value || 'Technology',
+        }),
         bio: fields.text({ label: 'Bio', multiline: true, description: 'Leave a blank line between paragraphs.' }),
         education: fields.object(
           {
