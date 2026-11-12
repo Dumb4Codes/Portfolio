@@ -5,10 +5,10 @@ role: Software Development Intern
 location: Remote
 mode: Remote
 start: 2026-06
-end: 2026-10
+end: ""
 order: 2
 summary: >-
-  Took client features from requirement to production: BRDs into approved Figma
+  Taking client features from requirement to production: BRDs into approved Figma
   designs, Next.js builds that cut page load time by 25%, and the NestJS APIs
   for a CRM migration.
 highlights:

@@ -178,6 +178,11 @@ What the numbers say, honestly:
 - **Internal case study mobile LCP 3.4 s** is the title repainting when the variable display font arrives on throttled 4G (the title's width axis was widened to 112 %, which has been reset to 100 %; the font arrival itself remains). Desktop is unaffected.
 - The personal project pages, the work index and the 404 are unchanged in character from before.
 
+### Later the same day
+
+- HASVIK Technologies is marked as ongoing again (`end: ""`), at the owner's request, so both internships show as Present. SKOPE stays the "current job" for the hero and header because it has the lower `order`. The bio sentence and both tailored résumés were updated to match.
+- The served résumé is the MERN-focused one; its stat strip was removed (unusual on a résumé, parses badly in ATS tools), its test total matches the site (934+), and its skills section was restored to the original's breadth (integrations, AI tooling, Angular, Java, FastAPI).
+
 ### Content note for the owner
 
 The range line now reads "934+ automated tests" because that is what the projects' `testsCount` fields add up to. The previous hard-coded statement said 1,300+. If 1,300 is the real total, add `testsCount` to the projects that are missing it and the number updates itself.
