@@ -69,6 +69,7 @@ export class ParticleEngine {
   private vh = 0
   private mobile = false
   private stacked = false
+  private light = false
   private shapes = new Map<number, Shape>()
   private boundA = -1
   private boundB = -1
@@ -197,9 +198,10 @@ export class ParticleEngine {
   private applyTheme() {
     const dark = document.documentElement.dataset.theme !== 'light'
     const u = this.mat.uniforms
-    u.uFg.value.set(dark ? '#EDE8DF' : '#0E0E0F')
+    u.uFg.value.set(dark ? '#EDE8DF' : '#242A3A')
     u.uAccent.value.set(dark ? '#FF5A1F' : '#E04A12')
     u.uDark.value = dark ? 1 : 0
+    this.light = !dark
     this.mat.blending = dark ? AdditiveBlending : NormalBlending
     this.mat.needsUpdate = true
     this.wake()
@@ -330,7 +332,7 @@ export class ParticleEngine {
     u.uMouseK.value = this.mouseK
     u.uRipple.value = this.ripple
     const o = Math.min(Math.max(director.s, 0), 1)
-    u.uOpacity.value = this.stacked ? 0.95 - 0.68 * o : 1 - 0.12 * o
+    u.uOpacity.value = (this.stacked ? 0.95 - 0.68 * o : 1 - 0.12 * o) * (this.light ? 0.62 : 1)
 
     this.renderer.render(this.scene, this.camera)
 

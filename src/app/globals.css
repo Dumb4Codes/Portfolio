@@ -48,22 +48,24 @@
   color-scheme: dark;
 }
 :root[data-theme='light'] {
-  --bg: #efeae1;
-  --bg-2: #e6e0d5;
-  --fg: #0e0e0f;
-  --muted: #625d55;
-  --line: rgba(14, 14, 15, 0.12);
-  --line-strong: rgba(14, 14, 15, 0.3);
+  --bg: #f5f3ee;
+  --bg-2: #ebe8e1;
+  --fg: #15161a;
+  --muted: #5d5f66;
+  --line: rgba(21, 22, 26, 0.12);
+  --line-strong: rgba(21, 22, 26, 0.26);
   --accent: #ff5a1f;
-  --accent-text: #ad3409; /* AA on bone paper and the raised panel for small text */
+  --accent-text: #b4380b; /* AA on the paper and on white cards for small text */
   --live: #15803d;
-  --on-accent: #0e0e0f;
-  --grain-opacity: 0.06;
+  --on-accent: #15161a;
+  --grain-opacity: 0.03;
   --ai-1: #6a5cff;
   --ai-2: #0aa8d6;
-  --aurora-opacity: 0.2;
-  --surface: color-mix(in oklab, var(--fg) 3.5%, transparent);
-  --surface-2: color-mix(in oklab, var(--fg) 6%, transparent);
+  --aurora-opacity: 0.28;
+  /* light cards are white paper lifted off the page, not a tint */
+  --surface: #ffffff;
+  --surface-2: #fcfbf8;
+  --shadow-card: 0 1px 2px rgba(21, 22, 26, 0.05), 0 10px 30px -12px rgba(21, 22, 26, 0.16);
   color-scheme: light;
 }
 @media (min-width: 768px) {
@@ -336,6 +338,9 @@ html.lenis body {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
 }
 .btn-accent:hover {
   background: var(--fg);
