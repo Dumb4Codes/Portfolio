@@ -15,7 +15,7 @@ export default function ArchiveSection({ projects }: { projects: Project[] }) {
         <Reveal variant="rule" className="rule" />
         <div className="archive__head grid12">
           <p className="section-label mono archive__label">
-            <span>[ 03 ]</span> <span>Archive</span>
+            <span>[ 02 ]</span> <span>Archive</span>
           </p>
           <Reveal as="h2" variant="wdth" id="archive-title" className="display archive__title">
             Everything <em className="serif">else</em>

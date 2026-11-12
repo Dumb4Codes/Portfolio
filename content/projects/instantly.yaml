@@ -1,7 +1,7 @@
 title: Instantly
 kind: personal
 featured: true
-order: 4
+order: 2
 year: 2026
 role: "Solo build: design, frontend, backend, deployment"
 tagline: A full-stack grocery store with Stripe, S3 and an AI copywriter for admins.

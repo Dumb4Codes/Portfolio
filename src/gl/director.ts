@@ -1,13 +1,15 @@
 import { chapterLocal } from '@/lib/chapter'
-import { SCENES } from './shapes/types'
+import { SCENES, sceneId } from './shapes/types'
 
 /**
- * Scene director: maps scroll position to a continuous scene coordinate `s` (0..5) so the particle
- * morph is scrubbed by scroll and reverses when you scroll back. Sections mark themselves with
- * `data-scene="<key>"`. A damped copy of `s` drives the shader so motion stays fluid.
+ * Scene director: maps scroll position to a continuous **anchor coordinate** `s` (0 .. anchors-1) so the
+ * particle morph is scrubbed by scroll and reverses when you scroll back. Sections mark themselves with
+ * `data-scene="<key>"`; the director reads them in document order. Shape ids come from the anchors on
+ * either side of `s`, so a page can go hero -> graph -> field without passing through the chapter shapes
+ * that sit between them in the id list. A damped copy of `s` drives the shader so motion stays fluid.
  */
 
-export const OVERRIDE_SHAPE = 6
+export const OVERRIDE_SHAPE = SCENES.length
 
 export type Anchor = { scene: number; top: number; bottom: number }
 
@@ -31,8 +33,9 @@ const smooth = (t: number) => t * t * (3 - 2 * t)
 
 class Director {
   anchors: Anchor[] = []
-  /** shown when the page has no anchors (case studies, 404) */
-  defaultScene = 4
+  /** shown when the page has no anchors (404, work index) */
+  defaultScene = sceneId('field')
+  /** anchor coordinate (damped) */
   s = 0
   private first = true
   private vel = 0
@@ -56,14 +59,14 @@ class Director {
     })
     this.anchors = list.sort((a, b) => a.top - b.top)
     const def = document.querySelector<HTMLElement>('[data-scene-default]')?.dataset.sceneDefault
-    this.defaultScene = def ? Math.max(0, SCENES.indexOf(def as (typeof SCENES)[number])) : 4
+    this.defaultScene = def && SCENES.includes(def as (typeof SCENES)[number]) ? SCENES.indexOf(def as (typeof SCENES)[number]) : sceneId('field')
   }
 
   setOverride(o: Override | null) {
     if (o) {
       this.override = o
       this.oTarget = 1
-      this.scatterTarget = o.mode === 'fail' ? 0 : 0
+      this.scatterTarget = 0
       this.overrideVersion++
     } else {
       this.oTarget = 0
@@ -75,25 +78,30 @@ class Director {
     this.scatterTarget = on ? 1 : 0
   }
 
+  /** Anchor coordinate for a scroll position: whole numbers inside an anchor, fractional in the gap between two. */
   private targetFor(y: number, vh: number): number {
     const a = this.anchors
-    if (!a.length) return this.defaultScene
+    if (a.length < 2) return 0
     const c = y + vh * 0.5
     const band = vh * 0.4
     for (let i = 0; i < a.length - 1; i++) {
       const m = (a[i].bottom + a[i + 1].top) / 2
-      if (c <= m - band) return a[i].scene
-      if (c < m + band) {
-        const f = smooth(clamp((c - (m - band)) / (2 * band)))
-        return a[i].scene + (a[i + 1].scene - a[i].scene) * f
-      }
+      if (c <= m - band) return i
+      if (c < m + band) return i + smooth(clamp((c - (m - band)) / (2 * band)))
     }
-    return a[a.length - 1].scene
+    return a.length - 1
+  }
+
+  /** Scene id of anchor `i` (clamped); the default scene when the page has no anchors. */
+  sceneOf(i: number): number {
+    const a = this.anchors
+    if (!a.length) return this.defaultScene
+    return a[Math.min(a.length - 1, Math.max(0, Math.round(i)))].scene
   }
 
   /** Nearest whole scene at a scroll position (used by the static fallback). */
   currentScene(y: number, vh: number): number {
-    return Math.round(this.targetFor(y, vh))
+    return this.sceneOf(this.targetFor(y, vh))
   }
 
   private localOf(scene: number, y: number, vh: number): number {
@@ -126,25 +134,23 @@ class Director {
     this.scatter += (this.scatterTarget - this.scatter) * (1 - Math.exp(-dt * 2.5))
     if (Math.abs(this.scatterTarget - this.scatter) < 0.002) this.scatter = this.scatterTarget
 
-    const base = Math.round(clamp(this.s, 0, 5))
-    let from = Math.min(Math.floor(this.s), 4)
-    let progress = this.s - from
-    let shapeA = from
-    let shapeB = from + 1
+    const n = this.anchors.length
+    const last = Math.max(0, n - 1)
+    const from = Math.min(Math.floor(this.s), Math.max(0, n - 2))
+    let progress = n > 1 ? clamp(this.s - from) : 0
+    let shapeA = this.sceneOf(from)
+    let shapeB = this.sceneOf(Math.min(from + 1, last))
     let localA: number
     let localB = 0
 
     if (this.override) {
-      shapeA = base
+      shapeA = this.sceneOf(clamp(this.s, 0, last))
       shapeB = OVERRIDE_SHAPE
       progress = this.oT
-      localA = this.localOf(base, y, vh)
+      localA = this.localOf(shapeA, y, vh)
     } else {
-      localA = progress < 0.002 ? this.localOf(from, y, vh) : 1
-      if (progress > 0.998) {
-        from = Math.min(Math.round(this.s), 5)
-        localB = this.localOf(Math.min(from, 5), y, vh)
-      }
+      localA = progress < 0.002 ? this.localOf(shapeA, y, vh) : 1
+      if (progress > 0.998) localB = this.localOf(shapeB, y, vh)
     }
 
     const active =

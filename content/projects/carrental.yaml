@@ -1,7 +1,7 @@
 title: CarRental
 kind: personal
 featured: true
-order: 5
+order: 4
 year: 2025
 role: Solo build
 tagline: Luxury car rental with a 3D hero and booking logic that refuses overlapping dates.

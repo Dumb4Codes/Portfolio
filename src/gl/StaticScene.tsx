@@ -7,7 +7,7 @@ import { generateScene, SCENES, type SceneKey } from './shapes'
  * Fallback for reduced motion, no WebGL, context loss and low-power: the same shape generators
  * drawn as a faint SVG of dots, one group per chapter, crossfaded by scroll position. No animation loop.
  */
-const SHAPES: Exclude<SceneKey, 'hero'>[] = ['ledger', 'clock', 'route', 'field', 'pin']
+const SHAPES: Exclude<SceneKey, 'hero'>[] = ['graph', 'ledger', 'clock', 'route', 'field', 'pin']
 
 function dotsPath(pts: [number, number][]) {
   return pts.map(([x, y]) => `M${x.toFixed(1)} ${y.toFixed(1)}h0`).join('')
@@ -15,7 +15,7 @@ function dotsPath(pts: [number, number][]) {
 
 export default function StaticScene() {
   const [size, setSize] = useState({ w: 1280, h: 800 })
-  const [scene, setScene] = useState(4)
+  const [scene, setScene] = useState(5)
 
   useEffect(() => {
     const measure = () => {
@@ -52,7 +52,7 @@ export default function StaticScene() {
         const a = sh.attr[i]
         const p: [number, number] = [sh.pos[i * 3], -sh.pos[i * 3 + 1]]
         const isHot =
-          (key === 'clock' && a >= 0.5) || (key === 'route' && a >= 2) || (key === 'pin' && a > 0.5) || (key === 'ledger' && Math.abs(a - 0.5) < 0.04)
+          (key === 'clock' && a >= 0.5) || (key === 'route' && a >= 2) || (key === 'graph' && a >= 2.5) || (key === 'pin' && a > 0.5) || (key === 'ledger' && Math.abs(a - 0.5) < 0.04)
         ;(isHot ? hot : base).push(p)
       }
       return { key, base: dotsPath(base), hot: dotsPath(hot) }

@@ -96,6 +96,12 @@ describe('manifesto total', () => {
   it('replaces {tests} with the formatted number', () => {
     expect(renderManifesto('{tests} checks. {tests}', 1234)).toBe('1,234 checks. 1,234')
   })
+  it('fills project and job counts, as digits or words', () => {
+    const n = { tests: 1300, projects: 13, jobs: 2 }
+    expect(renderManifesto('{jobs:words} internships. {projects:words} projects. {tests}+ checks.', n)).toBe('two internships. thirteen projects. 1,300+ checks.')
+    expect(renderManifesto('{projects} / {jobs}', n)).toBe('13 / 2')
+    expect(renderManifesto('{projects:words}', { ...n, projects: 42 })).toBe('42')
+  })
 })
 
 describe('metric parser', () => {

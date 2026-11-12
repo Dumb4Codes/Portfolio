@@ -32,6 +32,11 @@ body:has(.nf) .gl-layer { opacity: 1; }
 .cs__frame-inner { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
 .cs__visual { position: relative; display: flex; justify-content: center; }
 .cs__visual .visual { width: 100%; max-width: 920px; padding: clamp(16px, 3vw, 36px); background: color-mix(in oklab, var(--bg) 88%, transparent); }
+/* desktop: the panel sits left so the particle version of the same picture stays visible on the right */
+@media (min-width: 1024px) {
+  .cs__visual { justify-content: flex-start; }
+  .cs__visual .visual { max-width: 660px; }
+}
 .cs__visual .visual--standalone .clock-svg { width: min(100%, 420px); margin-inline: auto; }
 .cs__visual .visual--standalone .route-map { min-height: 280px; }
 .cs__visual .visual--standalone.visual--route .route-map { aspect-ratio: 16 / 9; }

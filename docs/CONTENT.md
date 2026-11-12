@@ -6,11 +6,11 @@ Everything on the site is editable in the admin (`/admin`, or `/keystatic` local
 
 | Admin section | Shows up as |
 |---|---|
-| **Profile** | Name, headline (one verb is set in italic serif), subheadline, availability, links, résumé, photo, bio, education, contact details |
-| **Site settings** | Page title and description (SEO), the big statement (`{tests}` is replaced by the total of all projects' automated checks), contact headline (`*word*` = italic), intro counter on/off, "hire" easter egg on/off |
+| **Profile** | Name, headline (one verb is set in italic serif), subheadline, availability (the header pill and the hero footer show its label), links, résumé (header button, hero button, contact), photo (shown in colour), bio, education, contact details |
+| **Site settings** | Page title and description (SEO), the range line (`{tests}` = total of all projects' automated checks, `{projects}` / `{jobs}` = counts, `{projects:words}` / `{jobs:words}` spell them out), contact headline (`*word*` = italic), build intro on/off, "hire" easter egg on/off |
 | **Skills** | The stack section and the scrolling strip. Counts ("used in 4 projects") are derived from projects |
 | **Projects** | Home gallery/archive, `/work`, `/work/<slug>`, command palette, sitemap, share images |
-| **Experience** | Timeline. The first job with no end date (by Order) is the hero status pill |
+| **Experience** | Timeline. The first job with no end date (by Order) is the hero's "Currently" line |
 | **Certifications** | The 3D deck and its dialog |
 
 ## Projects
@@ -18,11 +18,11 @@ Everything on the site is editable in the admin (`/admin`, or `/keystatic` local
 | Field | Notes |
 |---|---|
 | Kind | **Personal**: links and screenshots. **Internal**: employer work, no links, no screenshots, shows the Confidential badge |
-| Featured | Featured *personal* projects go in the big horizontal gallery. Featured *internal* projects with an illustration become the three pinned chapters. Everything else is in the archive |
+| Featured | Every featured project, internal or personal, goes in the "Selected work" grid on the home page in Order (interleave internal and personal so the grid shows range). Everything else is in the archive |
 | Order / Year | Order ascending, then year descending |
 | Metrics | `value` + `label`. Leading numbers count up; prefixes/suffixes (`<`, `~`, `%`, `ms`, `₹`) are kept. `1-4` and similar stay as written |
 | Automated checks | Optional. Adds to the big number on the home page |
-| Illustration | Internal only: Ledger, Payroll clock or Delivery route |
+| Illustration | Internal only: Ledger, Payroll clock or Delivery route. Drives the procedural cover on the grid, the full illustration on the case study, and the particle scene behind that page |
 | Cover / Gallery | Upload WebP or JPG, 2,000 px wide or less. No cover = a typographic cover is generated. Every gallery image needs a description |
 | Next steps | What you would build next. Shown positively on the case study |
 

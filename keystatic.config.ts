@@ -129,7 +129,7 @@ export default config({
           publicPath: '/images/site/',
           description: 'Leave empty to use the generated one. 1200x630.',
         }),
-        showPreloader: fields.checkbox({ label: 'Show the intro counter on first visit', defaultValue: true }),
+        showPreloader: fields.checkbox({ label: 'Show the build intro on first visit (cursors assembling the page)', defaultValue: true }),
         easterEgg: fields.checkbox({ label: 'Typing "hire" triggers the surprise', defaultValue: true }),
       },
     }),

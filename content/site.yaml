@@ -1,7 +1,8 @@
 seoTitle: Youvraj Singh, Full-Stack Developer in Bengaluru
-seoDescription: "Full-stack developer building the software that runs real businesses: stock
-  ledgers, payroll and live delivery tracking. React, Next.js, Node, FastAPI, Postgres and MongoDB."
-manifesto: Three production systems. One month. 1,300+ automated tests that prove the numbers.
-contactHeadline: Let's build *something* that adds up.
+seoDescription: "Full-stack developer who ships end to end: React, Next.js, Node, NestJS, FastAPI,
+  Postgres and MongoDB, tested with Playwright, deployed on Vercel and AWS. ERPs, payroll, delivery,
+  e-commerce and booking platforms."
+manifesto: "{jobs:words} internships. {projects:words} shipped projects. {tests}+ automated tests. From Figma to AWS, front to back."
+contactHeadline: Let's build *something* together.
 showPreloader: true
 easterEgg: true

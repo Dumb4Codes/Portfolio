@@ -19,7 +19,7 @@ export default function ContactSection({ profile, headline }: { profile: Profile
       <div className="wrap">
         <Reveal variant="rule" className="rule" />
         <p className="section-label mono contact__label">
-          <span>[ 08 ]</span> <span>Contact</span>
+          <span>[ 07 ]</span> <span>Contact</span>
         </p>
 
         <Reveal as="h2" variant="wdth" id="contact-title" className="display contact__title">

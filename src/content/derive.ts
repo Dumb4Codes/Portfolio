@@ -34,8 +34,23 @@ export function testsTotal(projects: Pick<Project, 'testsCount'>[]): number {
   return projects.reduce((sum, p) => sum + (p.testsCount ?? 0), 0)
 }
 
-export function renderManifesto(template: string, total: number): string {
-  return template.replace(/\{tests\}/g, total.toLocaleString('en-US'))
+export type ManifestoNumbers = { tests: number; projects: number; jobs: number }
+
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty']
+
+/**
+ * Fills the big statement. `{tests}` is the formatted total of automated checks; `{projects}` and `{jobs}`
+ * are counts. `{projects:words}` / `{jobs:words}` spell small numbers out ("thirteen"), which reads better in prose.
+ */
+export function renderManifesto(template: string, numbers: number | ManifestoNumbers): string {
+  const n: ManifestoNumbers = typeof numbers === 'number' ? { tests: numbers, projects: 0, jobs: 0 } : numbers
+  const words = (v: number) => (v >= 0 && v < WORDS.length ? WORDS[v] : v.toLocaleString('en-US'))
+  return template
+    .replace(/\{tests\}/g, n.tests.toLocaleString('en-US'))
+    .replace(/\{projects:words\}/g, words(n.projects))
+    .replace(/\{jobs:words\}/g, words(n.jobs))
+    .replace(/\{projects\}/g, n.projects.toLocaleString('en-US'))
+    .replace(/\{jobs\}/g, n.jobs.toLocaleString('en-US'))
 }
 
 // ---------- stack aliases ----------

@@ -21,6 +21,18 @@
   --on-accent: #0a0a0b;
   --grain-opacity: 0.045;
 
+  /* the "AI" pair: only the build intro, the hero aurora and tiny badges use these */
+  --ai-1: #8b7cff;
+  --ai-2: #35d6ff;
+  --aurora-opacity: 0.16;
+
+  /* surfaces for cards and panels */
+  --surface: color-mix(in oklab, var(--fg) 4%, transparent);
+  --surface-2: color-mix(in oklab, var(--fg) 7%, transparent);
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 0 color-mix(in oklab, var(--fg) 6%, transparent) inset;
+
   --font-display: var(--font-archivo), 'Arial Narrow', Arial, sans-serif;
   --font-serif: var(--font-instrument), 'Times New Roman', serif;
   --font-mono: var(--font-jetbrains), ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -47,6 +59,11 @@
   --live: #15803d;
   --on-accent: #0e0e0f;
   --grain-opacity: 0.06;
+  --ai-1: #6a5cff;
+  --ai-2: #0aa8d6;
+  --aurora-opacity: 0.2;
+  --surface: color-mix(in oklab, var(--fg) 3.5%, transparent);
+  --surface-2: color-mix(in oklab, var(--fg) 6%, transparent);
   color-scheme: light;
 }
 @media (min-width: 768px) {
@@ -183,14 +200,17 @@ html.lenis body {
 }
 .mono {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.4;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
 .mono-md {
-  font-size: 12px;
+  font-size: 13px;
+}
+.mono-sm {
+  font-size: 11px;
 }
 .muted {
   color: var(--muted);
@@ -338,6 +358,65 @@ html.lenis body {
   border-color: var(--accent-text);
 }
 
+/* Card primitive: a quiet surface with a hairline, used by the work grid and panels */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 0.3s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    background 0.3s var(--ease-out);
+}
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-2);
+  }
+}
+
+/* ============================================================
+   Aurora: two soft blobs in the AI pair behind the hero (under the particles). Still under reduced motion.
+   ============================================================ */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--aurora-opacity);
+}
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+.aurora::before {
+  left: -14vmax;
+  top: -22vmax;
+  background: radial-gradient(closest-side, var(--ai-1), transparent 70%);
+  animation: aurora-a 26s ease-in-out infinite alternate;
+}
+.aurora::after {
+  right: -18vmax;
+  bottom: -26vmax;
+  background: radial-gradient(closest-side, var(--ai-2), transparent 70%);
+  animation: aurora-b 32s ease-in-out infinite alternate;
+}
+@keyframes aurora-a {
+  to { transform: translate(14vmax, 10vmax) scale(1.15); }
+}
+@keyframes aurora-b {
+  to { transform: translate(-12vmax, -8vmax) scale(1.1); }
+}
+
 /* ============================================================
    Film grain (CSS only; off under reduced motion)
    ============================================================ */
@@ -424,6 +503,10 @@ html.js:not([data-motion='failed']) [data-reveal='rule'] {
 @media (prefers-reduced-motion: reduce) {
   .grain {
     display: none;
+  }
+  .aurora::before,
+  .aurora::after {
+    animation: none;
   }
   *,
   *::before,

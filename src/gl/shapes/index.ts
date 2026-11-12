@@ -1,5 +1,6 @@
 import { clockShape } from './clock'
 import { fieldShape } from './field'
+import { graphShape } from './graph'
 import { ledgerShape } from './ledger'
 import { pinShape } from './pin'
 import { routeShape } from './route'
@@ -8,7 +9,7 @@ import type { Box, SceneKey, Shape, ShapeCtx } from './types'
 export * from './types'
 export { textShape } from './text'
 export { pointsFromMask } from './mask'
-export { ledgerShape, clockShape, routeShape, fieldShape, pinShape }
+export { ledgerShape, clockShape, routeShape, fieldShape, pinShape, graphShape }
 
 export const MOBILE_BREAKPOINT = 768
 /** Below this the chapters stack (no right-hand column), so shapes sit centred behind the text. */
@@ -18,6 +19,8 @@ export const STACK_BREAKPOINT = 1024
 export function sceneBox(key: SceneKey, vw: number, vh: number): Box {
   const mobile = vw < STACK_BREAKPOINT
   if (key === 'field' || key === 'hero') return { cx: 0, cy: 0, w: vw, h: vh }
+  // the network spans the screen but stays off the very edges
+  if (key === 'graph') return { cx: 0, cy: 0, w: vw * 0.92, h: vh * 0.9 }
   if (mobile) {
     const s = Math.min(vw * 0.94, vh * 0.58)
     const cy = key === 'pin' ? vh * 0.02 : vh * 0.1
@@ -34,6 +37,7 @@ export function sceneBox(key: SceneKey, vw: number, vh: number): Box {
 }
 
 const GENERATORS: Record<Exclude<SceneKey, 'hero'>, (c: ShapeCtx) => Shape> = {
+  graph: graphShape,
   ledger: ledgerShape,
   clock: clockShape,
   route: routeShape,

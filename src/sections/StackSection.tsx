@@ -30,10 +30,10 @@ export default function StackSection({ groups, usage, titles }: { groups: Group[
         <Reveal variant="rule" className="rule" />
         <div className="stack__head grid12">
           <p className="section-label mono stack__label">
-            <span>[ 05 ]</span> <span>Stack</span>
+            <span>[ 04 ]</span> <span>Stack</span>
           </p>
           <Reveal as="h2" variant="wdth" id="stack-title" className="display stack__title">
-            What I <em className="serif">reach for</em>
+            What I <em className="serif">work with</em>
           </Reveal>
           <p className="stack__hint mono muted">Point at a skill to see where it is used.</p>
         </div>

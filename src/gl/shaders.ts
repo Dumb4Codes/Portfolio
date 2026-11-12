@@ -2,7 +2,7 @@
  * Particle shaders. Two position buffers (A, B) are blended by uProgress with a per-particle stagger
  * and a curl-like drift in the middle of the morph, so it reads as a flock rather than a lerp.
  *
- * Shape ids: 0 hero, 1 ledger, 2 clock, 3 route, 4 field, 5 pin, 6 override text.
+ * Shape ids: 0 hero, 1 graph, 2 ledger, 3 clock, 4 route, 5 field, 6 pin, 7 override text.
  * Accent rules per shape are in accentFor(); they use the chapter progress uniforms.
  */
 
@@ -35,15 +35,21 @@ export const vertexShader = /* glsl */ `
   varying float vCold;
 
   // accent (x) and dim (y: 1 = full, <1 = not yet reached) for a shape given its attr
+  // ids: 0 hero, 1 graph, 2 ledger, 3 clock, 4 route, 5 field, 6 pin, 7 override text
   vec2 accentFor(float shape, float a, float local) {
     if (shape < 0.5) return vec2(0.0, 1.0);
-    if (shape < 1.5) {                              // ledger: rows light up in order
+    if (shape < 1.5) {                              // graph: hubs in accent, a pulse runs along every edge
+      if (a >= 2.0) return vec2(step(2.5, a) * 0.85, 1.0);
+      float pulse = 1.0 - smoothstep(0.0, 0.06, abs(a - local));
+      return vec2(pulse, mix(0.55, 1.0, pulse));
+    }
+    if (shape < 2.5) {                              // ledger: rows light up in order
       float d = local - a;
       float lit = step(0.0, d);
       float current = lit * step(d, 0.085);
       return vec2(current, mix(0.22, 1.0, lit));
     }
-    if (shape < 2.5) {                              // clock: overnight arc sweeps in accent
+    if (shape < 3.5) {                              // clock: overnight arc sweeps in accent
       if (a >= 0.5) {
         float t = (a - 0.5) * 2.0;
         float lit = step(t, local);
@@ -51,7 +57,7 @@ export const vertexShader = /* glsl */ `
       }
       return vec2(0.0, 1.0);
     }
-    if (shape < 3.5) {                              // route: rider pulse + nodes light as passed
+    if (shape < 4.5) {                              // route: rider pulse + nodes light as passed
       if (a >= 2.0) {
         float lit = step(a - 2.0, local + 0.02);
         return vec2(lit, mix(0.45, 1.0, lit));
@@ -59,19 +65,20 @@ export const vertexShader = /* glsl */ `
       float pulse = 1.0 - smoothstep(0.0, 0.035, abs(a - local));
       return vec2(pulse, mix(0.5, 1.0, step(a, local)));
     }
-    if (shape < 4.5) return vec2(0.0, 1.0);
-    if (shape < 5.5) return vec2(step(0.5, a), 1.0);   // pin
+    if (shape < 5.5) return vec2(0.0, 1.0);          // field
+    if (shape < 6.5) return vec2(step(0.5, a), 1.0); // pin
     return vec2(0.0, 1.0);
   }
 
-  // overall brightness per shape: the field is only a faint dust behind body text
+  // overall brightness per shape: the field and the graph are quiet backdrops behind text
   float gainFor(float s) {
     if (s < 0.5) return 1.0;
-    if (s < 1.5) return 0.85;
-    if (s < 2.5) return 1.0;
-    if (s < 3.5) return 0.9;
-    if (s < 4.5) return 0.24;
-    if (s < 5.5) return 0.9;
+    if (s < 1.5) return 0.3;
+    if (s < 2.5) return 0.85;
+    if (s < 3.5) return 1.0;
+    if (s < 4.5) return 0.9;
+    if (s < 5.5) return 0.24;
+    if (s < 6.5) return 0.9;
     return 1.0;
   }
 

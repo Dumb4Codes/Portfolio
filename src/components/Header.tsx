@@ -1,29 +1,24 @@
 'use client'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { getLenis } from '@/lib/scroll'
-import LiveClock from './LiveClock'
 import ThemeToggle from './ThemeToggle'
 
 type Props = {
-  jobLine: string | null
-  timezone: string
+  availability: { status: 'open' | 'busy' | 'closed'; label: string }
+  resume?: string
+  email: string
   nav: readonly { label: string; href: string }[]
   socials: { label: string; href: string }[]
 }
 
-export default function Header({ jobLine, timezone, nav, socials }: Props) {
+export default function Header({ availability, resume, email, nav, socials }: Props) {
   const pathname = usePathname()
   // the menu is open only for the path it was opened on, so navigating closes it without an effect
   const [openOn, setOpenOn] = useState<string | null>(null)
   const open = openOn === pathname
   const setOpen = useCallback((v: boolean | ((o: boolean) => boolean)) => setOpenOn((cur) => ((typeof v === 'function' ? v(cur === pathname) : v) ? pathname : null)), [pathname])
-  const mac = useSyncExternalStore(
-    () => () => {},
-    () => /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent),
-    () => false,
-  )
   const btn = useRef<HTMLButtonElement>(null)
   const panel = useRef<HTMLDivElement>(null)
 
@@ -62,7 +57,7 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
   return (
     <>
       <header className="site-header">
-        <div className="wrap site-header__row">
+        <div className="wrap site-header__row" data-build="header">
           <Link href="/" className="monogram display" aria-label="YS, Youvraj Singh home page" data-cursor="Home">
             YS
           </Link>
@@ -76,22 +71,16 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
           </nav>
 
           <div className="site-header__right">
-            {jobLine && (
-              <p className="status-pill mono" title={jobLine}>
-                <span className="status-dot" aria-hidden="true" />
-                <span>{jobLine}</span>
-              </p>
+            <p className="status-pill mono" data-status={availability.status} title={availability.label}>
+              <span className="status-dot" aria-hidden="true" />
+              <span>{availability.label}</span>
+            </p>
+            {resume && (
+              <a className="btn btn-sm header-resume" href={resume} target="_blank" rel="noopener noreferrer" data-cursor="Open ↗">
+                Résumé ↗<span className="sr-only"> (PDF, opens in a new tab)</span>
+              </a>
             )}
-            <LiveClock timezone={timezone} className="mono header-clock" />
             <ThemeToggle />
-            <button
-              type="button"
-              className="kbd-hint mono"
-              aria-label={`${mac ? '⌘K' : 'Ctrl K'}, open command palette`}
-              onClick={() => window.dispatchEvent(new Event('palette:open'))}
-            >
-              {mac ? '⌘K' : 'Ctrl K'}
-            </button>
             <button
               ref={btn}
               type="button"
@@ -124,15 +113,31 @@ export default function Header({ jobLine, timezone, nav, socials }: Props) {
             </Link>
           ))}
         </nav>
-        <ul className="mobile-menu__social mono">
-          {socials.map((s) => (
-            <li key={s.href}>
-              <a href={s.href} target="_blank" rel="noopener noreferrer">
-                {s.label} ↗
+        <div className="mobile-menu__foot">
+          <p className="mono mobile-menu__avail" data-status={availability.status}>
+            <span className="status-dot" aria-hidden="true" />
+            {availability.label}
+          </p>
+          <div className="mobile-menu__actions">
+            {resume && (
+              <a className="btn btn-accent" href={resume} target="_blank" rel="noopener noreferrer">
+                Résumé ↗
               </a>
-            </li>
-          ))}
-        </ul>
+            )}
+            <a className="btn" href={`mailto:${email}`}>
+              Email me
+            </a>
+          </div>
+          <ul className="mobile-menu__social mono">
+            {socials.map((s) => (
+              <li key={s.href}>
+                <a href={s.href} target="_blank" rel="noopener noreferrer">
+                  {s.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   )

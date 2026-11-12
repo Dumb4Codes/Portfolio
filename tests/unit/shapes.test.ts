@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { clockShape, fieldShape, ledgerShape, pinShape, pointsFromMask, routeShape } from '@/gl/shapes'
+import { clockShape, fieldShape, graphShape, ledgerShape, pinShape, pointsFromMask, routeShape } from '@/gl/shapes'
 import { sceneBox } from '@/gl/shapes'
 import type { Box, SceneKey } from '@/gl/shapes'
 
@@ -51,6 +51,21 @@ describe.each(VIEWPORTS)('shape generators at %ix%i', (vw, vh) => {
     const nodes = Array.from(s.attr).filter((a) => a >= 2)
     expect(nodes.length).toBeGreaterThan(N * 0.05)
     expect(Math.max(...s.attr)).toBeLessThanOrEqual(3)
+  })
+
+  it('graph: exact count, inside its box, edges 0..1 and nodes flagged 2 (hub = 3)', () => {
+    const c = ctx('graph')
+    const s = graphShape(c)
+    expect(s.pos.length).toBe(N * 3)
+    expect(inBox(s, c.box, 30)).toBe(true)
+    const nodes = Array.from(s.attr).filter((a) => a >= 2)
+    const hubs = nodes.filter((a) => a >= 3)
+    expect(nodes.length).toBeGreaterThan(N * 0.2)
+    expect(hubs.length).toBeGreaterThan(0)
+    expect(hubs.length).toBeLessThan(nodes.length)
+    const edges = Array.from(s.attr).filter((a) => a < 2)
+    expect(Math.min(...edges)).toBeGreaterThanOrEqual(0)
+    expect(Math.max(...edges)).toBeLessThanOrEqual(1)
   })
 
   it('field: exact count, spans the viewport width', () => {

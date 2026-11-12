@@ -11,14 +11,22 @@ test.describe('smoke', () => {
     await expect(page.locator('h1')).toHaveCount(1)
     await expect(page.locator('h1')).toContainText('Youvraj')
     await expect(page.locator('h1')).toContainText('Singh')
-    for (const id of ['top', 'work', 'builds', 'archive', 'experience', 'stack', 'certifications', 'about', 'contact']) {
+    for (const id of ['top', 'work', 'archive', 'experience', 'stack', 'certifications', 'about', 'contact']) {
       await expect(page.locator(`#${id}`), `#${id}`).toHaveCount(1)
     }
-    await expect(page.locator('.chapter-wrap')).toHaveCount(3)
-    await expect(page.locator('.manifesto')).toContainText('1,300+')
-    await expect(page.locator('.build')).not.toHaveCount(0)
-    // status pill uses the first job with no end date
-    await expect(page.locator('.status-pill').first()).toContainText('Full Stack Developer Intern @ SKOPE Kitchens')
+    // one mixed grid: internal and personal work side by side
+    await expect(page.locator('.wcard')).toHaveCount(7)
+    await expect(page.locator('.wcard--internal')).toHaveCount(3)
+    await expect(page.locator('.wcard--personal')).toHaveCount(4)
+    // the range line is filled from content: job count, project count, test total
+    await expect(page.locator('.manifesto')).toContainText('Two internships')
+    await expect(page.locator('.manifesto')).toContainText('Thirteen shipped projects')
+    await expect(page.locator('.manifesto')).toContainText(/\d[\d,]*\+ automated tests/)
+    // the header pill shows availability, not the job title
+    await expect(page.locator('.status-pill').first()).toContainText('Open to full-time roles')
+    // the hero names the current job (first job with no end date) and has the three calls to action
+    await expect(page.locator('.hero__signals')).toContainText('Full Stack Developer Intern, SKOPE Kitchens')
+    await expect(page.locator('.hero__cta .btn')).toHaveCount(3)
     // both jobs are shown, SKOPE as Present
     await expect(page.locator('.entry__date').first()).toContainText('PRESENT')
     await page.waitForTimeout(2500)
@@ -32,7 +40,7 @@ test.describe('smoke', () => {
     await expect(page.locator('h1')).toContainText('Youvraj')
     await expect(page.locator('#work')).toContainText('SKOPE')
     await expect(page.locator('#experience')).toContainText('HASVIK Technologies')
-    await expect(page.locator('.build__title a').first()).toBeVisible()
+    await expect(page.locator('.wcard__title a').first()).toBeVisible()
     await expect(page.locator('.hero__headline')).toBeVisible()
     await ctx.close()
   })
@@ -88,5 +96,42 @@ test.describe('smoke', () => {
       expect(img.status(), path).toBe(200)
       expect(img.headers()['content-type']).toContain('image/png')
     }
+  })
+})
+
+test.describe('build intro (first visit)', () => {
+  test('cursors assemble the hero, then everything is visible and it never runs twice', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+    const page = await ctx.newPage()
+    await page.addInitScript(() => {
+      window.addEventListener('intro:done', () => ((window as unknown as { __introDone?: number }).__introDone = performance.now()))
+    })
+    await page.goto('/')
+    // the boot script decided before paint that the intro runs; the intro ends by marking <html> as built
+    await expect(page.locator('html')).toHaveClass(/built/, { timeout: 6000 })
+    const t = await page.evaluate(() => (window as unknown as { __introDone?: number }).__introDone)
+    expect(t).toBeTruthy()
+    // the intro itself is capped at 1.6 s; measured from navigation start it must still be quick
+    expect(t!).toBeLessThan(4500)
+    // nothing is left hidden and the overlay is gone
+    const hidden = await page.locator('[data-build]').evaluateAll((els) => els.filter((e) => getComputedStyle(e).opacity === '0').length)
+    expect(hidden).toBe(0)
+    await expect(page.locator('.intro__cursor')).toHaveCount(0)
+    expect(await page.evaluate(() => sessionStorage.getItem('pre'))).toBe('1')
+    // second load in the same session: no intro
+    await page.goto('/')
+    await page.waitForTimeout(300)
+    expect(await page.evaluate(() => document.documentElement.classList.contains('preload'))).toBe(false)
+    await ctx.close()
+  })
+
+  test('a key press skips the intro immediately', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+    const page = await ctx.newPage()
+    await page.goto('/', { waitUntil: 'commit' })
+    await page.waitForFunction(() => document.querySelector('.intro__cursor') !== null, null, { timeout: 5000 }).catch(() => {})
+    await page.keyboard.press('Escape')
+    await expect(page.locator('html')).not.toHaveClass(/preload/, { timeout: 1500 })
+    await ctx.close()
   })
 })

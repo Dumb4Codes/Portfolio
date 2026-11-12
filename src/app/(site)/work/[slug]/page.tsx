@@ -9,7 +9,7 @@ import { blurMap } from '@/lib/blur'
 import { SITE_URL } from '@/lib/site'
 import Gallery from '@/sections/Gallery'
 import NextProject from '@/sections/NextProject'
-import { InternalVisual } from '@/sections/WorkSection'
+import { InternalVisual, SCENE_FOR } from '@/sections/visuals/InternalVisual'
 
 export const dynamicParams = false
 
@@ -67,7 +67,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
   const index = String(idx + 1).padStart(2, '0')
 
   return (
-    <article className="cs">
+    <article className="cs" data-scene={internal ? SCENE_FOR[p.visual] : undefined}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
 
       <header className="cs__hero">

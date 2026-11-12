@@ -33,7 +33,7 @@ export default function AboutSection({ profile, job, blur }: { profile: Profile;
         <Reveal variant="rule" className="rule" />
         <div className="about__grid grid12">
           <p className="section-label mono about__label">
-            <span>[ 07 ]</span> <span>About</span>
+            <span>[ 06 ]</span> <span>About</span>
           </p>
           {profile.photo && (
             <AboutPhoto>
@@ -51,7 +51,7 @@ export default function AboutSection({ profile, job, blur }: { profile: Profile;
           )}
           <div className="about__copy">
             <Reveal as="h2" variant="wdth" id="about-title" className="display about__title">
-              The person <em className="serif">behind</em> the ledger
+              Hi, I&apos;m <em className="serif">{profile.shortName}</em>.
             </Reveal>
             <div className="about__bio">
               {paragraphs.map((p, i) => (

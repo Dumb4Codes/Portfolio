@@ -6,7 +6,7 @@ import { defineConfig, devices } from '@playwright/test'
  *   NEXT_PUBLIC_KEYSTATIC_STORAGE=local   so /keystatic loads without GitHub
  *   NEXT_PUBLIC_WEB3FORMS_KEY=dummy       so the contact form renders (requests are mocked)
  */
-const PORT = 3100
+const PORT = Number(process.env.PORT ?? 3100)
 
 export default defineConfig({
   testDir: 'tests/e2e',

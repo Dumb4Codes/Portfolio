@@ -1,16 +1,20 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { chapterLocal } from '@/lib/chapter'
-import { director } from '@/gl/director'
+import { director, OVERRIDE_SHAPE } from '@/gl/director'
+import { sceneId } from '@/gl/shapes'
 
 const VH = 900
-// hero, ledger, clock, route, then the long "field" zone, then the pin (contact)
-const ANCHORS = [
-  { scene: 0, top: 0, bottom: 900 },
-  { scene: 1, top: 2400, bottom: 4600 },
-  { scene: 2, top: 4600, bottom: 6800 },
-  { scene: 3, top: 6800, bottom: 9000 },
-  { scene: 4, top: 9000, bottom: 16000 },
-  { scene: 5, top: 16000, bottom: 17000 },
+const HERO = sceneId('hero')
+const GRAPH = sceneId('graph')
+const FIELD = sceneId('field')
+const PIN = sceneId('pin')
+
+// the home page: hero, the work grid (graph), the long field zone, then the pin (contact)
+const HOME = [
+  { scene: HERO, top: 0, bottom: 900 },
+  { scene: GRAPH, top: 2400, bottom: 4600 },
+  { scene: FIELD, top: 4600, bottom: 16000 },
+  { scene: PIN, top: 16000, bottom: 17000 },
 ]
 
 const at = (y: number) => {
@@ -22,61 +26,96 @@ const at = (y: number) => {
 
 describe('scene director', () => {
   beforeEach(() => {
-    director.anchors = ANCHORS
+    director.anchors = HOME
     director.override = null
   })
 
   it('shows the hero at the top and the pin at the end', () => {
-    expect(at(0).shapeA).toBe(0)
+    expect(at(0).shapeA).toBe(HERO)
     expect(at(0).progress).toBe(0)
     const end = at(16200)
-    expect(end.shapeA + end.progress).toBeCloseTo(5, 1)
+    expect(end.shapeB).toBe(PIN)
+    expect(end.progress).toBeCloseTo(1, 1)
   })
 
-  it('is inside a chapter when the reading line (viewport centre) is in it', () => {
-    expect(at(4600 - 450 + 600).shapeA).toBe(2) // mid clock chapter
-    expect(at(2400 + 800).shapeA).toBe(1)
-    expect(at(6800 + 800).shapeA).toBe(3)
+  it('is inside an anchor when the reading line (viewport centre) is in it', () => {
+    expect(at(2400 + 800).shapeA).toBe(GRAPH)
+    expect(at(2400 + 800).progress).toBe(0)
+    expect(at(9000).shapeA).toBe(FIELD)
   })
 
   it('is scrubbed: the coordinate rises with scroll and falls again when you scroll back', () => {
     const ys = [0, 600, 1200, 1800, 2200, 2600, 3200]
     const up = ys.map((y) => {
-      const f = at(y)
-      return f.shapeA + f.progress
+      at(y)
+      return director.s
     })
     for (let i = 1; i < up.length; i++) expect(up[i]).toBeGreaterThanOrEqual(up[i - 1] - 1e-9)
     const down = [...ys].reverse().map((y) => {
-      const f = at(y)
-      return f.shapeA + f.progress
+      at(y)
+      return director.s
     })
     expect(down.reverse()).toEqual(up)
   })
 
-  it('transitions hero -> ledger across the gap, never skipping a shape', () => {
-    for (let y = 0; y < 3000; y += 50) {
+  it('morphs between neighbouring anchors only, never through the shapes between their ids', () => {
+    // graph (1) -> field (5): the chapter shapes (ledger, clock, route) must never be bound on this page
+    const chapters = [sceneId('ledger'), sceneId('clock'), sceneId('route')]
+    for (let y = 0; y < 17000; y += 50) {
       const f = at(y)
-      expect(f.shapeB - f.shapeA).toBe(1)
+      expect(chapters).not.toContain(f.shapeA)
+      expect(chapters).not.toContain(f.shapeB)
       expect(f.progress).toBeGreaterThanOrEqual(0)
       expect(f.progress).toBeLessThanOrEqual(1)
     }
+    // in the gap between the work grid and the field zone the pair is graph/field
+    for (let y = 3850; y < 4450; y += 50) {
+      const f = at(y)
+      expect(f.shapeA).toBe(GRAPH)
+      expect(f.shapeB).toBe(FIELD)
+    }
+    // and across the hero -> graph gap the pair is hero/graph
+    for (let y = 0; y < 1500; y += 50) {
+      const f = at(y)
+      expect(f.shapeA).toBe(HERO)
+      expect(f.shapeB).toBe(GRAPH)
+    }
   })
 
-  it('without anchors (case study) the field is shown', () => {
+  it('without anchors (404, work index) the field is shown', () => {
     director.anchors = []
-    expect(at(500).shapeA + at(500).progress).toBeCloseTo(4, 5)
+    const f = at(500)
+    expect(f.shapeA).toBe(FIELD)
+    expect(f.shapeB).toBe(FIELD)
+    expect(f.progress).toBe(0)
+  })
+
+  it('a single anchor (case study) shows that scene steadily', () => {
+    director.anchors = [{ scene: sceneId('ledger'), top: 0, bottom: 3000 }]
+    for (const y of [0, 800, 2500]) {
+      const f = at(y)
+      expect(f.shapeA).toBe(sceneId('ledger'))
+      expect(f.progress).toBe(0)
+    }
   })
 
   it('an override (404 / HIRE?) swaps shape B for the override text and then releases', () => {
     director.setOverride({ text: '404', mode: 'fail' })
-    director.s = 4
+    director.s = 2
     ;(director as unknown as { first: boolean }).first = false
-    const f = director.update(0.5, 0, VH)
-    expect(f.shapeB).toBe(6)
+    const f = director.update(0.5, 9000, VH)
+    expect(f.shapeB).toBe(OVERRIDE_SHAPE)
+    expect(f.shapeA).toBe(FIELD)
     expect(f.active).toBe(true)
     director.setOverride(null)
-    for (let i = 0; i < 400; i++) director.update(0.05, 0, VH)
+    for (let i = 0; i < 400; i++) director.update(0.05, 9000, VH)
     expect(director.override).toBeNull()
+  })
+
+  it('currentScene (static fallback) returns scene ids, not anchor positions', () => {
+    expect(director.currentScene(0, VH)).toBe(HERO)
+    expect(director.currentScene(9000, VH)).toBe(FIELD)
+    expect(director.currentScene(16500, VH)).toBe(PIN)
   })
 
   it('chapter progress ramps 0 -> 1 across a chapter and clamps', () => {

@@ -1,6 +1,5 @@
 import Lenis from 'lenis'
 import { formatMetric, parseMetric } from '@/content/derive'
-import { chapterLocal } from '@/lib/chapter'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { getLenis, prefersReducedMotion, setLenis } from '@/lib/scroll'
 
@@ -8,8 +7,8 @@ import { getLenis, prefersReducedMotion, setLenis } from '@/lib/scroll'
  * The motion engine. Everything that needs GSAP / ScrollTrigger / Lenis lives here and is loaded
  * lazily after first paint (see Boot.tsx). The server-rendered HTML carries the hooks as data attributes:
  *   [data-reveal]      entrance variants          [data-metric]   count-up numbers
- *   .chapter-wrap      pinned SKOPE chapters      .builds__stage  horizontal gallery
  *   .ticker__track     sliding tech strip         .certs__stage   fanning certificate deck
+ *   .timeline__line    drawing timeline           .about__photo   slow parallax
  * Each behaviour returns a cleanup so route changes can tear down and rebuild from the new DOM.
  */
 
@@ -132,107 +131,6 @@ function ticker(): Cleanup[] {
   return [() => gsap.ticker.remove(tick)]
 }
 
-// ---------------------------------------------------------------- SKOPE chapters
-
-function chapters(): Cleanup[] {
-  const undo: Cleanup[] = []
-  const mm = gsap.matchMedia()
-  for (const wrap of $$('.chapter-wrap')) {
-    const chapter = wrap.querySelector<HTMLElement>('.chapter')!
-    // desktop: pin ~150vh. Mobile: stacked, no pin.
-    mm.add('(min-width: 1024px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)', () => {
-      ScrollTrigger.create({ trigger: chapter, start: 'top top', end: '+=150%', pin: true, pinSpacing: true, anticipatePin: 1 })
-    })
-    // progress is broadcast so overlays and the shader accent move together (same curve as the director)
-    const broadcast = () => {
-      const r = wrap.getBoundingClientRect()
-      const p = chapterLocal(window.innerHeight / 2 - r.top, 0, r.height)
-      wrap.style.setProperty('--p', p.toFixed(4))
-      wrap.dispatchEvent(new CustomEvent('chapter-progress', { detail: p }))
-    }
-    const st = ScrollTrigger.create({ trigger: wrap, start: 'top bottom', end: 'bottom top', onUpdate: broadcast, onRefresh: broadcast })
-    broadcast()
-    undo.push(() => st.kill())
-  }
-  undo.push(() => mm.revert())
-  return undo
-}
-
-// ---------------------------------------------------------------- personal builds gallery
-
-function builds(): Cleanup[] {
-  const el = document.querySelector<HTMLElement>('.builds__stage')
-  const list = el?.querySelector<HTMLElement>('.builds__track')
-  if (!el || !list) return []
-  const mm = gsap.matchMedia()
-  mm.add('(min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
-    el.dataset.pinned = 'true'
-    const dist = () => Math.max(0, list.scrollWidth - el.clientWidth)
-    const skew = gsap.quickTo(list.querySelectorAll('.build__media'), 'skewX', { duration: 0.5, ease: 'power3' })
-    const tween = gsap.to(list, {
-      x: () => -dist(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top top',
-        end: () => `+=${dist()}`,
-        pin: true,
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-        onUpdate: (self) => skew(gsap.utils.clamp(-4, 4, self.getVelocity() / -450)),
-      },
-    })
-    const st = tween.scrollTrigger!
-
-    // drag: the page scroll follows the pointer, Lenis supplies the inertia
-    let down = false
-    let lastX = 0
-    const ratio = () => (st.end - st.start) / Math.max(1, dist())
-    const onDown = (e: PointerEvent) => {
-      if ((e.target as Element).closest('a,button')) return
-      down = true
-      lastX = e.clientX
-      el.classList.add('is-dragging')
-    }
-    const onMove = (e: PointerEvent) => {
-      if (!down) return
-      const dx = e.clientX - lastX
-      lastX = e.clientX
-      const l = getLenis()
-      if (l) l.scrollTo(l.scroll - dx * ratio(), { immediate: true })
-      else window.scrollBy(0, -dx * ratio())
-    }
-    const onUp = () => {
-      down = false
-      el.classList.remove('is-dragging')
-    }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
-      e.preventDefault()
-      const card = list.querySelector<HTMLElement>('.build')!.offsetWidth + 48
-      const l = getLenis()
-      const to = (l?.scroll ?? window.scrollY) + (e.key === 'ArrowRight' ? 1 : -1) * card * ratio()
-      if (l) l.scrollTo(to, { duration: 0.8 })
-      else window.scrollTo({ top: to, behavior: 'smooth' })
-    }
-    list.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onMove)
-    window.addEventListener('pointerup', onUp)
-    list.addEventListener('keydown', onKey)
-    return () => {
-      delete el.dataset.pinned
-      list.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerup', onUp)
-      list.removeEventListener('keydown', onKey)
-      gsap.set(list, { clearProps: 'transform' })
-      gsap.set(list.querySelectorAll('.build__media'), { clearProps: 'skewX' })
-    }
-  })
-  return [() => mm.revert()]
-}
-
 // ---------------------------------------------------------------- timeline, about, certificates, next project
 
 function balanceLine(): Cleanup[] {
@@ -244,24 +142,10 @@ function balanceLine(): Cleanup[] {
 
 function about(): Cleanup[] {
   const fig = document.querySelector<HTMLElement>('.about__photo')
-  if (!fig) return []
-  const img = fig.querySelector('img')
-  if (img) gsap.fromTo(img, { yPercent: -6, scale: 1.12 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true } })
-  // duotone -> colour on hover (mouse) or tap
-  const set = (on: boolean) => (fig.dataset.color = String(on))
-  const enter = (e: PointerEvent) => e.pointerType === 'mouse' && set(true)
-  const leave = (e: PointerEvent) => e.pointerType === 'mouse' && set(false)
-  const click = () => set(fig.dataset.color !== 'true')
-  fig.addEventListener('pointerenter', enter)
-  fig.addEventListener('pointerleave', leave)
-  fig.addEventListener('click', click)
-  return [
-    () => {
-      fig.removeEventListener('pointerenter', enter)
-      fig.removeEventListener('pointerleave', leave)
-      fig.removeEventListener('click', click)
-    },
-  ]
+  const img = fig?.querySelector('img')
+  if (!fig || !img) return []
+  gsap.fromTo(img, { yPercent: -6, scale: 1.12 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true } })
+  return []
 }
 
 function certs(): Cleanup[] {
@@ -328,14 +212,10 @@ export function start(): Cleanup {
     run(reveals)
     run(hero)
     run(ticker)
-    run(chapters)
-    run(builds)
     run(balanceLine)
     run(about)
     run(certs)
     run(nextRing)
-  } else {
-    run(about)
   }
   html.dataset.motion = 'on'
   requestAnimationFrame(() => ScrollTrigger.refresh())

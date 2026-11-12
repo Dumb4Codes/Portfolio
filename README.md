@@ -2,9 +2,9 @@
 
 A personal portfolio for a full-stack developer in Bengaluru. One idea carries the whole site:
 
-> **The same 40,000 particles become every chapter of my work.**
+> **The same 40,000 particles become every part of my work.**
 
-A single WebGL particle field sits behind the page and morphs, as you scroll, from the name **YOUVRAJ** into a stock ledger, a 24-hour payroll clock, a delivery route, a drifting field, and finally a pin on Bengaluru. Everything else is quiet, type-led HTML. The site works without JavaScript, respects reduced motion, and runs on Vercel's free plan.
+A single WebGL particle field sits behind the page and morphs, as you scroll, from the name **YOUVRAJ** into a network of connected parts behind the work grid, a drifting field, and finally a pin on Bengaluru; each internal case study gets its own shape (a stock ledger, a 24-hour payroll clock, a delivery route). On the first visit four labelled cursors assemble the hero in about a second. Everything else is quiet, type-led HTML. The site works without JavaScript, respects reduced motion, and runs on Vercel's free plan.
 
 - **Stack:** Next.js 16 (App Router, static), React 19, TypeScript strict, Tailwind CSS 4, plain three.js (GLSL shaders), GSAP + Lenis (lazy), Keystatic admin, zod, Vitest, Playwright.
 - **Admin:** `/admin` (Keystatic). Add a project, edit a job, swap the résumé, with no code. Saves are commits to this repo; Vercel redeploys.
@@ -29,7 +29,7 @@ Edit content in the browser at **http://localhost:3000/keystatic** (writes strai
 |---|---|
 | `pnpm dev` | Dev server. Admin uses local files. |
 | `pnpm dev:github` | Dev server with the admin in **GitHub mode**. Used once to create the GitHub App (see SETUP_GUIDE step 3). |
-| `pnpm build` / `pnpm start` | Production build and server. Content is validated at build time. |
+| `pnpm build` / `pnpm start` | Production build and server. Content is validated at build time. On a Windows machine where the native SWC binary is blocked, use `npx next build --webpack` **from a shell whose working directory has the drive letter in upper case** (`D:\portfolio`, e.g. PowerShell); Git Bash reports `d:\portfolio` and webpack then bundles two copies of Next's router and the client crashes. |
 | `pnpm lint` / `pnpm typecheck` | ESLint (zero errors) and `tsc --noEmit`. |
 | `pnpm test` | Vitest: shape generators, zod schemas, metric parser, stack aliases, manifesto total, scene director. |
 | `pnpm test:e2e` | Playwright against the production build (see below). |

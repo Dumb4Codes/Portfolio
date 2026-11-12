@@ -81,10 +81,13 @@ test.describe('CONTENT_RULES: internal work stays confidential', () => {
   test('internal projects carry the illustrative label on every visual', async ({ page }) => {
     await skipIntro(page)
     await page.goto('/')
-    const tags = page.locator('.chapter-wrap .vis-tag')
+    const tags = page.locator('.wcard--internal .vis-tag')
     await expect(tags).toHaveCount(3)
     for (const t of await tags.all()) await expect(t).toContainText('Illustrative · sample data')
-    await expect(page.locator('.work__intro .badge')).toContainText('Internal · Confidential')
+    // internal cards carry the badge, never a Live or Code button or a screenshot
+    await expect(page.locator('.wcard--internal .badge')).toHaveCount(3)
+    await expect(page.locator('.wcard--internal a[target="_blank"]')).toHaveCount(0)
+    await expect(page.locator('.wcard--internal img')).toHaveCount(0)
   })
 
   test('the archive lists internal rows without links', async ({ page }) => {

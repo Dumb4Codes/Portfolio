@@ -14,7 +14,7 @@ import {
 } from 'three'
 import { director, OVERRIDE_SHAPE } from './director'
 import { fragmentShader, vertexShader } from './shaders'
-import { generateScene, MOBILE_BREAKPOINT, STACK_BREAKPOINT, textShape } from './shapes'
+import { generateScene, MOBILE_BREAKPOINT, SCENES, STACK_BREAKPOINT, textShape } from './shapes'
 import type { Box, Shape } from './shapes'
 import { mulberry32 } from './shapes/rng'
 
@@ -24,7 +24,6 @@ import { mulberry32 } from './shapes/rng'
  * moves (scroll, morph, pointer, theme change) and rests on a still frame after ~3.5s of calm.
  */
 
-const SCENE_KEYS = ['hero', 'ledger', 'clock', 'route', 'field', 'pin'] as const
 const FOV = 35
 
 type Options = {
@@ -265,7 +264,7 @@ export class ParticleEngine {
       const box: Box = this.mobile ? { cx: 0, cy: vh * 0.05, w: vw * 0.9, h: vw * 0.45 } : { cx: 0, cy: 0, w: Math.min(vw * 0.8, 1300), h: vh * 0.5 }
       shape = textShape([director.override?.text ?? 'HIRE?'], count, box, getComputedStyle(document.body).fontFamily)
     } else {
-      shape = generateScene(SCENE_KEYS[i] as Exclude<(typeof SCENE_KEYS)[number], 'hero'>, count, vw, vh)
+      shape = generateScene(SCENES[i] as Exclude<(typeof SCENES)[number], 'hero'>, count, vw, vh)
     }
     this.shapes.set(i, shape)
     return shape

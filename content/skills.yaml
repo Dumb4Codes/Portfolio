@@ -4,6 +4,7 @@ groups:
       - JavaScript (ES6+)
       - TypeScript
       - Python
+      - C++
       - Java
       - SQL
       - HTML5

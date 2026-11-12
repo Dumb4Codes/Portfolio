@@ -26,7 +26,7 @@ test.describe('no horizontal scroll from 320px to 2560px', () => {
           const wide = Array.from(document.querySelectorAll('body *')).filter((el) => {
             const r = (el as HTMLElement).getBoundingClientRect()
             const cs = getComputedStyle(el)
-            return r.width > 0 && r.right > de.clientWidth + 1 && cs.position !== 'fixed' && !(el as HTMLElement).closest('.builds__track, .gallery__strip, .certs__stage, .ticker, .gl-layer, .cert, .palette, .cursor, .archive__preview, .wipe, .preloader, .grain, .about__photo, .site-header, [hidden]')
+            return r.width > 0 && r.right > de.clientWidth + 1 && cs.position !== 'fixed' && !(el as HTMLElement).closest('.gallery__strip, .certs__stage, .ticker, .gl-layer, .cert, .palette, .cursor, .archive__preview, .wipe, .intro, .aurora, .grain, .about__photo, .site-header, [hidden]')
           })
           return { sw: de.scrollWidth, cw: de.clientWidth, culprit: wide[0]?.className?.toString().slice(0, 60) ?? '' }
         })
@@ -48,7 +48,7 @@ test.describe('mobile layout is designed, not squeezed', () => {
     const box = await name.boundingBox()
     expect(box!.width).toBeGreaterThan(390 * 0.8)
     expect(box!.height).toBeLessThan(box!.width * 0.3) // one line, not two
-    for (const sel of ['.menu-btn', '.icon-btn', '.btn']) {
+    for (const sel of ['.menu-btn', '.icon-btn', '.hero__cta .btn']) {
       const b = await page.locator(sel).first().boundingBox()
       expect(b!.height, sel).toBeGreaterThanOrEqual(36) // 44 for primary controls, 36 for the small copy button
     }

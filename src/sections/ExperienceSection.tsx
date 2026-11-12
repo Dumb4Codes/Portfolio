@@ -11,10 +11,10 @@ export default function ExperienceSection({ jobs, projects, education }: { jobs:
         <Reveal variant="rule" className="rule" />
         <div className="exp__head grid12">
           <p className="section-label mono exp__label">
-            <span>[ 04 ]</span> <span>Experience</span>
+            <span>[ 03 ]</span> <span>Experience</span>
           </p>
           <Reveal as="h2" variant="wdth" id="exp-title" className="display exp__title">
-            The <em className="serif">entries</em>
+            Where I&apos;ve <em className="serif">worked</em>
           </Reveal>
         </div>
 

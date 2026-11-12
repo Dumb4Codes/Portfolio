@@ -31,7 +31,7 @@ export default function CertsSection({ certs }: { certs: Cert[] }) {
         <Reveal variant="rule" className="rule" />
         <div className="certs__head grid12">
           <p className="section-label mono certs__label">
-            <span>[ 06 ]</span> <span>Certifications</span>
+            <span>[ 05 ]</span> <span>Certifications</span>
           </p>
           <Reveal as="h2" variant="wdth" id="cert-title" className="display certs__title">
             Proof of <em className="serif">coursework</em>

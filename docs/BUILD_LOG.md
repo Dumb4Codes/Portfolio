@@ -108,3 +108,53 @@ Playwright screenshots at 390×844, 768×1024, 1440×900 and 1920×1080, dark an
 | `lint-summary.mjs`, `pw-summary.mjs` | Compact ESLint / Playwright output |
 | `dummy-project-check.sh` | Proves the add-a-project flow needs no code |
 | `seed-convert.mjs` | One-off: converted the kit's seed YAML into Keystatic's format (kept for the record) |
+
+---
+
+# Redesign log, 2026-11-12: "well-rounded, fast, with an AI first load"
+
+Spec: `docs/superpowers/specs/2026-11-12-portfolio-redesign-design.md`. Plan: `docs/superpowers/plans/2026-11-12-portfolio-redesign-plan.md`.
+
+## Why
+
+The owner's review of the 2026-11-03 site: it read as "the ledger person". The manifesto, the first four scroll-screens (three pinned SKOPE chapters), three of six particle scenes, the Experience heading ("The entries"), the About heading ("The person behind the ledger") and the bio all orbited one employer project. A recruiter saw one domain, "Intern" in the most prominent spot and confidential work they could not click. The brief for the redesign: present a well-rounded full-stack developer, feel clean and modern, be responsive on every screen, add one creative AI-flavoured moment on first load without being slow, add C++ to the languages, and document everything.
+
+## What changed
+
+| Area | Before | After |
+|---|---|---|
+| Hero | Name + "I build the software that runs real businesses" + ledger/payroll/delivery sub-line; no CTAs | Name + "Full-stack developer who *ships* end to end" + tools sub-line + **See the work / Résumé / Email** buttons + a derived "Currently / Shipped / Across" signal panel + a soft violet/cyan aurora |
+| Header | Job-title pill ("Intern @ SKOPE"), live clock, ⌘K hint | **Availability pill** ("Open to full-time roles"), **Résumé** button, theme toggle; clock and ⌘K note live in the footer |
+| First load | 000→100 counter curtain ("Loading the ledger"), waited for WebGL | **Build intro**: four labelled cursors (`layout`, `copy`, `motion`, `ship`) fly in and snap the hero blocks into place, ~1 s, capped at 1.6 s, skippable, once per session, CSS failsafe at 2.5 s, off under reduced motion |
+| Statement | "Three production systems. One month. 1,300+ automated tests…" (hard-coded) | Range line from content placeholders: "Two internships. Thirteen shipped projects. 934+ automated tests. From Figma to AWS, front to back." |
+| Work | Three pinned, full-screen SKOPE chapters, then a horizontal gallery of personal builds | **One bento grid** of all featured work, interleaved (SKOPE Ops, Instantly, HR Portal, CarRental, mydeliveryboy, QuickStay, Pulse). Internal cards use **procedural SVG covers** (ledger / clock / route) labelled "Illustrative · sample data"; personal cards show screenshots with Live / Code buttons |
+| Case studies | Internal illustrations only on the case-study page | Same, plus the matching **particle scene** (ledger / clock / route) anchored on that page, panel left-aligned on desktop so the particles stay visible |
+| Particles | Scenes hero → ledger → clock → route → field → pin on home; director interpolated **scene ids**, so skipping a scene would flash through others | New **`graph`** scene (a network of connected parts) behind the work grid; director interpolates **anchor ordinals** and binds the scene ids on either side, so home goes hero → graph → field → pin directly |
+| Copy | "The entries", "The person behind the ledger", "Let's build something that adds up", "Loading the ledger" | "Where I've worked", "Hi, I'm Youvraj.", "Let's build something together", no ledger wordplay anywhere |
+| About | Duotone photo, tap for colour | Colour photo, bio rewritten around range and how he works |
+| Skills | — | **C++** added to Languages |
+| Theme | One accent | Same base and accent; added `--ai-1/--ai-2` (intro cursors, aurora, cover tints), `--surface`, `--radius-card`, card primitive; mono labels 11 → 12 px |
+| Résumé | Addepto-tailored PDF served temporarily | Siemens-targeted PDF (`_applications/siemens/`), rendered from HTML with `scripts/resume-pdf.mjs` |
+
+## Decisions worth knowing
+
+1. **Chapters off the home page, not deleted.** The ledger / payroll / route illustrations and their particle shapes are the most crafted parts of the site; they now live on the case-study pages where a reader has chosen to go. Nothing was thrown away.
+2. **Director model.** Interpolating anchor ordinals instead of scene ids was the smallest change that lets a page use any subset of scenes in any order. `shapeA/shapeB` are still plain ids for the shader. The 404 override and the static SVG fallback follow the same model.
+3. **Intro has no curtain.** The hero HTML is painted immediately (it stays the LCP element); only the marked blocks wait, and the ghost boxes show where they will land. If the script never runs, CSS releases everything at 2.5 s.
+4. **934+, not 1,300+.** The old statement hard-coded "1,300+ automated tests"; the content's per-project counts add up to 934. The range line now uses the derived number. If the 1,300 figure is right, add `testsCount` to the projects that are missing it (the personal projects have none) and the number follows.
+5. **Procedural covers for confidential work.** No screenshots, no real data, server-rendered SVG, each labelled. The confidentiality Playwright checks were extended to the cards (no `img`, no external links, badge present).
+6. **Hero "Across" line filters tooling.** The five most-used technologies are derived from project stacks, but styling and build tools (Tailwind, Vite, Radix, shadcn, Framer, Zod, JWT) are excluded so the line names languages, frameworks and data stores.
+7. **Windows build quirk.** The native SWC binary is blocked by an Application Control policy on this machine, so builds use `next build --webpack`. Under Git Bash, Node reports the project as `d:\portfolio` while pnpm's paths are `D:\portfolio`; webpack then bundles two copies of Next's router context and the client crashes with "invariant expected layout router to be mounted". Build and serve from PowerShell (or any shell that reports `D:`). Vercel is unaffected.
+
+## QA results
+
+QA_RESULTS_PLACEHOLDER
+
+## Helper scripts added
+
+| Script | Use |
+|---|---|
+| `probe.mjs` | `node scripts/probe.mjs http://localhost:3100 home work work/instantly`: h1 and console errors per page (paths without a leading slash, Git Bash rewrites those) |
+| `intro-frames.mjs` | Frames of the first-visit intro at 120…1900 ms plus its timing: `node scripts/intro-frames.mjs <outDir> 1440x900` |
+| `resume-pdf.mjs` | HTML résumé → A4 PDF with clickable links: `node scripts/resume-pdf.mjs in.html out.pdf` |
+| `shots.mjs` | Stops updated for the new home sections |

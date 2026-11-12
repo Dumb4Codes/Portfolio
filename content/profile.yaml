@@ -1,12 +1,12 @@
 name: Youvraj Singh
 shortName: Youvraj
 role: Full-Stack Developer
-headline: I build the software that runs real businesses.
-subheadline: "Full-stack developer in Bengaluru. Right now I'm shipping internal platforms for a
-  multi-brand cloud kitchen: stock ledgers, payroll and live delivery tracking."
+headline: Full-stack developer who ships end to end.
+subheadline: "Design in Figma, build in React, Next.js, Node or Python, prove it with Playwright,
+  run it on Vercel or AWS. Currently building internal products at SKOPE Kitchens in Bengaluru."
 availability:
   status: open
-  label: Open to full-time roles & freelance builds
+  label: Open to full-time roles
 location: Bengaluru, Karnataka, India
 timezone: Asia/Kolkata
 email: youv2002@gmail.com
@@ -20,15 +20,19 @@ resume: /resume/youvraj-singh-resume.pdf
 photo: /images/profile/youvraj-singh.jpg
 photoAlt: Youvraj Singh smiling, wearing a navy blazer over a white shirt, against a pale wall.
 bio: |
-  I'm a full-stack developer who likes the unglamorous parts of software: the ledger that has to
-  balance, the payroll that has to match to the paisa, the booking that must never double-book.
+  I'm a full-stack developer. I've shipped an operations ERP, a payroll system, a delivery service,
+  e-commerce and booking platforms, dashboards and a few tools built for fun, and I like every part of
+  that work: the interface people touch, the API behind it, the data model under it, and the tests that
+  keep it honest.
 
-  I work across the whole lifecycle (design in Figma, build in React/Next.js and Node or Python,
-  test with Playwright, deploy on Vercel, Render or AWS) and I care about what happens after launch:
-  role-based access, audit trails and tests that prove the numbers.
+  I work across the whole lifecycle. I start in Figma, build in React and Next.js with Node, NestJS or
+  FastAPI behind them, keep data in Postgres or MongoDB, write Playwright and Vitest suites, and deploy
+  on Vercel, Render or AWS. I care about what happens after launch: role-based access, audit trails,
+  performance budgets and clear documentation.
 
-  I studied Computer Science at St. Aloysius College, Jabalpur, and I'm currently a Full Stack
-  Developer Intern at SKOPE Kitchens in Bengaluru, after a software development internship with HASVIK Technologies.
+  I studied Computer Science at St. Aloysius College, Jabalpur. I'm currently a Full Stack Developer
+  Intern at SKOPE Kitchens in Bengaluru, after a software development internship with HASVIK
+  Technologies, and I'm open to full-time roles.
 education:
   degree: Bachelor of Science in Computer Science
   school: St. Aloysius College, Jabalpur (RDVV University)
