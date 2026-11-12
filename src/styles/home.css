@@ -167,9 +167,10 @@ html.js.preload [data-build] {
   /* if the intro never finishes (or never runs), release everything */
   animation: build-release 0s 2.5s forwards;
 }
-html.js.preload [data-build]:not([data-built='true']) { opacity: 0; transform: translateY(10px); }
-/* the name is the page's largest paint: it stays visible (dimmed) so first paint and LCP are never delayed by the intro */
-html.js.preload [data-build='name']:not([data-built='true']) { opacity: 0.28; transform: none; }
+/* blocks wait for their cursor faintly painted, never invisible: the largest text (the name on desktop, the sub-line on phones)
+   counts for first paint and LCP immediately, and the intro only lifts them to full */
+html.js.preload [data-build]:not([data-built='true']) { opacity: 0.22; transform: translateY(8px); }
+html.js.preload [data-build='name']:not([data-built='true']) { opacity: 0.3; transform: none; }
 html.js.preload [data-built='true'] { animation: build-flash 0.7s var(--ease-out) forwards; }
 @keyframes build-release { to { opacity: 1; transform: none; } }
 @keyframes build-flash {
