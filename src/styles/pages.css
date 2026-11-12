@@ -19,7 +19,8 @@ body:has(.nf) .gl-layer { opacity: 1; }
 .cs__hero { padding-top: calc(var(--header-h) + clamp(32px, 8vh, 96px)); padding-bottom: clamp(32px, 6vh, 72px); }
 .cs__crumb { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; margin-bottom: clamp(20px, 5vh, 56px); }
 .cs__crumb a { display: inline-block; padding: 12px 0; min-height: 44px; border-bottom: 1px solid var(--line-strong); }
-.cs__title { --w: 112%; animation: cs-in 1.2s var(--ease-out) both; font-size: clamp(48px, 13vw, 260px); line-height: 0.86; letter-spacing: -0.045em; overflow-wrap: anywhere; max-width: 12ch; }
+/* --w stays 100%: a wider title would repaint larger when the variable font arrives and count as a later LCP */
+.cs__title { --w: 100%; animation: cs-in 1.2s var(--ease-out) both; font-size: clamp(48px, 13vw, 260px); line-height: 0.86; letter-spacing: -0.045em; overflow-wrap: anywhere; max-width: 12ch; }
 .cs__tagline { margin-top: 24px; font-size: clamp(22px, 2.8vw, 44px); line-height: 1.1; max-width: 26ch; }
 .cs__meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 24px; margin-top: clamp(32px, 6vh, 64px); }
 .cs__meta > div { border-top: 1px solid var(--line-strong); padding: 12px 0 18px; }

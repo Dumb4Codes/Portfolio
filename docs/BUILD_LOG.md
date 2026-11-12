@@ -148,7 +148,39 @@ The owner's review of the 2026-11-03 site: it read as "the ledger person". The m
 
 ## QA results
 
-QA_RESULTS_PLACEHOLDER
+All run in the final state on 2026-11-12 (Windows laptop, production build via `next build --webpack`, see decision 7).
+
+| Check | Result |
+|---|---|
+| `pnpm typecheck` | passes |
+| `pnpm lint` | 0 errors, 0 warnings |
+| Vitest | **92 tests passing** (was 86): director ordinal model (neighbour-only morphs, single anchor, no anchors, override, static scene ids), graph shape bounds and attr classes, manifesto placeholders, plus everything from before |
+| Playwright | **60 tests passing** (was 56): smoke (new grid counts, range line, availability pill, hero signals and CTAs, no-JS), two new intro tests (assembles then everything visible, never runs twice; a key press skips it), features, axe in both themes on home / personal case study / internal case study / 404 / work index / palette open, confidentiality on the cards and case studies, responsive 320–2560 on five page types, menu focus trap, reduced motion, WebGL layer, admin (local-mode build) |
+| Console | no errors or warnings on home, `/work`, a personal and an internal case study (`scripts/probe.mjs`); only the known headless GPU driver message |
+| Build intro | measured with `scripts/intro-frames.mjs`: all blocks built, cursors gone and `html.built` set about 1.0 s after the intro starts; `intro:done` 2.1–2.3 s after navigation start in headless Chrome (hydration included); skip works; second load in the session shows no intro |
+| Screenshots reviewed | home at 320, 390, 768, 1440, 1920 (dark) and 390, 1440 (light); work index, 404, internal and personal case studies at 1440 and 390; intro frames at 1440 and 390 |
+
+### Lighthouse (Lighthouse 13, localhost, production build; mobile = Moto G Power class emulation, 4x CPU, slow 4G)
+
+| Page | Mobile perf | Mobile LCP / TBT / CLS | Desktop perf | Desktop LCP / TBT / CLS |
+|---|---|---|---|---|
+| Home | 63–80 (4 runs) | 1.1–1.3 s / 790–3,120 ms / 0.045 | 93–100 | 0.3 s / 10–200 ms / 0.011–0.058 |
+| Internal case study | 80–81 | 3.4 s / 450–470 ms / 0.002 | | |
+| Personal case study | 89 | 0.9 s / 380 ms / 0.003 | 99 | 0.8 s / 70 ms / 0.003 |
+| `/work` | | | 96 | 0.3 s / 160 ms / 0.034 |
+| Accessibility / Best Practices / SEO | 100 / 100 / 100 on every page measured | | | |
+
+What the numbers say, honestly:
+
+- **The intro cost LCP once, and that was fixed.** The first measurement after the redesign had home mobile LCP at 5.1 s because the hero blocks sat at opacity 0 until a cursor "built" them. Blocks now wait at 22–30 % opacity, so the largest text counts for first paint: LCP 1.1–1.3 s mobile, 0.3 s desktop.
+- **Mobile TBT is noisy and higher than the 2026-11-03 numbers (140–470 ms).** Two things differ from that measurement: the build is now webpack, not Turbopack (the native SWC binary is blocked on this machine; Vercel still builds with Turbopack), and the runs overlapped other work on the laptop. The 3,120 ms run happened right after a build; the quiet runs were 700–1,080 ms. Re-measure on the deployed site before drawing conclusions.
+- **CLS 0.045 on home** comes from the hero reflowing when the display font swaps in (the signals panel is the largest moved element). It is inside the "good" band (< 0.1); moving the panel to the top of its grid row did not change it, so the next step would be tuning the fallback font metrics for the name.
+- **Internal case study mobile LCP 3.4 s** is the title repainting when the variable display font arrives on throttled 4G (the title's width axis was widened to 112 %, which has been reset to 100 %; the font arrival itself remains). Desktop is unaffected.
+- The personal project pages, the work index and the 404 are unchanged in character from before.
+
+### Content note for the owner
+
+The range line now reads "934+ automated tests" because that is what the projects' `testsCount` fields add up to. The previous hard-coded statement said 1,300+. If 1,300 is the real total, add `testsCount` to the projects that are missing it and the number updates itself.
 
 ## Helper scripts added
 

@@ -101,7 +101,8 @@ html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, trans
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 28px;
-  align-items: end;
+  /* start, not end: a bottom-aligned panel moves when the headline reflows on font swap (layout shift) */
+  align-items: start;
 }
 @media (min-width: 1024px) {
   .hero__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(var(--gutter) * 3); }
@@ -120,7 +121,7 @@ html[data-gl='on'] .hero__first { color: color-mix(in oklab, var(--fg) 9%, trans
 .hero__cta .btn svg { flex: none; }
 .btn-ghost { border-color: transparent; padding-inline: 10px; }
 .btn-ghost:hover { background: transparent; color: var(--accent-text); border-color: transparent; }
-.hero__signals { display: grid; align-self: end; width: 100%; max-width: 460px; }
+.hero__signals { display: grid; align-self: start; width: 100%; max-width: 460px; }
 .hero__signals > div {
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
