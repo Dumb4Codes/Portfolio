@@ -151,27 +151,46 @@
 .mobile-menu__social { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .mobile-menu__social a { display: inline-block; padding: 12px 0; min-height: 44px; }
 
-/* ---------- Cursor ---------- */
+/* ---------- Cursor: the agents' arrow, snapped to the mouse, with a verb tag over actionable targets ---------- */
 .cursor { position: fixed; inset: 0; z-index: 300; pointer-events: none; display: none; }
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .cursor { display: block; }
   html.cursor-on, html.cursor-on * { cursor: none !important; }
+  /* text fields keep the native I-beam */
+  html.cursor-on :is(input, textarea, select, [contenteditable='true'], [contenteditable='']) { cursor: text !important; }
+  html.cursor-on select { cursor: default !important; }
 }
-.cursor__dot, .cursor__ring {
+.cursor__ptr {
   position: fixed;
   left: 0;
   top: 0;
-  border-radius: 50%;
-  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
   opacity: 0;
-  transition: opacity 0.2s, width 0.3s var(--ease-out), height 0.3s var(--ease-out), margin 0.3s var(--ease-out), background 0.3s;
+  transition: opacity 0.15s;
+  will-change: transform;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
-.cursor__dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--accent); }
-.cursor__ring { width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid var(--fg); display: grid; place-items: center; mix-blend-mode: difference; }
-html.cursor-on .cursor__dot, html.cursor-on .cursor__ring { opacity: 1; }
-.cursor__ring.is-active { width: 54px; height: 54px; margin: -27px 0 0 -27px; background: color-mix(in oklab, var(--fg) 8%, transparent); }
-.cursor__ring.has-label { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: var(--fg); border-color: var(--fg); mix-blend-mode: normal; }
-.cursor__label { color: var(--bg); font-size: 10px; white-space: nowrap; }
+html.cursor-on .cursor__ptr { opacity: 1; }
+.cursor__ptr.is-text { opacity: 0; }
+.cursor__arrow { display: block; margin: -2px 0 0 -2px; transition: transform 0.16s var(--ease-out); transform-origin: 3px 3px; }
+.cursor__arrow path { fill: var(--fg); stroke: var(--bg); stroke-width: 1.3; stroke-linejoin: round; }
+.cursor__ptr.is-active .cursor__arrow { transform: scale(1.12); }
+.cursor__ptr.is-press .cursor__arrow { transform: scale(0.82); }
+.cursor__tag {
+  margin: 14px 0 0 -2px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--on-accent);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0;
+  translate: -4px 0;
+  transition: opacity 0.14s var(--ease-out), translate 0.18s var(--ease-out);
+}
+.cursor__ptr.has-tag .cursor__tag { opacity: 1; translate: 0 0; }
 
 /* ---------- Build intro: cursors assembling the hero ---------- */
 .intro {

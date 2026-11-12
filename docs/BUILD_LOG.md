@@ -181,6 +181,7 @@ What the numbers say, honestly:
 ### Later the same day
 
 - HASVIK Technologies is marked as ongoing again (`end: ""`), at the owner's request, so both internships show as Present. SKOPE stays the "current job" for the hero and header because it has the lower `order`. The bio sentence and both tailored résumés were updated to match.
+- The cursor was redesigned at the owner's request (the orange dot + lagging difference-blend ring felt dated). It is now the intro agents' arrow: bone-white with a thin dark outline so it reads on any background, snapped to the mouse with no lag, an accent tag with the verb over `data-cursor` targets, a shrink on press, the native I-beam over text fields, and the system cursor back on keyboard use.
 - The served résumé is the MERN-focused one; its stat strip was removed (unusual on a résumé, parses badly in ATS tools), its test total matches the site (934+), and its skills section was restored to the original's breadth (integrations, AI tooling, Angular, Java, FastAPI).
 
 ### Content note for the owner

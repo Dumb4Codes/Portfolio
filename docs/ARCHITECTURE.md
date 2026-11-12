@@ -92,7 +92,7 @@ First visit per session only (the boot script sets `html.preload` before paint; 
 - The canvas is `aria-hidden`. Every internal illustration is `role="img"` with a full text description.
 - `prefers-reduced-motion`: no Lenis, no particles (static SVG instead), no parallax, no marquee, no entrance animations, no grain, no build intro, and the hero aurora is still.
 - Internal (confidential) projects never render an `<img>`: their covers are procedural SVGs (`sections/InternalCover.tsx`) labelled "Illustrative · sample data", and the schema strips any link or image an editor might add.
-- The custom cursor never hides the system cursor for keyboard or touch users.
+- The custom cursor (`components/Cursor.tsx`) is the same arrow the intro's agents use, snapped to the mouse with no lag, with an accent tag that names the action over `data-cursor` targets (View, Open ↗, Copy…). It never replaces the I-beam over text fields, comes back to the system cursor on any keyboard navigation, and does not exist for touch or reduced-motion users.
 - Light theme uses a darker accent for small text (AA on bone paper and the raised panel).
 
 ## 7. Admin
