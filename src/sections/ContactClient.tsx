@@ -39,7 +39,7 @@ export function ContactActions({ email, phoneEnc, resume }: { email: string; pho
         <li>
           <span className="mono muted">Résumé</span>
           <span className="contact__row">
-            <a href={resume} className="contact__value" target="_blank" rel="noopener noreferrer" download>
+            <a href={resume} className="contact__value" target="_blank" rel="noopener noreferrer" download="Youvraj_Singh_Resume.pdf">
               Download PDF
             </a>
           </span>

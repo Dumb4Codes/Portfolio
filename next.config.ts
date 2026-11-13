@@ -16,6 +16,8 @@ const config: NextConfig = {
     return [
       { source: '/keystatic/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       { source: '/admin', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+      // the résumé opens in the browser, and saves as Youvraj_Singh_Resume.pdf whatever its URL is
+      { source: '/resume/:file*', headers: [{ key: 'Content-Disposition', value: 'inline; filename="Youvraj_Singh_Resume.pdf"' }] },
       {
         source: '/(.*)',
         headers: [
