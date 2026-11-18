@@ -18,6 +18,7 @@ groups:
       - Redux Toolkit
       - Zustand
       - TanStack Query
+      - Axios
       - Tailwind CSS
       - Radix UI
       - shadcn/ui

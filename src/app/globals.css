@@ -15,7 +15,7 @@
   --line: rgba(237, 232, 223, 0.12);
   --line-strong: rgba(237, 232, 223, 0.28);
   --accent: #ff5a1f;
-  --accent-text: #ff5a1f;
+  --accent-text: var(--fg);
   --accent-2: #7aa2ff;
   --live: #4ade80;
   --on-accent: #0a0a0b;
@@ -55,7 +55,7 @@
   --line: rgba(21, 22, 26, 0.12);
   --line-strong: rgba(21, 22, 26, 0.26);
   --accent: #ff5a1f;
-  --accent-text: #b4380b; /* AA on the paper and on white cards for small text */
+  --accent-text: var(--fg);
   --live: #15803d;
   --on-accent: #15161a;
   --grain-opacity: 0.03;
@@ -219,7 +219,8 @@ html.lenis body {
   color: var(--muted);
 }
 .accent {
-  color: var(--accent-text);
+  color: var(--fg);
+  font-weight: 800;
 }
 .prose {
   max-width: 68ch;

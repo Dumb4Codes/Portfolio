@@ -9,8 +9,8 @@ end: ""
 order: 2
 summary: >-
   Taking client features from requirement to production: BRDs into approved Figma
-  designs, Next.js builds that cut page load time by 25%, and the NestJS APIs
-  for a CRM migration.
+  designs, Next.js builds that cut page load time by 25%, and both sides of a
+  leads CRM, from the Next.js interface to the NestJS and MongoDB APIs.
 highlights:
   - >-
     Converted Figma designs into responsive, high-performance Next.js components
@@ -19,9 +19,11 @@ highlights:
     Designed new features in Figma straight from client BRDs; the client
     reviewed and approved the designs before development began.
   - >-
-    Contributed to a CRM migration by building scalable REST APIs in NestJS,
-    documenting and testing them with Swagger, and restructuring PostgreSQL
-    schemas for data consistency.
+    Built features across the front end and back end of the company's leads CRM
+    portal, which manages sales leads and their follow-ups: the interface in
+    Next.js with TanStack Query, Zustand, Tailwind CSS and Axios, and the REST
+    APIs in NestJS (Node.js) on MongoDB, with every endpoint documented in
+    Swagger.
   - >-
     Helped deploy and manage AWS resources for hosting and scaling team
     features, working in a Git workflow with code review from senior developers.
@@ -29,8 +31,13 @@ stack:
   - Next.js
   - React
   - TypeScript
+  - TanStack Query
+  - Zustand
+  - Tailwind CSS
+  - Axios
   - NestJS
-  - PostgreSQL
+  - Node.js
+  - MongoDB
   - Swagger
   - AWS
   - Figma
